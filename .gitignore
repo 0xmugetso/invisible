@@ -1,0 +1,37 @@
+# Dependencies and build output
+/node_modules/
+/.next/
+/out/
+/coverage/
+*.tsbuildinfo
+*.log
+
+# Local configuration and credentials
+.env
+.env.*
+!.env.example
+/.local/
+/.aws/
+/.config/gcloud/
+*.pem
+*.key
+
+# Runtime publications and temporary exports
+/public/activity/
+/public/rankings/
+/public/*.tmp
+/data/*.tmp
+
+# Local editor and assistant files
+.DS_Store
+/.idea/
+/.vscode/
+/.agents/
+/.codex/
+/claude/
+/.claude/
+/.cursor/
+/.github/copilot-instructions.md
+/AGENTS.md
+/CLAUDE.md
+/.cursorrules

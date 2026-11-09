@@ -1,0 +1,87 @@
+[
+  {
+    "id": "rhea",
+    "name": "Rhea Finance",
+    "category": "DeFi",
+    "description": "Exchange and lending on NEAR.",
+    "contracts": {
+      "v2.ref-finance.near": "https://github.com/ref-finance/guide/blob/main/developers/contracts.md",
+      "contract.main.burrow.near": "https://github.com/NearDeFi/burrowland"
+    },
+    "tokens": [
+      {
+        "accountId": "token.rhealab.near",
+        "symbol": "RHEA",
+        "evidence": "https://nearblocks.io/tokens/token.rhealab.near"
+      }
+    ],
+    "links": {
+      "website": "https://www.rhea.finance/",
+      "documentation": "https://github.com/ref-finance/guide/blob/main/docs/rhea-finance-white-paper.md",
+      "X": {
+        "url": "https://twitter.com/rhea_finance",
+        "evidence": "https://www.rhea.finance/"
+      },
+      "Discord": {
+        "url": "https://discord.gg/rheafinance",
+        "evidence": "https://www.rhea.finance/"
+      },
+      "Telegram": {
+        "url": "https://t.me/rhea_finance",
+        "evidence": "https://www.rhea.finance/"
+      }
+    }
+  },
+  {
+    "id": "metapool",
+    "name": "Meta Pool",
+    "category": "Staking",
+    "description": "Liquid staking on NEAR.",
+    "contracts": {
+      "meta-pool.near": "https://docs.metapool.app/master/for-developers/meta-pool-contracts/near-network"
+    },
+    "tokens": [
+      {
+        "accountId": "mpdao-token.near",
+        "symbol": "mpDAO",
+        "evidence": "https://docs.metapool.app/master/for-developers/meta-pool-contracts/near-network"
+      }
+    ],
+    "links": {
+      "website": "https://www.metapool.app/",
+      "documentation": "https://docs.metapool.app/",
+      "X": {
+        "url": "https://x.com/meta_pool",
+        "evidence": "https://www.metapool.app/"
+      },
+      "Discord": {
+        "url": "https://discord.gg/9DzPZCzzxp",
+        "evidence": "https://www.metapool.app/"
+      },
+      "Telegram": {
+        "url": "https://t.me/MetaPoolOfficialGroup",
+        "evidence": "https://www.metapool.app/"
+      }
+    }
+  },
+  {
+    "id": "linear",
+    "name": "LiNEAR",
+    "category": "Staking",
+    "description": "Liquid staking on NEAR.",
+    "contracts": {
+      "linear-protocol.near": "https://github.com/linear-protocol/LiNEAR"
+    },
+    "tokens": [
+      {
+        "accountId": "linear-protocol.near",
+        "symbol": "LiNEAR",
+        "evidence": "https://docs.linearprotocol.org/developer-guide/contract-overview"
+      }
+    ],
+    "links": {
+      "documentation": "https://docs.linearprotocol.org/",
+      "github": "https://github.com/linear-protocol/LiNEAR"
+    }
+  }
+]

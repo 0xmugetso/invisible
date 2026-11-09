@@ -1,0 +1,15 @@
+export type Project={id:string;name:string;category:string;mark:string;color:string;description:string;contracts:string[];source:string;repo?:string;risk:string;benchmark?:boolean};
+export type Daily={day:string;accounts:number;tx:number};
+export type Metric={a7:number;b7:number;a28:number;b28:number;repeat:number;tx:number;prevTx:number;daily:Daily[];contracts:{contract:string;tx:number;prevTx:number}[];commits:number[]|null;attention:number[]|null};
+export type Snapshot={kind:string;end:string;created:string|null;metrics:Record<string,Metric>;network:{day:string;fees:number|null;indexed?:number}[]|null;provenance:string};
+export type Row=Project & {m:Metric|null;g7:number|null;g28:number|null;ret:number|null;dev:number|null;att:number|null;score:number|null;components:Record<string,number|null>|null;signal:string|null;confidence:string|null;weight:number};
+export const VERSION:string;
+export const minimum:number;
+export function ratio(n:number,d:number):number|null;
+export function growth(n:number,d:number):number|null;
+export function dateAt(end:string,offset:number):string;
+export function pct(n:number|null|undefined):string;
+export function change(n:number|null|undefined):string;
+export function percentile(v:number,values:number[]):number;
+export function rank(p:Project[],s:Snapshot|null):{rows:Row[];mode:string;eligible:number};
+export function concentration(v:number[]):{total:number;top3:number|null;hhi:number|null};

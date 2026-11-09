@@ -1,0 +1,25 @@
+{
+  "source": "NearBlocks v3 account transactions",
+  "fetchedAt": "2026-11-07T21:07:07.660Z",
+  "end": "2026-11-06",
+  "projects": {
+    "linear": {
+      "unavailable": "HTTP 429"
+    },
+    "metapool": {
+      "unavailable": "HTTP 429"
+    },
+    "social": {
+      "unavailable": "HTTP 429"
+    },
+    "ref": {
+      "unavailable": "HTTP 429"
+    },
+    "burrow": {
+      "unavailable": "HTTP 429"
+    },
+    "sputnik": {
+      "unavailable": "HTTP 429"
+    }
+  }
+}

@@ -592,3 +592,15 @@ html[data-theme="dark"] {
 @media (max-width: 540px) {
   .contract-grid { grid-template-columns: minmax(0, 1fr); }
 }
+
+.discovery-now { display:grid; grid-template-columns:minmax(0,1.15fr) minmax(0,1fr); gap:16px; align-items:start; margin-bottom:22px; }
+.discovery-now .panel { margin:0; min-width:0; }
+.project-pulse { list-style:none; padding:0; margin:0; }
+.project-pulse li { display:flex; flex-wrap:wrap; justify-content:space-between; gap:6px 16px; border-top:1px solid var(--line); padding:10px 0; }
+.project-pulse p { margin:0; }
+.project-pulse time { display:block; color:var(--muted); font-size:.82rem; }
+.project-pulse a { font-size:.88rem; }
+.pilot-date { font-size:.88rem; }
+@media (max-width:840px) {
+  .discovery-now { grid-template-columns:1fr; }
+}

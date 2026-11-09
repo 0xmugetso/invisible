@@ -8,12 +8,17 @@ type Recommendation = {
   evidence:string[]; tokens:{symbol:string; account:string; evidence:string}[];
   links:{kind:string; url:string}[] | null;
 };
+type RecentCall = {
+  id:string; name:string; transaction_hash:string; receiver_id:string; block_time:string;
+  methods:string[]; succeeded:boolean|null;
+};
 type Rankings = {cutoff:string; highestRanked:Recommendation[]; fastestRising:Recommendation[]};
 const percent = (value:number) => Math.round(value*100)+'%';
 const growth = (value:number) => (value > 0 ? '+' : '')+percent(value);
 
 export default function ActivityRankings() {
   const [ranking, setRanking] = useState<Rankings|null>(null);
+  const [recent, setRecent] = useState<RecentCall[]>([]);
   useEffect(() => {
     let request: AbortController | undefined;
     async function refresh() {
@@ -21,14 +26,21 @@ export default function ActivityRankings() {
       const controller = new AbortController();
       request = controller;
       try {
-        const response = await fetch('/activity/rankings.json', {
-          cache:'no-cache', signal:AbortSignal.any([controller.signal,AbortSignal.timeout(10000)]),
-        });
-        if (!response.ok) return;
-        const value: Rankings = await response.json();
-        if (!controller.signal.aborted && Array.isArray(value.highestRanked) && Array.isArray(value.fastestRising)) {
-          setRanking(previous => previous?.cutoff === value.cutoff ? previous : value);
+        const options = {cache:'no-cache', signal:AbortSignal.any([controller.signal,AbortSignal.timeout(10000)])} as const;
+        const [ranked, sampled] = await Promise.allSettled(
+          ['rankings','projects'].map(async dataset => {
+            const response = await fetch('/activity/'+dataset+'.json', options);
+            return response.ok ? response.json() : null;
+          })
+        );
+        if (controller.signal.aborted) return;
+        if (ranked.status === 'fulfilled' && ranked.value) {
+          const value: Rankings = ranked.value;
+          if (Array.isArray(value.highestRanked) && Array.isArray(value.fastestRising)) {
+            setRanking(previous => previous?.cutoff === value.cutoff ? previous : value);
+          }
         }
+        if (sampled.status === 'fulfilled' && Array.isArray(sampled.value)) setRecent(sampled.value);
       } catch {
         // Retain the last published rankings.
       } finally {
@@ -46,7 +58,7 @@ export default function ActivityRankings() {
   }, []);
 
   return <section className="panel activity-recommendations">
-    <h2>Projects to watch</h2>
+    <h2>For you</h2>
     {ranking ? <>
       <p>Verified NEAR tokens · Activity through {ranking.cutoff.slice(0,16).replace('T',' ')} UTC</p>
       <div className="columns">
@@ -63,6 +75,18 @@ export default function ActivityRankings() {
             </li>)}</ol> : <p>No eligible projects grew over the latest seven days.</p>}
           </div>)}
       </div>
-    </> : <p>Rankings will appear after the first complete history import and scoring run.</p>}
+    </> : <>
+      <p>Project rankings are pending historical data.</p>
+      {recent.length > 0 && <>
+        <h3>Latest calls from verified projects</h3>
+        <ul className="project-pulse">
+          {recent.map(call => <li key={call.id}>
+            <div><strong>{call.name}</strong><p>{call.methods[0] ?? 'Function call'} · {call.succeeded === true ? 'Succeeded' : call.succeeded === false ? 'Failed' : 'Status unknown'}</p></div>
+            <div><time dateTime={call.block_time}>{call.block_time.slice(0,16).replace('T',' ')} UTC</time>
+              <a href={'https://nearblocks.io/txns/'+call.transaction_hash}>View transaction ↗</a></div>
+          </li>)}
+        </ul>
+      </>}
+    </>}
   </section>;
 }

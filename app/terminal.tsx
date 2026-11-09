@@ -114,15 +114,16 @@ export default function Terminal({view,id,coverage:initialCoverage}:{view:string
       {!useReal&&view!=='deployments'&&view!=='discovery'&&view!=='ecosystem'&&<p className="sample-note">Simulation · illustrative metrics</p>}
       {view==='discovery'&&<>
         <section className="intro">
-          <h1>Find repeat activity on NEAR</h1>
-          <p>Compare projects by signer growth and how often signers come back.</p>
+          <h1>{useReal?'What’s moving on NEAR':'Explore a simulated ranking'}</h1>
+          <p>{useReal?'See the latest blocks and calls from verified projects.':'Compare signer growth and return activity using sample data.'}</p>
           <div className="intro-meta">
-            <span><b>{projects.length}</b> tracked projects</span>
-            {signals.length > 0 && <span><b>{signals.length}</b> qualifying signals</span>}
+            {!useReal && <span><b>{projects.length}</b> tracked projects</span>}
+            {!useReal && signals.length > 0 && <span><b>{signals.length}</b> qualifying signals</span>}
             {!useReal && <span>Simulation data</span>}
-            {useReal && snap && <span>Rankings through {dateAt(snap.end,-1)} UTC</span>}
+
           </div>
         </section>
+        {useReal && <div className="discovery-now"><ActivityRankings/><LiveActivity/></div>}
         {useReal&&snap?.network&&<section className="atlas-overview panel discovery-scope">
           <div>
             <h2>NEAR activity beyond the pilot</h2>
@@ -131,7 +132,7 @@ export default function Terminal({view,id,coverage:initialCoverage}:{view:string
           </div>
           <CohortSculpture counts={[-21,-14,-7].map(start=>snap.network!.slice(snap.network!.length+start,snap.network!.length+start+7).reduce((sum,day)=>sum+(day.indexed??0),0)) as [number,number,number]} unit="indexed transactions" period="7-day" labels={['3 weeks ago','2 weeks ago','Latest week']}/>
         </section>}
-        {useReal&&!snap?<><LiveActivity/><CohortEvidence/></>:featured&&snap?<section className="feature">
+        {useReal&&!snap?<CohortEvidence/>:featured&&snap?<section className="feature">
           <div className="feature-copy">
             <div className="feature-title"><Badge r={featured}/><h2>{featured.name}</h2></div>
             <p><strong>{change(featured.g28)}</strong> active signers vs. the previous 28 days.<br/>{fmt(featured.m?.repeat)} signers returned ({pct(featured.ret)}).</p>
@@ -146,10 +147,9 @@ export default function Terminal({view,id,coverage:initialCoverage}:{view:string
             </div>
           </div>
         </section>:null}
-        {useReal && snap && <LiveActivity/>}
-        {useReal && <ActivityRankings/>}
         <section className="feed">
-          <div className="section-title"><h2>{snap?'Project rankings':'Project directory'}</h2><Link className="method-link" href={'/thesis/'+params}>How we rank projects ↗</Link></div>
+          <div className="section-title"><h2>{snap?(useReal?'Pilot project rankings':'Simulated project rankings'):'Project directory'}</h2><Link className="method-link" href={'/thesis/'+params}>How we rank projects ↗</Link></div>
+        {useReal && snap && <p className="pilot-date">Pilot data through {dateAt(snap.end,-1)} UTC</p>}
         <div className="filters">
           <label className="search-control"><span className="sr-only">Search projects</span><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.5" cy="8.5" r="4.5" fill="none" stroke="currentColor" strokeWidth="1.5"/><path d="m12 12 4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/></svg><input placeholder="Search projects or contracts" value={query} onChange={e=>setQuery(e.target.value)}/></label>
           <SelectControl label="Category" value={cat} onChange={setCat}>{['All',...new Set(projects.map(p=>p.category))].map(c=><option key={c} value={c}>{c==='All'?'All categories':c}</option>)}</SelectControl>

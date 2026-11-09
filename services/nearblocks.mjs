@@ -39,6 +39,37 @@ export async function ingestBlocks(db) {
   return Math.max(...blocks.map(block => Date.parse(block.block_time)));
 }
 
+function directCall(tx, contract, time) {
+  if (!Array.isArray(tx.actions)) throw new Error('Missing NearBlocks actions for '+contract);
+  const calls = tx.actions.filter(action => action.action === 'FUNCTION_CALL');
+  if (!calls.length) return null;
+  if (!tx.transaction_hash || !tx.signer_account_id) throw new Error('Incomplete NearBlocks transaction.');
+  return {
+    transaction_hash:tx.transaction_hash, receiver_id:contract, signer_id:tx.signer_account_id,
+    block_time:new Date(time).toISOString(), methods:[...new Set(calls.map(call => call.method).filter(Boolean))],
+    succeeded:typeof tx.outcomes?.status === 'boolean' ? tx.outcomes.status : null,
+  };
+}
+
+export async function ingestProjectSample(db) {
+  const {rows:contracts} = await db.query(`SELECT c.account_id FROM invisible.project_contract c
+    JOIN invisible.project p ON p.id=c.project_id WHERE NOT p.benchmark
+    AND EXISTS (SELECT 1 FROM invisible.project_token t WHERE t.project_id=p.id AND t.active)
+    ORDER BY c.account_id`);
+  const results = new Map();
+  for (const {account_id:contract} of contracts) {
+    await wait(apiKey ? 750 : 1500);
+    const {data} = await request('accounts/'+encodeURIComponent(contract)+'/txns', {limit:20});
+    for (const tx of data) {
+      if (tx.receiver_account_id !== contract) continue;
+      const call = directCall(tx, contract, timestamp(tx.block_timestamp));
+      if (call) results.set(call.transaction_hash, call);
+    }
+  }
+  // A sample gives transaction evidence without establishing ranking coverage.
+  await storeCalls(db, [...results.values()], [], 'nearblocks');
+}
+
 async function fetchCalls(contract, start, end) {
   const rows = new Map();
   const cursors = new Set();
@@ -53,15 +84,8 @@ async function fetchCalls(contract, start, end) {
       if (time > oldest) throw new Error('NearBlocks pages out of order for '+contract);
       oldest = time;
       if (time < start || time >= end || tx.receiver_account_id !== contract) continue;
-      if (!Array.isArray(tx.actions)) throw new Error('Missing NearBlocks actions for '+contract);
-      const calls = tx.actions.filter(action => action.action === 'FUNCTION_CALL');
-      if (!calls.length) continue;
-      if (!tx.transaction_hash || !tx.signer_account_id) throw new Error('Incomplete NearBlocks transaction.');
-      rows.set(tx.transaction_hash, {
-        transaction_hash:tx.transaction_hash, receiver_id:contract, signer_id:tx.signer_account_id,
-        block_time:new Date(time).toISOString(), methods:[...new Set(calls.map(call => call.method).filter(Boolean))],
-        succeeded:typeof tx.outcomes?.status === 'boolean' ? tx.outcomes.status : null,
-      });
+      const call = directCall(tx, contract, time);
+      if (call) rows.set(call.transaction_hash, call);
     }
     if (!data.length && meta?.next_page) throw new Error('Empty NearBlocks page with a continuation cursor.');
     if (oldest < start || !meta?.next_page) return [...rows.values()];

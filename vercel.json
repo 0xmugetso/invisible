@@ -1,0 +1,23 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": null,
+  "buildCommand": "npm run build",
+  "outputDirectory": "out",
+  "functions": {
+    "api/refresh-activity.mjs": {
+      "includeFiles": "analytics/{call-history,project-rankings}.sql",
+      "maxDuration": 300
+    }
+  },
+  "rewrites": [
+    { "source": "/activity/projects.json", "destination": "/api/activity?dataset=projects" },
+    { "source": "/activity/blocks.json", "destination": "/api/activity?dataset=blocks" },
+    { "source": "/activity/rankings.json", "destination": "/api/activity?dataset=rankings" }
+  ],
+  "crons": [
+    { "path": "/api/refresh-activity?slot=00", "schedule": "0 0 * * *" },
+    { "path": "/api/refresh-activity?slot=06", "schedule": "0 6 * * *" },
+    { "path": "/api/refresh-activity?slot=12", "schedule": "0 12 * * *" },
+    { "path": "/api/refresh-activity?slot=18", "schedule": "0 18 * * *" }
+  ]
+}

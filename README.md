@@ -114,3 +114,15 @@ Replace the date arguments with ISO dates spanning at least 56 complete UTC days
 The worker checks blocks every 30 seconds and produces rankings for 00:00, 06:00, 12:00 and 18:00 UTC. It writes `activity/blocks.json` and `activity/rankings.json` under `public/` and the existing `out/` export. Serve those outputs from the dashboard origin. Run one worker per database and output location. The browser checks for published recommendations every minute and can still read blocks directly from NearBlocks when the database feed is unavailable.
 
 The ranking requires 50 signers in each 28-day window and 10 in the preceding seven-day comparison window. The score uses peer percentiles for returning share (40%), 28-day signer growth (40%) and days with activity (20%). Fastest rising uses positive seven-day signer growth. It counts direct function-call attempts, including failures, with a signer counted once per project per window. Ranking history records the cutoff, methodology and evidence hashes. If ingestion fails or there is insufficient comparable coverage, the worker retains the previous published rankings.
+
+### Vercel cron
+
+Use the repository root and the build settings in `vercel.json`. It deploys the static Next.js export and two Node functions. Four daily cron entries call `/api/refresh-activity` in the 00:00, 06:00, 12:00, and 18:00 UTC hours. Each entry has a distinct slot query parameter. Vercel Hobby can invoke each entry any time within its scheduled hour.
+
+Set `CRON_SECRET`, `DATABASE_URL`, and `BQ_PROJECT` in the production environment. Use a random cron secret. For keyless BigQuery access, follow the [Vercel Google Cloud federation guide](https://vercel.com/docs/oidc/gcp). Use the team issuer and allowed audience `https://vercel.com/TEAM_SLUG`, map `google.subject` to `assertion.sub`, and restrict the provider with `assertion.sub == 'owner:TEAM_SLUG:project:invisible:environment:production'`. Grant that exact subject Workload Identity User on the service account. The service account needs BigQuery Job User on the query project. Enable the BigQuery, Security Token Service, and IAM Service Account Credentials APIs in Google Cloud.
+
+Set `BQ_WIF_PROVIDER` to `projects/PROJECT_NUMBER/locations/global/workloadIdentityPools/POOL_ID/providers/PROVIDER_ID` and `BQ_SERVICE_ACCOUNT_EMAIL` to the service account email. Vercel supplies a short-lived token to each cron invocation. An existing key-based setup can use `BQ_CREDENTIALS_JSON` when the federation variables are absent.
+
+Set `NEARBLOCKS_API_KEY` for account ingestion and optionally `BQ_HISTORY_MAX_BYTES` for the scan cap. The cron uses the BigQuery API, so the Vercel runtime does not need the `bq` CLI.
+
+Run the database setup and initial 56-day backfill before the first scheduled run. The cron reconciles one settled UTC day with BigQuery, fetches newer NearBlocks activity, and writes completed rankings to PostgreSQL. The deployed dashboard reads those results through the activity API. If the database block sample is stale, the browser continues to poll NearBlocks directly.

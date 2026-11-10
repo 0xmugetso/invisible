@@ -1,0 +1,40 @@
+-- One compact result per project for two complete 28-day windows.
+WITH registry AS (
+  SELECT JSON_VALUE(item,'$.project') AS project_id, JSON_VALUE(item,'$.contract') AS contract
+  FROM UNNEST(JSON_QUERY_ARRAY(@registry)) AS item
+), calls AS (
+  SELECT DISTINCT r.project_id, a.block_date AS day, a.signer_account_id AS signer,
+    a.transaction_hash AS hash, a.block_timestamp AS block_time
+  FROM `bigquery-public-data.crypto_near_mainnet_us.transaction_actions` a
+  JOIN registry r ON r.contract=a.receiver_account_id
+  WHERE a.block_date >= DATE_SUB(@day, INTERVAL 56 DAY) AND a.block_date < @day
+    AND a.action_kind='FUNCTION_CALL'
+    AND a.signer_account_id IS NOT NULL AND a.transaction_hash IS NOT NULL
+), signers AS (
+  SELECT project_id, signer,
+    LOGICAL_OR(day >= DATE_SUB(@day, INTERVAL 28 DAY)) AS current_month,
+    LOGICAL_OR(day < DATE_SUB(@day, INTERVAL 28 DAY)) AS prior_month,
+    LOGICAL_OR(day >= DATE_SUB(@day, INTERVAL 7 DAY)) AS current_week,
+    LOGICAL_OR(day >= DATE_SUB(@day, INTERVAL 14 DAY) AND day < DATE_SUB(@day, INTERVAL 7 DAY)) AS prior_week
+  FROM calls GROUP BY project_id, signer
+), counts AS (
+  SELECT project_id, COUNTIF(current_month) AS current_signers, COUNTIF(prior_month) AS prior_signers,
+    COUNTIF(current_month AND prior_month) AS repeat_signers,
+    COUNTIF(current_week) AS weekly_signers, COUNTIF(prior_week) AS prior_weekly_signers
+  FROM signers GROUP BY project_id
+), activity AS (
+  SELECT project_id, COUNT(DISTINCT day) AS active_days,
+    ARRAY_AGG(hash ORDER BY block_time DESC, hash LIMIT 3) AS evidence
+  FROM calls WHERE day >= DATE_SUB(@day, INTERVAL 28 DAY)
+  GROUP BY project_id
+)
+SELECT p.project_id, COALESCE(c.current_signers,0) AS current_signers,
+  COALESCE(c.prior_signers,0) AS prior_signers, COALESCE(c.repeat_signers,0) AS repeat_signers,
+  COALESCE(c.weekly_signers,0) AS weekly_signers, COALESCE(c.prior_weekly_signers,0) AS prior_weekly_signers,
+  COALESCE(a.active_days,0) AS active_days, IFNULL(a.evidence,[]) AS evidence,
+  SAFE_DIVIDE(c.current_signers,c.prior_signers)-1 AS monthly_growth,
+  SAFE_DIVIDE(c.weekly_signers,c.prior_weekly_signers)-1 AS weekly_growth,
+  SAFE_DIVIDE(c.repeat_signers,c.prior_signers) AS returning_share
+FROM (SELECT DISTINCT project_id FROM registry) p
+LEFT JOIN counts c USING (project_id)
+LEFT JOIN activity a USING (project_id)

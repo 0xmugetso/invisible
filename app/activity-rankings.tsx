@@ -79,7 +79,9 @@ export default function ActivityRankings() {
                 : `${growth(project.weekly_growth)} active signers compared with the previous seven days`}</p>
               <p>{project.evidence[0] && <a href={'https://nearblocks.io/txns/'+project.evidence[0]}>Example transaction ↗</a>}
                 {project.links?.map(link=><a key={link.kind+link.url} href={link.url}> · {link.kind}</a>)}</p>
-            </li>)}</ol> : <p>No eligible projects grew over the latest seven days.</p>}
+            </li>)}</ol> : <p>{title === 'Highest ranked'
+              ? 'At least three projects must meet the signer thresholds to publish a ranking.'
+              : 'No ranked projects grew over the latest seven days.'}</p>}
           </div>)}
       </div>
     </> : <>

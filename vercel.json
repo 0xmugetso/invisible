@@ -5,7 +5,7 @@
   "outputDirectory": "out",
   "functions": {
     "api/refresh-activity.mjs": {
-      "includeFiles": "analytics/{call-history,project-rankings}.sql",
+      "includeFiles": "analytics/warehouse-rankings.sql",
       "maxDuration": 300
     }
   },

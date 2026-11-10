@@ -123,6 +123,6 @@ Set `CRON_SECRET`, `DATABASE_URL`, and `BQ_PROJECT` in the production environmen
 
 Set `BQ_WIF_PROVIDER` to `projects/PROJECT_NUMBER/locations/global/workloadIdentityPools/POOL_ID/providers/PROVIDER_ID` and `BQ_SERVICE_ACCOUNT_EMAIL` to the service account email. Vercel supplies a short-lived token to each cron invocation. An existing key-based setup can use `BQ_CREDENTIALS_JSON` when the federation variables are absent.
 
-Set `NEARBLOCKS_API_KEY` for account ingestion and optionally `BQ_HISTORY_MAX_BYTES` for the scan cap. The cron uses the BigQuery API, so the Vercel runtime does not need the `bq` CLI.
+Set `NEARBLOCKS_API_KEY` for recent account samples and optionally `BQ_PROJECT_MAX_BYTES` for the ranking scan cap. The cron uses the BigQuery API.
 
-Run the database setup and initial 56-day backfill before the first scheduled run. The cron reconciles one settled UTC day with BigQuery, fetches newer NearBlocks activity, and writes completed rankings to PostgreSQL. The deployed dashboard reads those results through the activity API. If the database block sample is stale, the browser continues to poll NearBlocks directly.
+Run the database setup before the first scheduled run. The cron finds the latest complete 56-day warehouse window with a following partition present. BigQuery computes signer cohorts across that window and returns one summary per verified project. PostgreSQL stores the summaries, scores, and transaction evidence alongside the project registry. The cutoff advances when the next complete UTC day is available. NearBlocks supplies recent activity independently of that cutoff.

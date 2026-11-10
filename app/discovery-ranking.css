@@ -1,0 +1,22 @@
+.discovery-ranking { margin-bottom:24px; }
+.discovery-ranking > p { margin:8px 0 16px; font-size:.875rem; }
+.discovery-ranking table { width:100%; border-collapse:collapse; text-align:left; font-variant-numeric:tabular-nums; }
+.discovery-ranking th, .discovery-ranking td { padding:12px 8px; border-bottom:1px solid var(--line); }
+.discovery-ranking thead th { font-size:.8125rem; color:var(--muted); font-weight:500; }
+.discovery-ranking th:first-child, .discovery-ranking td:first-child { padding-left:0; }
+.discovery-ranking th:last-child, .discovery-ranking td:last-child { text-align:right; padding-right:0; }
+.discovery-ranking tbody th { font-weight:600; overflow-wrap:anywhere; }
+.discovery-ranking tbody th a:hover { color:var(--green); text-decoration:underline; }
+.discovery-ranking small { display:block; color:var(--muted); font-weight:400; }
+.discovery-details { border-top:1px solid var(--line); }
+.discovery-details summary { cursor:pointer; padding:16px 0; color:var(--ink); font-weight:600; }
+.discovery-details > .panel { margin-top:0; }
+@media (max-width:540px) {
+  .discovery-ranking th:nth-child(4), .discovery-ranking td:nth-child(4) { display:none; }
+  .discovery-ranking table { table-layout:fixed; font-size:.875rem; }
+  .discovery-ranking th:first-child { width:12%; }
+  .discovery-ranking th:nth-child(3) { width:19%; }
+  .discovery-ranking th:last-child { width:13%; }
+}
+.shell[data-view="discovery"]:has(.discovery-ranking) .intro { padding-block:24px; }
+.shell[data-view="discovery"]:has(.discovery-ranking) .intro h1 { font-size:clamp(2rem, 5vw, 3.25rem); letter-spacing:-.04em; }

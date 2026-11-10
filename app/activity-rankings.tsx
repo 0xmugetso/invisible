@@ -12,7 +12,7 @@ type RecentCall = {
   id:string; name:string; transaction_hash:string; receiver_id:string; block_time:string;
   methods:string[]; succeeded:boolean|null;
 };
-type Rankings = {cutoff:string; highestRanked:Recommendation[]; fastestRising:Recommendation[]};
+type Rankings = {cutoff:string; analysis?:unknown[]; highestRanked:Recommendation[]; fastestRising:Recommendation[]};
 type Coverage = {coveredDays:number; totalDays:number; contracts:number; cutoff:string};
 const percent = (value:number) => Math.round(value*100)+'%';
 const growth = (value:number) => (value > 0 ? '+' : '')+percent(value);
@@ -65,9 +65,8 @@ export default function ActivityRankings() {
   }, []);
 
   return <section className="panel activity-recommendations">
-    <h2>For you</h2>
     {ranking ? <>
-      <p>Verified NEAR tokens · Activity through {ranking.cutoff.slice(0,16).replace('T',' ')} UTC</p>
+      <p>Ranking of {ranking.analysis?.length ?? ranking.highestRanked.length} tracked projects with verified NEAR tokens · Data cutoff {ranking.cutoff.slice(0,16).replace('T',' ')} UTC</p>
       <div className="columns">
         {([['Highest ranked',ranking.highestRanked],['Fastest rising',ranking.fastestRising]] as const).map(([title,projects])=>
           <div key={title}>

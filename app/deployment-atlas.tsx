@@ -5,6 +5,7 @@ import Link from 'next/link';
 import projects from '../data/projects.json';
 import {dateAt} from '../lib/model.mjs';
 import {CohortSculpture, CountUp} from './research-graphics';
+import './discovery-ranking.css';
 
 type Method = [method:string, transactions:number, signers:number, example:string];
 type Entry = [contract:string,a:number,b:number,c:number,ab:number,bc:number,abc:number,week:number,previousWeek:number,transactions:number,days:number,lastActive:string|null,lastDeployment:string|null,examples:string[],methods:Method[]];
@@ -25,7 +26,7 @@ function ranks(values:number[]) {
   return result;
 }
 
-export default function DeploymentAtlas({snapshotPath = '/deployments.json'}: {snapshotPath?:string}) {
+export default function DeploymentAtlas({snapshotPath = '/deployments.json', compact = false}: {snapshotPath?:string; compact?:boolean}) {
   const [snapshot,setSnapshot] = useState<Snapshot|null>(null);
   const [failed,setFailed] = useState(false);
   const [query,setQuery] = useState('');
@@ -33,6 +34,7 @@ export default function DeploymentAtlas({snapshotPath = '/deployments.json'}: {s
   const [page,setPage] = useState(0);
   const [account,setAccount] = useState('');
   useEffect(()=>{
+    if (compact) return;
     function sync(){
       const params = new URLSearchParams(location.search);
       setAccount(params.get('contract') ?? '');
@@ -43,7 +45,7 @@ export default function DeploymentAtlas({snapshotPath = '/deployments.json'}: {s
     sync();
     window.addEventListener('popstate',sync);
     return () => window.removeEventListener('popstate',sync);
-  },[]);
+  },[compact]);
   useEffect(()=>{
     const controller = new AbortController();
     fetch(snapshotPath,{signal:AbortSignal.any([controller.signal,AbortSignal.timeout(15000)])}).then(response=>{
@@ -88,6 +90,29 @@ export default function DeploymentAtlas({snapshotPath = '/deployments.json'}: {s
     window.scrollTo(0,0);
   }
 
+  if (compact) {
+    const ranked = filtered.filter(item => item.score !== null);
+    const leaders = ranked.slice(0,10);
+    return <section className="discovery-ranking" aria-labelledby="contract-leaders">
+      <div className="section-title">
+        <h2 id="contract-leaders">Top NEAR contracts</h2>
+        <Link className="method-link" href="/deployments/">Explore all contracts ↗</Link>
+      </div>
+      <p>{snapshot
+        ? `By Discovery score · ${fmt(ranked.length)} qualified of ${fmt(scored.length)} contracts · Snapshot through ${dateAt(snapshot.end,-1)} UTC`
+        : failed ? 'The contract ranking snapshot is unavailable.' : 'Loading the contract ranking snapshot…'}</p>
+      {leaders.length > 0 ? <table>
+        <thead><tr><th scope="col">Rank</th><th scope="col">Contract</th><th scope="col">28-day signers</th><th scope="col">Returning</th><th scope="col">Score</th></tr></thead>
+        <tbody>{leaders.map(({row,score,r}, index) => <tr key={row[0]}>
+          <td>{index+1}</td>
+          <th scope="row"><Link href={'/deployments/?contract='+encodeURIComponent(row[0])}>{row[0]}</Link>
+            {names.has(row[0]) && <small>{names.get(row[0])}</small>}
+          </th>
+          <td>{fmt(row[3])}</td><td>{r === null ? '—' : percent(r)}</td><td>{score}</td>
+        </tr>)}</tbody>
+      </table> : snapshot && <p>Too few contracts meet the signer thresholds to rank this snapshot.</p>}
+    </section>;
+  }
   if(!snapshot)return <section className="detail-head"><h1>NEAR deployments</h1><p>{failed?'The deployment export is unavailable.':'Loading NEAR contract evidence…'}</p></section>;
   const selected=account?scored.find(item=>item.row[0]===account):null;
   if(account&&!selected)return <section className="detail-head"><h1>Contract outside this snapshot</h1><p>{account}</p><Link className="back" href="/deployments/">← Deployment directory</Link></section>;

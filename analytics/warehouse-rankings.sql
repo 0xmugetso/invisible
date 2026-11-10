@@ -22,8 +22,16 @@ WITH registry AS (
     COUNTIF(current_month AND prior_month) AS repeat_signers,
     COUNTIF(current_week) AS weekly_signers, COUNTIF(prior_week) AS prior_weekly_signers
   FROM signers GROUP BY project_id
+), daily AS (
+  SELECT project_id, day, COUNT(DISTINCT signer) AS signers
+  FROM calls WHERE day >= DATE_SUB(@day, INTERVAL 28 DAY)
+  GROUP BY project_id, day
+), consistency AS (
+  SELECT project_id, COUNT(*) AS active_days,
+    1 - SAFE_DIVIDE(MAX(signers), SUM(signers)) AS spread
+  FROM daily GROUP BY project_id
 ), activity AS (
-  SELECT project_id, COUNT(DISTINCT day) AS active_days,
+  SELECT project_id,
     ARRAY_AGG(tx_hash ORDER BY block_time DESC, tx_hash LIMIT 3) AS evidence
   FROM calls WHERE day >= DATE_SUB(@day, INTERVAL 28 DAY)
   GROUP BY project_id
@@ -31,10 +39,12 @@ WITH registry AS (
 SELECT p.project_id, COALESCE(c.current_signers,0) AS current_signers,
   COALESCE(c.prior_signers,0) AS prior_signers, COALESCE(c.repeat_signers,0) AS repeat_signers,
   COALESCE(c.weekly_signers,0) AS weekly_signers, COALESCE(c.prior_weekly_signers,0) AS prior_weekly_signers,
-  COALESCE(a.active_days,0) AS active_days, IFNULL(a.evidence,[]) AS evidence,
+  COALESCE(d.active_days,0) AS active_days, COALESCE(d.spread,0) AS spread,
+  IFNULL(a.evidence,[]) AS evidence,
   SAFE_DIVIDE(c.current_signers,c.prior_signers)-1 AS monthly_growth,
   SAFE_DIVIDE(c.weekly_signers,c.prior_weekly_signers)-1 AS weekly_growth,
   SAFE_DIVIDE(c.repeat_signers,c.prior_signers) AS returning_share
 FROM (SELECT DISTINCT project_id FROM registry) p
 LEFT JOIN counts c USING (project_id)
 LEFT JOIN activity a USING (project_id)
+LEFT JOIN consistency d USING (project_id)

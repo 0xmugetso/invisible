@@ -24,7 +24,7 @@ export async function refreshWarehouseRankings(db, query, today) {
   const [{cutoff:day} = {}] = await query(coverageQuery, {day:today}, options);
   if (!day) return {status:'waiting_for_warehouse'};
   const cutoff = day+'T00:00:00.000Z';
-  const methodology = 'activity-warehouse-v1';
+  const methodology = 'activity-warehouse-v2';
   const {rows:projects} = await db.query(`SELECT p.id,p.name,
     ARRAY(SELECT c.account_id FROM invisible.project_contract c WHERE c.project_id=p.id ORDER BY c.account_id) AS contracts,
     (SELECT jsonb_agg(jsonb_build_object('symbol',t.symbol,'account',t.account_id,'evidence',t.evidence_url) ORDER BY t.account_id)
@@ -48,16 +48,29 @@ export async function refreshWarehouseRankings(db, query, today) {
   const byProject = new Map(rows.map(row => [row.project_id,row]));
   if (rows.length !== projects.length || projects.some(p => !byProject.has(p.id))) throw new Error('Incomplete warehouse ranking result.');
   const analysis = projects.map(({id,name,tokens,links}) => ({...byProject.get(id),name,tokens,links}));
-  const eligible = analysis.filter(row => row.current_signers >= 50 && row.prior_signers >= 50 && row.prior_weekly_signers >= 10);
-  const percentile = (key, value) => eligible.filter(row => row[key] <= value).length / eligible.length;
-  const ranked = eligible.length < 3 ? [] : eligible.map(row => ({...row, score:Math.round(100*(
-    .4*percentile('returning_share',row.returning_share) +
-    .4*percentile('monthly_growth',row.monthly_growth) +
-    .2*percentile('active_days',row.active_days)
-  ))})).sort((a,b) => b.score-a.score || b.repeat_signers-a.repeat_signers || a.project_id.localeCompare(b.project_id));
-  const results = {cutoff,methodology,registryVersion,analysis,highestRanked:ranked.slice(0,10),
-    fastestRising:ranked.filter(row => row.weekly_growth > 0).sort((a,b) =>
-      b.weekly_growth-a.weekly_growth || b.score-a.score || a.project_id.localeCompare(b.project_id)).slice(0,10)};
+  const eligible = analysis.filter(row =>
+    row.current_signers >= 50 && row.prior_signers >= 50 && row.prior_weekly_signers >= 10 &&
+    row.repeat_signers >= 10 && row.active_days >= 14
+  ).map(row => ({
+    ...row,
+    adjusted_return: row.repeat_signers / (row.prior_signers + 50),
+    adjusted_growth: (row.current_signers - row.prior_signers) / (row.prior_signers + 50),
+    adjusted_weekly_growth: (row.weekly_signers - row.prior_weekly_signers) / (row.prior_weekly_signers + 25),
+  }));
+  const weights = {adjusted_return: .35, repeat_signers: .30, adjusted_growth: .25, spread: .10};
+  const percentile = (key, value) => {
+    const below = eligible.filter(row => row[key] < value).length;
+    const tied = eligible.filter(row => row[key] === value).length;
+    return (below + tied / 2) / eligible.length;
+  };
+  const ranked = eligible.length < 3 ? [] : eligible.map(row => {
+    const components = Object.fromEntries(Object.keys(weights).map(key => [key, percentile(key,row[key])]));
+    const score = Math.round(100 * Object.entries(weights).reduce((sum,[key,weight]) => sum + weight*components[key],0));
+    return {...row,score,components};
+  }).sort((a,b) => b.score-a.score || b.repeat_signers-a.repeat_signers || a.project_id.localeCompare(b.project_id));
+  const results = {cutoff,methodology,registryVersion,analysis,weights,rankedCount:ranked.length,highestRanked:ranked,
+    fastestRising:ranked.filter(row => row.adjusted_weekly_growth > 0).sort((a,b) =>
+      b.adjusted_weekly_growth-a.adjusted_weekly_growth || b.score-a.score || a.project_id.localeCompare(b.project_id))};
   await db.query(`INSERT INTO invisible.ranking_run (cutoff,methodology,results) VALUES ($1,$2,$3)
     ON CONFLICT (cutoff) DO UPDATE SET methodology=EXCLUDED.methodology, results=EXCLUDED.results,
       calculated_at=now()`, [cutoff,methodology,results]);

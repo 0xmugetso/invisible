@@ -186,5 +186,139 @@
       "documentation": "https://doc.aurora.dev/"
     },
     "benchmark": true
+  },
+  {
+    "id": "nearmobile",
+    "name": "NEAR Mobile",
+    "category": "Staking",
+    "description": "Calls to the wallet’s NPRO rewards validator.",
+    "contracts": {
+      "npro.poolv1.near": "https://www.nearmobile.app/staking"
+    },
+    "tokens": [
+      {
+        "accountId": "npro.nearmobile.near",
+        "symbol": "NPRO",
+        "evidence": "https://www.nearmobile.app/blog/npro-is-launching-15th-december-everything-you-need-to-know"
+      }
+    ],
+    "links": {
+      "website": "https://www.nearmobile.app/"
+    }
+  },
+  {
+    "id": "intear",
+    "name": "Intear",
+    "category": "DeFi",
+    "description": "Direct activity on the Intear DEX engine.",
+    "contracts": {
+      "dex.intear.near": "https://docs.intear.tech/intear-dex/quickstart/"
+    },
+    "tokens": [
+      {
+        "accountId": "token.intear.near",
+        "symbol": "TEAR",
+        "evidence": "https://nearblocks.io/tokens/token.intear.near"
+      }
+    ],
+    "links": {
+      "website": "https://docs.intear.tech/"
+    }
+  },
+  {
+    "id": "nearly",
+    "name": "Nearly",
+    "category": "Launchpad",
+    "description": "Direct calls to the token launch factory.",
+    "contracts": {
+      "nearlytrade.near": "https://github.com/sam3dsol/Nearlytrade"
+    },
+    "tokens": [
+      {
+        "accountId": "nearly-993927.nearlytrade.near",
+        "symbol": "NEARLY",
+        "evidence": "https://nearly.trade/nearly-993927.nearlytrade.near"
+      }
+    ],
+    "links": {
+      "website": "https://nearly.trade/"
+    }
+  },
+  {
+    "id": "justhoot",
+    "name": "JustHoot",
+    "category": "Launchpad",
+    "description": "Direct calls to the launchpad factories.",
+    "contracts": {
+      "launchpad.justhoot.near": "https://nearblocks.io/address/launchpad.justhoot.near",
+      "v2-launchpad.justhoot.near": "https://nearblocks.io/address/v2-launchpad.justhoot.near"
+    },
+    "tokens": [
+      {
+        "accountId": "hoot-8ecf65.launchpad.justhoot.near",
+        "symbol": "HOOT",
+        "evidence": "https://justhoot.fun/p/hoot-8ecf65.launchpad.justhoot.near"
+      }
+    ],
+    "links": {
+      "website": "https://justhoot.fun/"
+    }
+  },
+  {
+    "id": "enleap",
+    "name": "Enleap",
+    "category": "Gaming",
+    "description": "Calls to the GEAR staking contract.",
+    "contracts": {
+      "staking.enleap.near": "https://nearblocks.io/address/staking.enleap.near"
+    },
+    "tokens": [
+      {
+        "accountId": "gear.enleap.near",
+        "symbol": "GEAR",
+        "evidence": "https://nearblocks.io/tokens/gear.enleap.near"
+      }
+    ],
+    "links": {
+      "website": "https://nearblocks.io/address/enleap.near"
+    }
+  },
+  {
+    "id": "pumpopoly",
+    "name": "Pumpopoly",
+    "category": "Gaming",
+    "description": "Calls to the NEAR game world contract.",
+    "contracts": {
+      "world.pumpopoly.near": "https://nearblocks.io/address/world.pumpopoly.near"
+    },
+    "tokens": [
+      {
+        "accountId": "token.pumpopoly.near",
+        "symbol": "PUMPOPOLY",
+        "evidence": "https://legacy.near.social/mob.near/widget/Tokens.Top?tokenId=token.pumpopoly.near"
+      }
+    ],
+    "links": {
+      "website": "https://near.pumpopoly.com/"
+    }
+  },
+  {
+    "id": "hapi",
+    "name": "HAPI Protocol",
+    "category": "Security",
+    "description": "Direct calls to the HAPI score contract.",
+    "contracts": {
+      "score-v1.hapiprotocol.near": "https://nearblocks.io/address/score-v1.hapiprotocol.near"
+    },
+    "tokens": [
+      {
+        "accountId": "d9c2d319cd7e6177336b0a9c93c21cb48d84fb54.factory.bridge.near",
+        "symbol": "HAPI",
+        "evidence": "https://nearblocks.io/tokens/d9c2d319cd7e6177336b0a9c93c21cb48d84fb54.factory.bridge.near"
+      }
+    ],
+    "links": {
+      "website": "https://hapi.one/"
+    }
   }
 ]

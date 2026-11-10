@@ -32,7 +32,7 @@ export async function latestProjectActivity(db) {
 
 export async function rankingCoverage(db) {
   const {rows:[warehouse]} = await db.query(`SELECT cutoff, jsonb_array_length(results->'analysis') AS projects
-    FROM invisible.ranking_run WHERE methodology='activity-warehouse-v1' ORDER BY cutoff DESC LIMIT 1`);
+    FROM invisible.ranking_run WHERE methodology IN ('activity-warehouse-v1','activity-warehouse-v2') ORDER BY cutoff DESC LIMIT 1`);
   if (warehouse) return {coveredDays:56, totalDays:56, cutoff:warehouse.cutoff, projects:warehouse.projects};
   const cutoff = new Date(rankingCutoff()).toISOString();
   const {rows:[coverage]} = await db.query(`WITH contracts AS (

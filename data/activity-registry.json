@@ -6,7 +6,9 @@
     "description": "Exchange and lending on NEAR.",
     "contracts": {
       "v2.ref-finance.near": "https://github.com/ref-finance/guide/blob/main/developers/contracts.md",
-      "contract.main.burrow.near": "https://github.com/NearDeFi/burrowland"
+      "contract.main.burrow.near": "https://github.com/NearDeFi/burrowland",
+      "dclv2.ref-labs.near": "https://guide.rhea.finance/developers/contracts",
+      "boostfarm.ref-labs.near": "https://guide.rhea.finance/developers/contracts"
     },
     "tokens": [
       {
@@ -83,5 +85,106 @@
       "documentation": "https://docs.linearprotocol.org/",
       "github": "https://github.com/linear-protocol/LiNEAR"
     }
+  },
+  {
+    "id": "stader",
+    "name": "Stader NearX",
+    "category": "Staking",
+    "description": "Liquid staking through the NearX mainnet contract.",
+    "contracts": {
+      "v2-nearx.stader-labs.near": "https://github.com/stader-labs/nearx#live-contracts"
+    },
+    "tokens": [
+      {
+        "accountId": "v2-nearx.stader-labs.near",
+        "symbol": "NearX",
+        "evidence": "https://github.com/stader-labs/nearx#live-contracts"
+      }
+    ],
+    "links": {
+      "github": "https://github.com/stader-labs/nearx"
+    }
+  },
+  {
+    "id": "jumbo",
+    "name": "Jumbo Exchange",
+    "category": "DeFi",
+    "description": "Exchange and liquidity farming contracts.",
+    "contracts": {
+      "v1.jumbo_exchange.near": "https://nearblocks.io/address/v1.jumbo_exchange.near",
+      "farming-v1.jumbo_exchange.near": "https://nearblocks.io/address/farming-v1.jumbo_exchange.near"
+    },
+    "tokens": [
+      {
+        "accountId": "token.jumbo_exchange.near",
+        "symbol": "JUMBO",
+        "evidence": "https://nearblocks.io/tokens/token.jumbo_exchange.near"
+      }
+    ],
+    "links": {
+      "website": "https://jumbo.exchange/"
+    }
+  },
+  {
+    "id": "octopus",
+    "name": "Octopus Network",
+    "category": "Infrastructure",
+    "description": "Appchain registration and governance on NEAR.",
+    "contracts": {
+      "octopus-registry.near": "https://github.com/octopus-network/octopus-dao#octopus-smart-contracts-structure"
+    },
+    "tokens": [
+      {
+        "accountId": "f5cfbc74057c610c8ef151a439252680ac68c6dc.factory.bridge.near",
+        "symbol": "OCT",
+        "evidence": "https://nearblocks.io/tokens/f5cfbc74057c610c8ef151a439252680ac68c6dc.factory.bridge.near"
+      }
+    ],
+    "links": {
+      "github": "https://github.com/octopus-network/octopus-dao"
+    }
+  },
+  {
+    "id": "sweat",
+    "name": "Sweat Economy",
+    "category": "Consumer",
+    "description": "Claims and Growth Jars are visible on NEAR. Direct calls do not capture relayed wallet use.",
+    "contracts": {
+      "claim.sweat": "https://gov.near.org/t/hsp-027-remove-the-near-developer-gas-rebate/42213",
+      "v2.jars.sweat": "https://gov.near.org/t/hsp-027-remove-the-near-developer-gas-rebate/42213"
+    },
+    "tokens": [
+      {
+        "accountId": "token.sweat",
+        "symbol": "SWEAT",
+        "evidence": "https://nearblocks.io/tokens/token.sweat"
+      }
+    ],
+    "links": {
+      "website": "https://sweateconomy.com/",
+      "documentation": "https://help.swe.at/hc/sweat/en/categories/sweat-faqs"
+    },
+    "benchmark": true
+  },
+  {
+    "id": "aurora",
+    "name": "Aurora",
+    "category": "Infrastructure",
+    "description": "Engine calls measure NEAR transaction signers, which often represent relayers.",
+    "contracts": {
+      "aurora": "https://github.com/aurora-is-near/aurora-engine"
+    },
+    "tokens": [
+      {
+        "accountId": "aaaaaa20d9e0e2461697782ef11675f668207961.factory.bridge.near",
+        "symbol": "AURORA",
+        "evidence": "https://doc.aurora.dev/blog/aurora-chains-demo/"
+      }
+    ],
+    "links": {
+      "website": "https://aurora.dev/",
+      "documentation": "https://doc.aurora.dev/"
+    },
+    "benchmark": true
   }
 ]

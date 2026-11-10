@@ -1,3 +1,4 @@
+import {createHash} from 'node:crypto';
 import {readFile} from 'node:fs/promises';
 
 const coverageQuery = `WITH partitions AS (
@@ -24,9 +25,6 @@ export async function refreshWarehouseRankings(db, query, today) {
   if (!day) return {status:'waiting_for_warehouse'};
   const cutoff = day+'T00:00:00.000Z';
   const methodology = 'activity-warehouse-v1';
-  const existing = await db.query('SELECT 1 FROM invisible.ranking_run WHERE cutoff=$1 AND methodology=$2', [cutoff, methodology]);
-  if (existing.rowCount) return {status:'already_current', cutoff};
-
   const {rows:projects} = await db.query(`SELECT p.id,p.name,
     ARRAY(SELECT c.account_id FROM invisible.project_contract c WHERE c.project_id=p.id ORDER BY c.account_id) AS contracts,
     (SELECT jsonb_agg(jsonb_build_object('symbol',t.symbol,'account',t.account_id,'evidence',t.evidence_url) ORDER BY t.account_id)
@@ -39,6 +37,12 @@ export async function refreshWarehouseRankings(db, query, today) {
     ORDER BY p.id`);
   if (!projects.length) throw new Error('Seed the verified project registry first.');
   const registry = projects.flatMap(p => p.contracts.map(contract => ({project:p.id, contract})));
+  const registryVersion = createHash('sha256').update(JSON.stringify(projects)).digest('hex');
+  const existing = await db.query(
+    "SELECT 1 FROM invisible.ranking_run WHERE cutoff=$1 AND methodology=$2 AND results->>'registryVersion'=$3",
+    [cutoff, methodology, registryVersion]);
+  if (existing.rowCount) return {status:'already_current', cutoff};
+
   const sql = await readFile(new URL('../analytics/warehouse-rankings.sql',import.meta.url), 'utf8');
   const rows = await query(sql, {day,registry:JSON.stringify(registry)}, options);
   const byProject = new Map(rows.map(row => [row.project_id,row]));
@@ -51,7 +55,7 @@ export async function refreshWarehouseRankings(db, query, today) {
     .4*percentile('monthly_growth',row.monthly_growth) +
     .2*percentile('active_days',row.active_days)
   ))})).sort((a,b) => b.score-a.score || b.repeat_signers-a.repeat_signers || a.project_id.localeCompare(b.project_id));
-  const results = {cutoff,methodology,analysis,highestRanked:ranked.slice(0,10),
+  const results = {cutoff,methodology,registryVersion,analysis,highestRanked:ranked.slice(0,10),
     fastestRising:ranked.filter(row => row.weekly_growth > 0).sort((a,b) =>
       b.weekly_growth-a.weekly_growth || b.score-a.score || a.project_id.localeCompare(b.project_id)).slice(0,10)};
   await db.query(`INSERT INTO invisible.ranking_run (cutoff,methodology,results) VALUES ($1,$2,$3)

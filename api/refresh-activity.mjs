@@ -1,5 +1,5 @@
 import {timingSafeEqual} from 'node:crypto';
-import {openDatabase} from '../services/store.mjs';
+import {openDatabase, seedRegistry} from '../services/store.mjs';
 import {bigQueryForInvocation} from '../services/bigquery.mjs';
 import {ingestBlocks, ingestProjectSample} from '../services/nearblocks.mjs';
 import {refreshWarehouseRankings} from '../services/warehouse-rankings.mjs';
@@ -22,6 +22,7 @@ export default async function handler(request, response) {
     lock = await db.connect();
     const {rows:[{acquired}]} = await lock.query('SELECT pg_try_advisory_lock(61398420) AS acquired');
     if (!acquired) return response.status(200).json({status:'already running'});
+    await seedRegistry(db);
     const query = bigQueryForInvocation(request.headers['x-vercel-oidc-token']);
     const today = date(Date.now()-day);
     const [result, blocks, sample] = await Promise.allSettled([

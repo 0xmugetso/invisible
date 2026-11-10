@@ -6,19 +6,19 @@ type Recommendation = {
   project_id:string; name:string; score:number; active_days:number;
   monthly_growth:number; weekly_growth:number; returning_share:number;
   evidence:string[]; tokens:{symbol:string; account:string; evidence:string}[];
-  links:{kind:string; url:string}[] | null;
 };
 type RecentCall = {
   id:string; name:string; transaction_hash:string; receiver_id:string; block_time:string;
   methods:string[]; succeeded:boolean|null;
 };
-type Rankings = {cutoff:string; analysis?:unknown[]; highestRanked:Recommendation[]; fastestRising:Recommendation[]};
+type Rankings = {cutoff:string; registryVersion?:string; analysis?:unknown[]; highestRanked:Recommendation[]; fastestRising:Recommendation[]};
 type Coverage = {coveredDays:number; totalDays:number; contracts:number; cutoff:string};
 const percent = (value:number) => Math.round(value*100)+'%';
 const growth = (value:number) => (value > 0 ? '+' : '')+percent(value);
 
 export default function ActivityRankings() {
   const [ranking, setRanking] = useState<Rankings|null>(null);
+  const [list, setList] = useState<'highestRanked'|'fastestRising'>('highestRanked');
   const [recent, setRecent] = useState<RecentCall[]>([]);
   const [coverage, setCoverage] = useState<Coverage|null>(null);
   const [coverageChecked, setCoverageChecked] = useState(false);
@@ -40,7 +40,7 @@ export default function ActivityRankings() {
         if (ranked.status === 'fulfilled' && ranked.value) {
           const value: Rankings = ranked.value;
           if (Array.isArray(value.highestRanked) && Array.isArray(value.fastestRising)) {
-            setRanking(previous => previous?.cutoff === value.cutoff ? previous : value);
+            setRanking(previous => previous?.cutoff === value.cutoff && previous.registryVersion === value.registryVersion ? previous : value);
           }
         }
         if (sampled.status === 'fulfilled' && Array.isArray(sampled.value)) setRecent(sampled.value);
@@ -66,34 +66,39 @@ export default function ActivityRankings() {
 
   return <section className="panel activity-recommendations">
     {ranking ? <>
-      <p>Ranking of {ranking.analysis?.length ?? ranking.highestRanked.length} tracked projects with verified NEAR tokens · Data cutoff {ranking.cutoff.slice(0,16).replace('T',' ')} UTC</p>
-      <div className="columns">
-        {([['Highest ranked',ranking.highestRanked],['Fastest rising',ranking.fastestRising]] as const).map(([title,projects])=>
-          <div key={title}>
-            <h3>{title}</h3>
-            {projects.length ? <ol>{projects.map(project=><li key={project.project_id}>
-              <strong>{project.name}</strong> · {project.tokens.map(token=><a key={token.account} href={token.evidence}>{token.symbol}</a>)}
-              <p>{title === 'Highest ranked'
-                ? `Score ${project.score}/100 · ${percent(project.returning_share)} of prior signers returned · ${growth(project.monthly_growth)} 28-day signer growth · active on ${project.active_days} of 28 days`
-                : `${growth(project.weekly_growth)} active signers compared with the previous seven days`}</p>
-              <p>{project.evidence[0] && <a href={'https://nearblocks.io/txns/'+project.evidence[0]}>Example transaction ↗</a>}
-                {project.links?.map(link=><a key={link.kind+link.url} href={link.url}> · {link.kind}</a>)}</p>
-            </li>)}</ol> : <p>{title === 'Highest ranked'
-              ? 'At least three projects must meet the signer thresholds to publish a ranking.'
-              : 'No ranked projects grew over the latest seven days.'}</p>}
-          </div>)}
+      <div className="ranking-tools">
+        <div className="ranking-switch" aria-label="Project ranking">
+          <button type="button" aria-pressed={list === 'highestRanked'} onClick={()=>setList('highestRanked')}>Highest ranked</button>
+          <button type="button" aria-pressed={list === 'fastestRising'} onClick={()=>setList('fastestRising')}>Fastest rising</button>
+        </div>
+        <p>{ranking.analysis?.length ?? ranking.highestRanked.length} projects measured · Cutoff {ranking.cutoff.slice(0,10)} UTC</p>
       </div>
+      {ranking[list].length ? <ol className="project-leaderboard">
+        {ranking[list].map((project,index)=><li key={project.project_id}>
+          <span className="leader-index">{String(index+1).padStart(2,'0')}</span>
+          <div className="leader-name"><strong>{project.name}</strong>
+            <div>{project.tokens.map(token=><a key={token.account} href={token.evidence}>{token.symbol} ↗</a>)}
+              {project.evidence[0] && <a href={'https://nearblocks.io/txns/'+project.evidence[0]}>Example transaction ↗</a>}
+            </div>
+          </div>
+          <div className="leader-metric"><strong>{growth(list === 'highestRanked' ? project.monthly_growth : project.weekly_growth)}</strong><small>{list === 'highestRanked' ? '28-day signer growth' : '7-day signer growth'}</small></div>
+          <div className="leader-metric"><strong>{percent(project.returning_share)}</strong><small>Prior signers returned</small></div>
+          <div className="leader-metric leader-score"><strong>{project.score}</strong><small>Score / 100</small></div>
+        </li>)}
+      </ol> : <p className="ranking-empty">{list === 'highestRanked'
+        ? 'At least three projects must meet the signer thresholds to publish a ranking.'
+        : 'No ranked projects gained signers over the latest seven days.'}</p>}
     </> : <>
       <div className="ranking-coverage">
         <div className="ranking-coverage-label">
           <h3>Ranking data coverage</h3>
-          {coverage && coverage.contracts > 0 && <span>{coverage.coveredDays} / {coverage.totalDays} days</span>}
+          {coverage && <span>{coverage.coveredDays} / {coverage.totalDays} days</span>}
         </div>
-        {coverage && coverage.contracts > 0 ? <>
+        {coverage ? <>
           <progress aria-label="Ranking data coverage" value={coverage.coveredDays} max={coverage.totalDays} />
           <p>{coverage.coveredDays === coverage.totalDays
             ? 'Coverage complete. Rankings are pending.'
-            : `${coverage.totalDays - coverage.coveredDays} days left across ${coverage.contracts} tracked contracts.`}</p>
+            : `${coverage.totalDays - coverage.coveredDays} of ${coverage.totalDays} days still need coverage.`}</p>
         </> : <p>{coverageChecked ? 'Coverage data is unavailable.' : 'Checking data coverage…'}</p>}
       </div>
       {recent.length > 0 && <>

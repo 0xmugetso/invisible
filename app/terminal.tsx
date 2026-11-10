@@ -3,6 +3,7 @@ import {useEffect,useState} from 'react';
 import Link from 'next/link';
 import {ResearchChart, ReturningShare, CountUp} from './research-graphics';
 import ActivityRankings from './activity-rankings';
+import activityRegistry from '../data/activity-registry.json';
 import DeploymentAtlas from './deployment-atlas';
 import EcosystemStory from './ecosystem-story';
 import projects from '../data/projects.json';
@@ -113,27 +114,53 @@ export default function Terminal({view,id,coverage:initialCoverage}:{view:string
       {view==='deployments'&&<DeploymentAtlas snapshotPath={release?.deployments}/>}
       {!useReal&&view!=='deployments'&&view!=='discovery'&&view!=='ecosystem'&&<p className="sample-note">Simulation · illustrative metrics</p>}
       {view==='discovery'&&<>
-        <section className="intro">
-          <h1>{useReal?'What’s moving on NEAR':'Explore a simulated ranking'}</h1>
-          <p>{useReal?'Compare NEAR contracts by signer growth and how often signers return.':'Compare signer growth and return activity using sample data.'}</p>
-          <div className="intro-meta">
-            {!useReal && <span><b>{projects.length}</b> tracked projects</span>}
-            {!useReal && signals.length > 0 && <span><b>{signals.length}</b> qualifying signals</span>}
-            {!useReal && <span>Simulation data</span>}
-
-          </div>
-        </section>
-        {useReal && <>
-          <DeploymentAtlas snapshotPath={release?.deployments} compact />
-          <details className="discovery-details">
-            <summary>Projects with verified tokens</summary>
-            <ActivityRankings/>
-          </details>
-          <details className="discovery-details">
-            <summary>Recent NEAR blocks</summary>
+        {useReal ? <>
+          <section className="discovery-hero" aria-labelledby="discovery-title">
+            <div className="discovery-lead">
+              <h1 id="discovery-title">Find what’s<br/>growing on NEAR.</h1>
+              <p>Follow the projects gaining signers and bringing them back. See the contracts and transactions behind each ranking.</p>
+              <div className="discovery-actions">
+                <a className="discovery-primary" href="#project-rankings">Explore rankings <span aria-hidden="true">↓</span></a>
+                <Link href="/thesis/?data=observed">Read the research <span aria-hidden="true">↗</span></Link>
+              </div>
+            </div>
             <LiveActivity/>
-          </details>
-        </>}
+          </section>
+          <section className="discovery-projects" aria-labelledby="project-rankings">
+            <div className="discovery-section-heading">
+              <div><h2 id="project-rankings">Project rankings</h2>
+                <p>Projects with a verified NEAR token, scored on signer growth, return rate, and days active.</p></div>
+              <a href="#project-registry">View project coverage <span aria-hidden="true">↓</span></a>
+            </div>
+            <ActivityRankings/>
+          </section>
+          <section className="discovery-directory" aria-labelledby="project-registry">
+            <div className="discovery-section-heading">
+              <div><h2 id="project-registry">Project coverage</h2>
+                <p>{activityRegistry.length} verified token projects · {activityRegistry.reduce((count, entry)=>count+Object.keys(entry.contracts).length,0)} mapped contracts. Open a project to see its sources.</p></div>
+            </div>
+            <div className="discovery-registry">{activityRegistry.map(entry=><details key={entry.id}>
+              <summary><strong>{entry.name}</strong><span>{entry.tokens.map(token=>token.symbol).join(', ')}</span></summary>
+              <div className="registry-evidence">
+                <p>{entry.description} {entry.benchmark && 'Tracked for reference, outside the rankings.'}</p>
+                <ul>
+                  {entry.tokens.map(token=><li key={token.accountId}><a href={token.evidence}>{token.symbol} token evidence ↗</a><code>{token.accountId}</code></li>)}
+                  {Object.entries(entry.contracts).map(([account, source])=><li key={account}>
+                    <Link href={'/deployments/?contract='+encodeURIComponent(account)}>{account}</Link><a href={source}>Source ↗</a>
+                  </li>)}
+                </ul>
+              </div>
+            </details>)}</div>
+          </section>
+          <div className="discovery-contracts"><DeploymentAtlas snapshotPath={release?.deployments} compact /></div>
+        </> : <section className="intro">
+          <h1>Explore a simulated ranking</h1>
+          <p>Compare signer growth and return activity using sample data.</p>
+          <div className="intro-meta"><span><b>{projects.length}</b> tracked projects</span>
+            {signals.length > 0 && <span><b>{signals.length}</b> qualifying signals</span>}
+            <span>Simulation data</span>
+          </div>
+        </section>}
         {!useReal && <>
         {featured&&snap?<section className="feature">
           <div className="feature-copy">

@@ -4,7 +4,7 @@ WITH registry AS (
   FROM UNNEST(JSON_QUERY_ARRAY(@registry)) AS item
 ), calls AS (
   SELECT DISTINCT r.project_id, a.block_date AS day, a.signer_account_id AS signer,
-    a.transaction_hash AS hash, a.block_timestamp AS block_time
+    a.transaction_hash AS tx_hash, a.block_timestamp AS block_time
   FROM `bigquery-public-data.crypto_near_mainnet_us.transaction_actions` a
   JOIN registry r ON r.contract=a.receiver_account_id
   WHERE a.block_date >= DATE_SUB(@day, INTERVAL 56 DAY) AND a.block_date < @day
@@ -24,7 +24,7 @@ WITH registry AS (
   FROM signers GROUP BY project_id
 ), activity AS (
   SELECT project_id, COUNT(DISTINCT day) AS active_days,
-    ARRAY_AGG(hash ORDER BY block_time DESC, hash LIMIT 3) AS evidence
+    ARRAY_AGG(tx_hash ORDER BY block_time DESC, tx_hash LIMIT 3) AS evidence
   FROM calls WHERE day >= DATE_SUB(@day, INTERVAL 28 DAY)
   GROUP BY project_id
 )

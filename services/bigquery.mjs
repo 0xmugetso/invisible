@@ -34,8 +34,10 @@ export function bigQueryForInvocation(oidcToken) {
 }
 
 async function queryBigQuery(client, sql, params, {byteCap,maxRows}) {
+  const queryParams = Object.fromEntries(Object.entries(params).map(([key, value]) =>
+    [key, key === 'day' ? BigQuery.date(value) : value]));
   const [job] = await client.createQueryJob({
-    query:sql, params, types:Object.fromEntries(Object.keys(params).map(key => [key, key === 'day' ? 'DATE' : 'STRING'])),
+    query:sql, params:queryParams,
     location:'us-east1', maximumBytesBilled:byteCap, jobTimeoutMs:120000,
   });
   const [rows, next] = await job.getQueryResults({autoPaginate:false, maxResults:10000, timeoutMs:120000});

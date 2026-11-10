@@ -30,6 +30,35 @@ export async function latestProjectActivity(db) {
   return rows;
 }
 
+export async function rankingCoverage(db) {
+  const cutoff = new Date(rankingCutoff()).toISOString();
+  const {rows:[coverage]} = await db.query(`WITH contracts AS (
+    SELECT DISTINCT c.account_id
+    FROM invisible.project_contract c
+    JOIN invisible.project p ON p.id=c.project_id
+    WHERE NOT p.benchmark AND EXISTS (
+      SELECT 1 FROM invisible.project_token t WHERE t.project_id=p.id AND t.active
+    )
+  ), coverage AS (
+    SELECT c.account_id, range_agg(tstzrange(v.from_time,v.through_time,'[)'))
+      FILTER (WHERE v.receiver_id IS NOT NULL) AS covered
+    FROM contracts c LEFT JOIN invisible.call_coverage v ON v.receiver_id=c.account_id
+      AND v.through_time > $1::timestamptz - interval '1344 hours'
+      AND v.from_time < $1::timestamptz
+    GROUP BY c.account_id
+  )
+  SELECT (SELECT count(*)::int FROM contracts) AS contracts,
+    count(*) FILTER (WHERE EXISTS (SELECT 1 FROM contracts) AND NOT EXISTS (
+      SELECT 1 FROM coverage c WHERE NOT COALESCE(
+        c.covered @> tstzrange(
+          $1::timestamptz - (day+1)*interval '24 hours',
+          $1::timestamptz - day*interval '24 hours', '[)'
+        ), false)
+    ))::int AS "coveredDays"
+  FROM generate_series(0,55) AS days(day)`, [cutoff]);
+  return {...coverage, totalDays:56, cutoff};
+}
+
 export async function calculateRankings(db, time) {
   const until = new Date(time).toISOString();
   const existing = await db.query('SELECT results FROM invisible.ranking_run WHERE cutoff=$1', [until]);

@@ -1,11 +1,11 @@
 import {openDatabase} from '../services/store.mjs';
-import {latestBlocks, latestProjectActivity} from '../services/rankings.mjs';
+import {latestBlocks, latestProjectActivity, rankingCoverage} from '../services/rankings.mjs';
 
 export default async function handler(request, response) {
   if (request.method !== 'GET') return response.status(405).end();
   response.setHeader('Cache-Control','no-store');
   const {dataset} = request.query;
-  if (dataset !== 'rankings' && dataset !== 'blocks' && dataset !== 'projects') return response.status(404).end();
+  if (!['rankings','blocks','projects','coverage'].includes(dataset)) return response.status(404).end();
   let db;
   try {
     db = openDatabase();
@@ -17,6 +17,7 @@ export default async function handler(request, response) {
       return response.status(200).json(blocks);
     }
     if (dataset === 'projects') return response.status(200).json(await latestProjectActivity(db));
+    if (dataset === 'coverage') return response.status(200).json(await rankingCoverage(db));
     const {rows:[latest]} = await db.query('SELECT results FROM invisible.ranking_run ORDER BY cutoff DESC LIMIT 1');
     return latest ? response.status(200).json(latest.results) : response.status(404).end();
   } catch (error) {

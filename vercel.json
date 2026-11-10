@@ -12,7 +12,8 @@
   "rewrites": [
     { "source": "/activity/projects.json", "destination": "/api/activity?dataset=projects" },
     { "source": "/activity/blocks.json", "destination": "/api/activity?dataset=blocks" },
-    { "source": "/activity/rankings.json", "destination": "/api/activity?dataset=rankings" }
+    { "source": "/activity/rankings.json", "destination": "/api/activity?dataset=rankings" },
+    { "source": "/activity/coverage.json", "destination": "/api/activity?dataset=coverage" }
   ],
   "crons": [
     { "path": "/api/refresh-activity?slot=00", "schedule": "0 0 * * *" },

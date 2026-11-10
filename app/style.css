@@ -595,6 +595,15 @@ html[data-theme="dark"] {
 
 .discovery-now { display:grid; grid-template-columns:minmax(0,1.15fr) minmax(0,1fr); gap:16px; align-items:start; margin-bottom:22px; }
 .discovery-now .panel { margin:0; min-width:0; }
+.ranking-coverage { margin:16px 0 24px; }
+.ranking-coverage-label { display:flex; align-items:baseline; justify-content:space-between; flex-wrap:wrap; gap:4px 16px; }
+.ranking-coverage-label h3 { margin:0; }
+.ranking-coverage-label span { color:var(--muted); font-size:.875rem; font-variant-numeric:tabular-nums; }
+.ranking-coverage progress { display:block; width:100%; height:6px; margin:8px 0; border:0; border-radius:4px; background:var(--line); overflow:hidden; appearance:none; }
+.ranking-coverage progress::-webkit-progress-bar { background:var(--line); }
+.ranking-coverage progress::-webkit-progress-value { background:currentColor; }
+.ranking-coverage progress::-moz-progress-bar { background:currentColor; }
+.ranking-coverage p { margin:8px 0 0; }
 .project-pulse { list-style:none; padding:0; margin:0; }
 .project-pulse li { display:flex; flex-wrap:wrap; justify-content:space-between; gap:6px 16px; border-top:1px solid var(--line); padding:10px 0; }
 .project-pulse p { margin:0; }

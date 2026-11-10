@@ -13,12 +13,15 @@ type RecentCall = {
   methods:string[]; succeeded:boolean|null;
 };
 type Rankings = {cutoff:string; highestRanked:Recommendation[]; fastestRising:Recommendation[]};
+type Coverage = {coveredDays:number; totalDays:number; contracts:number; cutoff:string};
 const percent = (value:number) => Math.round(value*100)+'%';
 const growth = (value:number) => (value > 0 ? '+' : '')+percent(value);
 
 export default function ActivityRankings() {
   const [ranking, setRanking] = useState<Rankings|null>(null);
   const [recent, setRecent] = useState<RecentCall[]>([]);
+  const [coverage, setCoverage] = useState<Coverage|null>(null);
+  const [coverageChecked, setCoverageChecked] = useState(false);
   useEffect(() => {
     let request: AbortController | undefined;
     async function refresh() {
@@ -27,8 +30,8 @@ export default function ActivityRankings() {
       request = controller;
       try {
         const options = {cache:'no-cache', signal:AbortSignal.any([controller.signal,AbortSignal.timeout(10000)])} as const;
-        const [ranked, sampled] = await Promise.allSettled(
-          ['rankings','projects'].map(async dataset => {
+        const [ranked, sampled, measured] = await Promise.allSettled(
+          ['rankings','projects','coverage'].map(async dataset => {
             const response = await fetch('/activity/'+dataset+'.json', options);
             return response.ok ? response.json() : null;
           })
@@ -41,6 +44,10 @@ export default function ActivityRankings() {
           }
         }
         if (sampled.status === 'fulfilled' && Array.isArray(sampled.value)) setRecent(sampled.value);
+        const value: Coverage | null = measured.status === 'fulfilled' ? measured.value : null;
+        setCoverage(value && Number.isInteger(value.coveredDays) && value.totalDays > 0 &&
+          value.coveredDays >= 0 && value.coveredDays <= value.totalDays ? value : null);
+        setCoverageChecked(true);
       } catch {
         // Retain the last published rankings.
       } finally {
@@ -76,7 +83,18 @@ export default function ActivityRankings() {
           </div>)}
       </div>
     </> : <>
-      <p>Project rankings are pending historical data.</p>
+      <div className="ranking-coverage">
+        <div className="ranking-coverage-label">
+          <h3>Ranking data coverage</h3>
+          {coverage && coverage.contracts > 0 && <span>{coverage.coveredDays} / {coverage.totalDays} days</span>}
+        </div>
+        {coverage && coverage.contracts > 0 ? <>
+          <progress aria-label="Ranking data coverage" value={coverage.coveredDays} max={coverage.totalDays} />
+          <p>{coverage.coveredDays === coverage.totalDays
+            ? 'Coverage complete. Rankings are pending.'
+            : `${coverage.totalDays - coverage.coveredDays} days left across ${coverage.contracts} tracked contracts.`}</p>
+        </> : <p>{coverageChecked ? 'Coverage data is unavailable.' : 'Checking data coverage…'}</p>}
+      </div>
       {recent.length > 0 && <>
         <h3>Latest calls from verified projects</h3>
         <ul className="project-pulse">

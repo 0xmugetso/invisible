@@ -53,9 +53,13 @@ export function researchEcosystem(page, query = '') {
   const start = (page - 1) * size;
   const term = query.toLowerCase();
   const matching = catalog.projects.filter(project => [project.name, project.id, ...project.reportedContracts,
-    ...(project.reportedTokens ?? []).map(token=>token.accountId)].some(value=>value.toLowerCase().includes(term)));
+    ...(project.reportedTokens ?? []).map(token=>token.accountId),
+    ...(project.tokenScreen?.nameMatches ?? []).map(token=>token.accountId)].some(value=>value.toLowerCase().includes(term)));
   return {
     total:matching.length,
+    indexedMatches:term ? (catalog.indexedTokens ?? []).filter(token=>
+      [token.name,token.symbol,token.accountId].some(value=>value.toLowerCase().includes(term))) : [],
+    indexedTokenAccounts: new Set((catalog.indexedTokens ?? []).map(token=>token.accountId)).size,
     collectedAt:catalog.collectedAt, sources:catalog.sources, deploymentCutoff:catalog.deploymentCutoff, page,
     counts:Object.fromEntries(Object.entries(Object.groupBy(catalog.projects, project=>project.status))
       .map(([status,projects])=>[status,projects.length])),
@@ -79,31 +83,31 @@ export async function researchNarratives() {
 async function marketEvidence(token) {
   const path = '/fts/'+encodeURIComponent(token.accountId);
   const checkedAt = new Date().toISOString();
-  const {data} = await nearBlocksRequest(path);
-  if (data?.contract !== token.accountId) throw new Error('Token contract mismatch');
-  const market = {
-    status:'reported', checkedAt, source:nearBlocks+path,
-    priceUsd:decimal(data.price), volume24hUsd:decimal(data.volume_24h),
-    marketCapUsd:decimal(data.market_cap), fullyDilutedValuationUsd:decimal(data.fully_diluted_market_cap),
-    circulatingSupply:decimal(data.circulating_supply), totalSupplyOnNear:decimal(data.total_supply),
-    marketCapRank:null, marketCapRankSource:null, maxSupply:null,
-  };
-  // Follow the indexer's contract-to-market ID mapping, never ticker matches.
-  if (typeof data.coingecko_id === 'string' && /^[a-z0-9-]+$/.test(data.coingecko_id)) {
-    const params = new URLSearchParams({vs_currency:'usd', ids:data.coingecko_id});
-    try {
-      const rows = await request(coinGecko+'/coins/markets?'+params);
-      const quote = rows.find(row => row.id === data.coingecko_id);
-      if (quote) {
-        market.marketCapRank = Number.isSafeInteger(quote.market_cap_rank) && quote.market_cap_rank > 0 ? quote.market_cap_rank : null;
-        market.maxSupply = decimal(quote.max_supply);
-        market.marketCapRankSource = {url:coinGecko+'/coins/markets?'+params, updatedAt:quote.last_updated ?? null};
-      }
-    } catch {
-      // The NearBlocks quote remains available if CoinGecko is rate-limited.
-    }
+  const nearSource = nearBlocks+path;
+  const data = await nearBlocksRequest(path).then(result=>
+    result.data?.contract === token.accountId ? result.data : null).catch(()=>null);
+  const exactListings = (catalog.indexedTokens ?? []).filter(row=>row.accountId===token.accountId);
+  // An exact address is evidence. A matching ticker or project name is only a lead.
+  const marketId = exactListings.length === 1 ? exactListings[0].id : data?.coingecko_id;
+  let quote, quoteSource;
+  if (typeof marketId === 'string' && /^[a-z0-9-]+$/.test(marketId)) {
+    const params = new URLSearchParams({vs_currency:'usd', ids:marketId});
+    quoteSource = coinGecko+'/coins/markets?'+params;
+    quote = await request(quoteSource).then(rows=>rows.find(row=>row.id===marketId)).catch(()=>null);
   }
-  return market;
+  if (!quote && !data) return {status:'unavailable',checkedAt,source:nearSource};
+  return {
+    status:'reported', checkedAt, source:quote ? quoteSource : nearSource,
+    priceUsd:decimal(quote ? quote.current_price : data?.price),
+    volume24hUsd:decimal(quote ? quote.total_volume : data?.volume_24h),
+    marketCapUsd:decimal(quote ? quote.market_cap : data?.market_cap),
+    fullyDilutedValuationUsd:decimal(quote ? quote.fully_diluted_valuation : data?.fully_diluted_market_cap),
+    circulatingSupply:decimal(quote ? quote.circulating_supply : data?.circulating_supply),
+    totalSupplyOnNear:decimal(data?.total_supply), nearSupplySource:data ? nearSource : null,
+    marketCapRank:Number.isSafeInteger(quote?.market_cap_rank) && quote.market_cap_rank > 0 ? quote.market_cap_rank : null,
+    marketCapRankSource:quote ? {url:quoteSource,updatedAt:quote.last_updated ?? null} : null,
+    maxSupply:decimal(quote?.max_supply),
+  };
 }
 
 function projectSummary(project, snapshot, rank) {
@@ -135,7 +139,12 @@ export function researchLeaderboard(snapshot) {
     methodology:snapshot?.methodology ?? null,
     weights:snapshot?.weights ?? null,
     thresholds:activityThresholds,
-    coverage:{catalogEntries:catalog.projects.length, reviewPending:catalog.projects.filter(project=>project.status==='needs_product_review').length},
+    coverage:{
+      catalogEntries:catalog.projects.length,
+      tokenLeads:catalog.projects.filter(project=>project.status==='unverified_token_lead').length,
+      noTokenEvidence:catalog.projects.filter(project=>project.status==='no_token_found_in_sources').length,
+      indexedTokenAccounts:new Set((catalog.indexedTokens ?? []).map(token=>token.accountId)).size,
+    },
     projects:eligible.map(project => projectSummary(project, snapshot, ranks.get(project.id)))
       .sort((a,b) => (a.activityRank ?? Infinity) - (b.activityRank ?? Infinity) || a.id.localeCompare(b.id)),
   };

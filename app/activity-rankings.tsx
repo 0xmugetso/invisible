@@ -22,11 +22,11 @@ type Project = {
   scoreComponents?:Record<string,number>|null;
   unmetThresholds:{metric:string; minimum:number; observed:number|null}[];
 };
-type Board = {cutoff:string|null; weights?:Record<string,number>|null; coverage:{catalogEntries:number;reviewPending:number}; projects:Project[]};
+type Board = {cutoff:string|null; weights?:Record<string,number>|null; coverage:{catalogEntries:number;tokenLeads:number;noTokenEvidence:number}; projects:Project[]};
 type Sourced = {source:string; summary?:string; status?:string; [key:string]:unknown};
 type Market = {
   status:string; source:string; checkedAt?:string; marketCapRank?:number|null; marketCapRankSource?:{url:string}|null;
-  marketCapUsd?:string|null; fullyDilutedValuationUsd?:string|null; circulatingSupply?:string|null; totalSupplyOnNear?:string|null;
+  nearSupplySource?:string|null; marketCapUsd?:string|null; fullyDilutedValuationUsd?:string|null; circulatingSupply?:string|null; totalSupplyOnNear?:string|null;
 };
 type Dossier = {
   tokens:(Project['tokens'][number] & {market:Market})[];
@@ -77,7 +77,7 @@ function ProjectEvidence({project,weights}:{project:Project; weights?:Board['wei
           <div><dt>Market cap</dt><dd>{market.marketCapUsd == null ? '—' : money.format(Number(market.marketCapUsd))}</dd></div>
           <div><dt>FDV</dt><dd>{market.fullyDilutedValuationUsd == null ? '—' : money.format(Number(market.fullyDilutedValuationUsd))}</dd></div>
           <div><dt>Circulating supply</dt><dd>{market.circulatingSupply == null ? '—' : format(Number(market.circulatingSupply))}</dd></div>
-          <div><dt>Supply on NEAR</dt><dd>{market.totalSupplyOnNear == null ? '—' : format(Number(market.totalSupplyOnNear))}</dd></div>
+          <div><dt>Supply on NEAR</dt><dd>{market.totalSupplyOnNear == null ? '—' : market.nearSupplySource ? <a href={market.nearSupplySource}>{format(Number(market.totalSupplyOnNear))}</a> : format(Number(market.totalSupplyOnNear))}</dd></div>
           <div><dt>Market cap rank</dt><dd>{market.marketCapRankSource && market.marketCapRank != null ? <a href={market.marketCapRankSource.url}>{format(market.marketCapRank)}</a> : '—'}</dd></div>
         </dl> : <p>Market data unavailable.</p>}
       </div>)}
@@ -133,6 +133,6 @@ export default function ActivityRankings() {
         <tr id={'research-'+project.id} hidden={expanded!==project.id}><td colSpan={6}>{expanded===project.id && <ProjectEvidence project={project} weights={board.weights}/>}</td></tr>
       </tbody>)}
     </table></div> : <p className="ranking-empty">No projects in this view.</p>}
-    <p className="research-coverage">{board.coverage.catalogEntries} ecosystem listings · {board.coverage.reviewPending} awaiting review <a href="#project-registry">Browse coverage</a></p>
+    <p className="research-coverage">{board.coverage.catalogEntries} ecosystem listings screened · {board.coverage.tokenLeads} token leads to verify <a href="#project-registry">Browse coverage</a></p>
   </section>;
 }

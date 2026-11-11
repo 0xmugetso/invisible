@@ -526,5 +526,130 @@
     "links": {
       "website": "https://www.aurigami.finance/"
     }
+  },
+  {
+    "id": "neartrade-terminal",
+    "name": "neartrade",
+    "category": "Trading",
+    "description": "Trading terminal and Telegram bot. Shared exchange calls require a way to attribute frontend activity.",
+    "contracts": {},
+    "tokens": [
+      {
+        "accountId": "trade-2.nearlytrade.near",
+        "symbol": "TRADE",
+        "evidence": "https://www.neartrade.lol/"
+      }
+    ],
+    "links": {
+      "website": "https://www.neartrade.lol/"
+    }
+  },
+  {
+    "id": "trufin",
+    "name": "TruFin",
+    "category": "Liquid staking",
+    "description": "TruNEAR is the receipt token for NEAR staking. The staking contract is also the token contract.",
+    "contracts": {
+      "staker1.msig1.trufin.near": "https://nearblocks.io/tokens/staker1.msig1.trufin.near/faq"
+    },
+    "tokens": [
+      {
+        "accountId": "staker1.msig1.trufin.near",
+        "symbol": "TruNEAR",
+        "evidence": "https://nearblocks.io/tokens/staker1.msig1.trufin.near/faq"
+      }
+    ],
+    "links": {
+      "website": "https://www.trufin.io/"
+    }
+  },
+  {
+    "id": "nearpad-family",
+    "name": "NearPad",
+    "category": "Launchpad",
+    "description": "NEAR token launch factory and associated Rhea DCL markets. The mapped factory measures direct launches.",
+    "contracts": {
+      "nearpadfamily.near": "https://nearpad.family/docs"
+    },
+    "tokens": [
+      {
+        "accountId": "nearpad-99d601.nearpadfamily.near",
+        "symbol": "NEARPAD",
+        "evidence": "https://nearblocks.io/tokens/nearpad-99d601.nearpadfamily.near"
+      }
+    ],
+    "links": {
+      "website": "https://nearpad.family/"
+    }
+  },
+  {
+    "id": "sodax",
+    "name": "SODAX",
+    "category": "Cross-chain DeFi",
+    "description": "Cross-chain trading and lending. NEAR token movement alone is insufficient to measure product use.",
+    "contracts": {},
+    "tokens": [
+      {
+        "accountId": "soda.sodax.near",
+        "symbol": "SODA",
+        "evidence": "https://nearblocks.io/tokens/soda.sodax.near"
+      }
+    ],
+    "links": {
+      "website": "https://www.sodax.com/"
+    }
+  },
+  {
+    "id": "edge-video",
+    "name": "Edge Video AI",
+    "category": "AI",
+    "description": "Video engagement and rewards. FAST is listed on NEAR and product usage still needs attribution.",
+    "contracts": {},
+    "tokens": [
+      {
+        "accountId": "edge-fast.near",
+        "symbol": "FAST",
+        "evidence": "https://nearblocks.io/token/edge-fast.near"
+      }
+    ],
+    "links": {
+      "website": "https://www.edgevideo.ai/"
+    }
+  },
+  {
+    "id": "neko",
+    "name": "NEKO",
+    "category": "Trading and education",
+    "description": "NEAR trading terminal and learn-to-earn product. Shared exchange routes are not yet attributable to this frontend.",
+    "contracts": {},
+    "tokens": [
+      {
+        "accountId": "ftv2.nekotoken.near",
+        "symbol": "NEKO",
+        "evidence": "https://gov.near.org/t/announcement-please-upgrade-your-neko-token-to-neko-v2/25179"
+      }
+    ],
+    "links": {
+      "website": "https://nekoonnear.com/",
+      "product": "https://nekoonnear.com/challenge"
+    }
+  },
+  {
+    "id": "shitzu",
+    "name": "Shitzu",
+    "category": "Ecosystem tooling",
+    "description": "The Shitzu team publishes the NEAR Ecosystem Map. Token transfers do not measure usage of that tool.",
+    "contracts": {},
+    "tokens": [
+      {
+        "accountId": "token.0xshitzu.near",
+        "symbol": "SHITZU",
+        "evidence": "https://nearblocks.io/token/token.0xshitzu.near?tab=faq"
+      }
+    ],
+    "links": {
+      "website": "https://app.shitzuapes.xyz/",
+      "product": "https://github.com/Shitzu-Apes/near-ecosystem-explorer"
+    }
   }
 ]

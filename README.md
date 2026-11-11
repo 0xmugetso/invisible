@@ -135,11 +135,11 @@ The production leaderboard uses direct function-call attempts to the verified pr
 
 The Vercel research handler supplies five views for the dashboard and research preview.
 
-- `GET /api/research?view=ecosystem&page=1` returns the merged review inventory and source links. Set `q` to search by name or account. Refresh it with `node scripts/import-ecosystem-catalog.mjs`. The import merges known aliases and retains directory claims for review.
+- `GET /api/research?view=ecosystem&page=1` returns the merged review inventory and source links. Set `q` to search by name or account. Refresh it with `node scripts/import-ecosystem-catalog.mjs`. The import merges known aliases, screens every listing against CoinGecko’s NEAR token addresses, and retains unmatched listings with an explicit evidence status. An absent match means the screened sources did not identify a token. It does not establish that the project has never issued one.
 - `GET /api/research?view=candidates` reads one page from the NearBlocks fungible token index. Pass the returned `nextCursor` as the URL-encoded `cursor` to continue. Candidate status identifies known project tokens and assets that need attribution review. A shared or bridged asset can still qualify when evidence identifies the project and its NEAR product contracts.
 - `GET /api/research?view=leaderboard` joins the verified registry to the latest warehouse ranking. Projects with verified tokens appear with their activity rank, or the reason their rank is absent. The ecosystem catalog includes projects without a verified token.
 - `GET /api/research?view=narratives` returns the categories featured in CoinGecko’s search trends as market-wide attention context.
-- `GET /api/research?view=project&id=rhea` joins a project’s activity, contract and token evidence to market data. NearBlocks supplies market cap, FDV, volume and supply as reported for the exact NEAR contract. CoinGecko supplies market cap rank and max supply when the indexer maps that contract to a CoinGecko asset. The market lookup time and warehouse cutoff can differ. Missing evidence is represented by null.
+- `GET /api/research?view=project&id=rhea` joins a project’s activity, contract and token evidence to market data. NearBlocks supplies supply on NEAR for the exact token contract. The service uses a CoinGecko market quote when it can map the address to an asset and falls back to NearBlocks market fields otherwise. The market lookup time and warehouse cutoff can differ. Missing evidence is represented by null.
 
 To review several pages at once, run `node scripts/discover-token-candidates.mjs 10`. The command prints one JSON record per page. Pass the last `nextCursor` as the second argument to resume.
 

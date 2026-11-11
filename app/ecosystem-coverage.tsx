@@ -4,11 +4,12 @@ import {useEffect,useState} from 'react';
 
 type Page = {
   total:number; nextPage:number|null;
+  indexedMatches?:{id:string;name:string;accountId:string;source:string}[];
   projects:{id:string; name:string; status:string; reportedTokens?:{symbol:string;accountId:string}[];
-    evidence:{source:string}[]}[];
+    tokenScreen?:{review?:{reason:string;source:string}|null; nameMatches:{name:string;accountId:string;source:string}[]}; evidence:{source:string}[]}[];
 };
 const labels:Record<string,string> = {
-  verified_registry:'Reviewed', needs_product_review:'Review pending', excluded_standalone_meme:'Excluded · standalone meme', excluded_shared_asset:'Excluded · shared asset',
+  verified_registry:'Reviewed', unverified_token_lead:'Token lead needs verification', no_token_found_in_sources:'No token found in screened sources', excluded_standalone_meme:'Excluded · standalone meme', excluded_shared_asset:'Excluded · shared asset',
 };
 
 export default function EcosystemCoverage() {
@@ -48,8 +49,14 @@ export default function EcosystemCoverage() {
         <strong>{project.name}</strong>
         <span>{labels[project.status] ?? project.status}</span>
         {project.reportedTokens?.length ? <span>Reported tokens: {project.reportedTokens.map(token=>token.symbol).join(', ')}</span> : null}
+        {project.tokenScreen?.nameMatches.map(token=><a key={token.accountId} href={token.source}>Token name match · {token.name}</a>)}
+        {project.tokenScreen?.review && <span>{project.tokenScreen.review.reason} <a href={project.tokenScreen.review.source}>Review source</a></span>}
         {project.evidence[0] && <a href={project.evidence[0].source}>Listing source</a>}
       </li>)}</ul>
+      {!!data.indexedMatches?.length && <details>
+        <summary>Matching indexed assets ({data.indexedMatches.length})</summary>
+        <ul>{data.indexedMatches.map(token=><li key={token.id}><a href={token.source}>{token.name}</a> <span>{token.accountId}</span></li>)}</ul>
+      </details>}
       {(page>1 || data.nextPage!==null) && <div className="catalog-pagination">
         <button type="button" disabled={page===1} onClick={()=>changePage(page-1)}>Previous</button>
         <span>Page {page}</span>

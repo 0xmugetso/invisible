@@ -129,7 +129,7 @@ export default function Terminal({view,id,coverage:initialCoverage}:{view:string
           <section className="discovery-projects" aria-labelledby="project-rankings">
             <div className="discovery-section-heading">
               <div><h2 id="project-rankings">Project rankings</h2>
-                <p>Reviewed NEAR projects, scored on signer growth, return rate, and activity across days.</p></div>
+                <p>NEAR projects with verified tokens, scored on signer growth, return rate, and activity across days.</p></div>
               <a href="#project-registry">View project coverage <span aria-hidden="true">↓</span></a>
             </div>
             <ActivityRankings/>
@@ -137,7 +137,7 @@ export default function Terminal({view,id,coverage:initialCoverage}:{view:string
           <section className="discovery-directory" aria-labelledby="project-registry">
             <div className="discovery-section-heading">
               <div><h2 id="project-registry">Project coverage</h2>
-                <p>{activityRegistry.length} reviewed projects · {activityRegistry.reduce((count, entry)=>count+Object.keys(entry.contracts).length,0)} mapped contracts. Open a project to see its sources.</p></div>
+                <p>{activityRegistry.length} reviewed ecosystem projects · {activityRegistry.reduce((count, entry)=>count+Object.keys(entry.contracts).length,0)} mapped contracts. Open a project to see its sources.</p></div>
             </div>
             <div className="discovery-registry">{activityRegistry.map(entry=><details key={entry.id}>
               <summary><strong>{entry.name}</strong><span>{entry.tokens.map(token=>token.symbol).join(', ') || entry.category}</span></summary>

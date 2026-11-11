@@ -19,9 +19,10 @@ type Project = {
   id:string; name:string; status:string; activityRank:number|null; activityScore:number|null;
   tokens:{symbol:string; accountId:string; evidence:string}[];
   activity:{current_signers:number; repeat_signers:number; monthly_growth:number|null; evidence:string[]} | null;
+  scoreComponents?:Record<string,number>|null;
   unmetThresholds:{metric:string; minimum:number; observed:number|null}[];
 };
-type Board = {cutoff:string|null; coverage:{catalogEntries:number;reviewPending:number}; projects:Project[]};
+type Board = {cutoff:string|null; weights?:Record<string,number>|null; coverage:{catalogEntries:number;reviewPending:number}; projects:Project[]};
 type Sourced = {source:string; summary?:string; status?:string; [key:string]:unknown};
 type Market = {
   status:string; source:string; checkedAt?:string; marketCapRank?:number|null; marketCapRankSource?:{url:string}|null;
@@ -32,6 +33,9 @@ type Dossier = {
   contracts:Record<string,string>;
   tokenomics:Record<string,Sourced|null>;
   roadmap:Sourced|null; socialActivity:Sourced|null; narrativeMomentum:Sourced|null;
+};
+const scoreLabels:Record<string,string> = {
+  adjusted_return:'Return rate', repeat_signers:'Returning signers', adjusted_growth:'Signer growth', spread:'Activity spread',
 };
 const evidenceNames:Record<string,string> = {
   stage:'Token stage', vesting:'Vesting', upcomingUnlocks:'Upcoming unlocks',
@@ -48,7 +52,7 @@ async function getResearch<T>(params:Record<string,string>, signal:AbortSignal):
   return response.json();
 }
 
-function ProjectEvidence({project}:{project:Project}) {
+function ProjectEvidence({project,weights}:{project:Project; weights?:Board['weights']}) {
   const [data,setData] = useState<Dossier|null>(null);
   const [failed,setFailed] = useState(false);
   useEffect(()=>{
@@ -60,12 +64,15 @@ function ProjectEvidence({project}:{project:Project}) {
   },[project.id]);
   return <div className="research-evidence">
     {project.activity && <p>28-day activity · {format(project.activity.current_signers)} signers · {format(project.activity.repeat_signers)} returning · {percent(project.activity.monthly_growth)} vs prior window</p>}
+    {project.scoreComponents && weights && <p>Score contributions · {Object.entries(weights).flatMap(([key,weight])=>
+      project.scoreComponents?.[key] == null ? [] : [`${scoreLabels[key] ?? key} ${(project.scoreComponents[key]*weight*100).toFixed(1)} / ${Math.round(weight*100)}`]
+    ).join(' · ')}</p>}
     {project.unmetThresholds.length > 0 && <p>{project.unmetThresholds.map(({metric,observed,minimum})=>
       `${metrics[metric] ?? metric} ${format(observed)} (minimum ${minimum})`).join(' · ')}</p>}
     {project.activity?.evidence[0] && <p><a href={'https://nearblocks.io/txns/'+project.activity.evidence[0]}>View example transaction</a></p>}
     {data ? <>
       {data.tokens.map(({accountId,symbol,evidence,market})=><div key={accountId}>
-        <p><a href={evidence}>{symbol} token contract</a> · <a href={market.source}>Market data source</a>{market.checkedAt && <> · Checked {market.checkedAt.slice(0,10)} UTC</>}</p>
+        <p><a href={evidence}>{symbol} token contract</a> · <a href={market.source}>Market data source</a>{market.checkedAt && <> · Retrieved {market.checkedAt.slice(0,10)} UTC</>}</p>
         {market.status==='reported' ? <dl className="research-metrics">
           <div><dt>Market cap</dt><dd>{market.marketCapUsd == null ? '—' : money.format(Number(market.marketCapUsd))}</dd></div>
           <div><dt>FDV</dt><dd>{market.fullyDilutedValuationUsd == null ? '—' : money.format(Number(market.fullyDilutedValuationUsd))}</dd></div>
@@ -104,16 +111,17 @@ export default function ActivityRankings() {
   const ranked = board.projects.filter(project=>project.activityRank!==null);
   const unranked = board.projects.filter(project=>project.activityRank===null);
   const projects = showUnranked ? unranked : ranked;
+  const lastDay = board.cutoff ? new Date(Date.parse(board.cutoff)-1).toISOString().slice(0,10) : null;
   return <section className="research-ranking" aria-label="Project rankings">
     <div className="ranking-tools">
       <div className="ranking-switch" aria-label="Ranking status">
         <button type="button" aria-pressed={!showUnranked} onClick={()=>setShowUnranked(false)}>Ranked ({ranked.length})</button>
         <button type="button" aria-pressed={showUnranked} onClick={()=>setShowUnranked(true)}>Unranked ({unranked.length})</button>
       </div>
-      <p>{board.cutoff ? `Activity through ${board.cutoff.slice(0,10)} UTC (exclusive)` : 'Activity snapshot pending'}{failed ? ' · Last available snapshot' : ''}</p>
+      <p>{lastDay ? `Activity through ${lastDay} UTC` : 'Activity snapshot pending'}{failed ? ' · Last available snapshot' : ''}</p>
     </div>
     {projects.length ? <div className="research-table-scroll"><table>
-      <thead><tr><th scope="col">Rank</th><th scope="col">Project</th><th scope="col">28d signers</th><th scope="col">Returning</th><th scope="col">28d change</th><th scope="col">Activity score</th></tr></thead>
+      <thead><tr><th scope="col">Rank</th><th scope="col">Project</th><th scope="col">28d signers</th><th scope="col">Returning signers</th><th scope="col">28d change</th><th scope="col">Activity score</th></tr></thead>
       {projects.map(project=><tbody key={project.id}>
         <tr><td>{project.activityRank ?? '—'}</td>
           <th scope="row"><button type="button" aria-expanded={expanded===project.id} aria-controls={'research-'+project.id}
@@ -122,7 +130,7 @@ export default function ActivityRankings() {
           <td>{format(project.activity?.current_signers)}</td><td>{format(project.activity?.repeat_signers)}</td>
           <td>{percent(project.activity?.monthly_growth)}</td><td>{format(project.activityScore)}</td>
         </tr>
-        <tr id={'research-'+project.id} hidden={expanded!==project.id}><td colSpan={6}>{expanded===project.id && <ProjectEvidence project={project}/>}</td></tr>
+        <tr id={'research-'+project.id} hidden={expanded!==project.id}><td colSpan={6}>{expanded===project.id && <ProjectEvidence project={project} weights={board.weights}/>}</td></tr>
       </tbody>)}
     </table></div> : <p className="ranking-empty">No projects in this view.</p>}
     <p className="research-coverage">{board.coverage.catalogEntries} ecosystem listings · {board.coverage.reviewPending} awaiting review <a href="#project-registry">Browse coverage</a></p>

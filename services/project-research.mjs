@@ -115,6 +115,7 @@ function projectSummary(project, snapshot, rank) {
     activityRank:rank?.rank ?? null, activityScore:rank?.score ?? null,
     performanceRank:null,
     activity,
+    scoreComponents:rank?.components ?? null,
     unmetThresholds:activity ? unmetActivityThresholds(activity) : [],
   };
 }
@@ -122,11 +123,13 @@ function projectSummary(project, snapshot, rank) {
 export function researchLeaderboard(snapshot) {
   const eligible = registry.filter(project => project.tokens.length > 0);
   const tokenProjectIds = new Set(eligible.map(project => project.id));
-  const ranked = (snapshot?.highestRanked ?? []).filter(row => tokenProjectIds.has(row.project_id));
-  const ranks = new Map(ranked.map((row,index) => [row.project_id, {rank:index+1, score:row.score}]));
+  const ranked = (snapshot?.highestRanked ?? []).filter(row => tokenProjectIds.has(row.project_id) &&
+    !byId.get(row.project_id).benchmark && !unmetActivityThresholds(row).length);
+  const ranks = new Map(ranked.map((row,index) => [row.project_id, {rank:index+1, score:row.score, components:row.components}]));
   return {
     version:1,
     rankingScope:'verified_token_project_activity',
+    scoreBasis:'Relative onchain activity among qualified token projects',
     performanceRankingStatus:'awaiting_evidence',
     cutoff:snapshot?.cutoff ?? null,
     methodology:snapshot?.methodology ?? null,

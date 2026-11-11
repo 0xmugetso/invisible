@@ -1,4 +1,4 @@
-import {unmetActivityThresholds} from './activity-eligibility.mjs';
+import {unmetActivityThresholds, warehouseActivityMethodology} from './activity-eligibility.mjs';
 import {createHash} from 'node:crypto';
 import {readFile} from 'node:fs/promises';
 
@@ -25,7 +25,7 @@ export async function refreshWarehouseRankings(db, query, today) {
   const [{cutoff:day} = {}] = await query(coverageQuery, {day:today}, options);
   if (!day) return {status:'waiting_for_warehouse'};
   const cutoff = day+'T00:00:00.000Z';
-  const methodology = 'activity-warehouse-v4';
+  const methodology = warehouseActivityMethodology;
   const {rows:projects} = await db.query(`SELECT p.id,p.name,
     ARRAY(SELECT c.account_id FROM invisible.project_contract c WHERE c.project_id=p.id ORDER BY c.account_id) AS contracts,
     COALESCE((SELECT jsonb_agg(jsonb_build_object('symbol',t.symbol,'account',t.account_id,'evidence',t.evidence_url) ORDER BY t.account_id)
@@ -56,14 +56,17 @@ export async function refreshWarehouseRankings(db, query, today) {
     adjusted_weekly_growth: (row.weekly_signers - row.prior_weekly_signers) / (row.prior_weekly_signers + 25),
   }));
   const weights = {adjusted_return: .35, repeat_signers: .30, adjusted_growth: .25, spread: .10};
-  const percentile = (key, value) => {
+  const doubledPeerRank = (key, value) => {
     const below = eligible.filter(row => row[key] < value).length;
     const tied = eligible.filter(row => row[key] === value).length;
-    return (below + tied / 2) / eligible.length;
+    return 2 * below + tied;
   };
   const ranked = eligible.length < 3 ? [] : eligible.map(row => {
-    const components = Object.fromEntries(Object.keys(weights).map(key => [key, percentile(key,row[key])]));
-    const score = Math.round(100 * Object.entries(weights).reduce((sum,[key,weight]) => sum + weight*components[key],0));
+    const denominator = 2 * eligible.length;
+    const ranks = Object.fromEntries(Object.keys(weights).map(key => [key, doubledPeerRank(key,row[key])]));
+    const components = Object.fromEntries(Object.entries(ranks).map(([key,rank]) => [key, rank / denominator]));
+    const weightedRank = Object.entries(weights).reduce((sum,[key,weight]) => sum + Math.round(weight*100)*ranks[key],0);
+    const score = Math.round(weightedRank / denominator);
     return {...row,score,components};
   }).sort((a,b) => b.score-a.score || b.repeat_signers-a.repeat_signers || a.project_id.localeCompare(b.project_id));
   const results = {cutoff,methodology,registryVersion,analysis,weights,rankedCount:ranked.length,highestRanked:ranked,

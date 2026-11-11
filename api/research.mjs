@@ -1,3 +1,4 @@
+import {warehouseActivityMethodology} from '../services/activity-eligibility.mjs';
 import {openDatabase} from '../services/store.mjs';
 import {discoverTokenCandidates, researchEcosystem, researchLeaderboard, researchNarratives, researchProject} from '../services/project-research.mjs';
 
@@ -25,7 +26,9 @@ export default async function handler(request, response) {
       return response.status(200).json(result);
     }
     db = openDatabase();
-    const {rows:[latest]} = await db.query('SELECT results FROM invisible.ranking_run ORDER BY cutoff DESC LIMIT 1');
+    const {rows:[latest]} = await db.query(
+      'SELECT results FROM invisible.ranking_run WHERE methodology=ANY($1::text[]) ORDER BY cutoff DESC LIMIT 1',
+      [[warehouseActivityMethodology,'activity-warehouse-v4']]);
     const snapshot = latest?.results ?? null;
     const result = view === 'project' ? await researchProject(id, snapshot) : researchLeaderboard(snapshot);
     if (!result) return response.status(404).json({error:'Project not found'});

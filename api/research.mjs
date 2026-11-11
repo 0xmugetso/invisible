@@ -1,3 +1,4 @@
+import {investmentLeaderboard} from '../services/investment-ranking.mjs';
 import {warehouseActivityMethodology} from '../services/activity-eligibility.mjs';
 import {openDatabase} from '../services/store.mjs';
 import {discoverTokenCandidates, researchEcosystem, researchLeaderboard, researchNarratives, researchProject} from '../services/project-research.mjs';
@@ -5,7 +6,7 @@ import {discoverTokenCandidates, researchEcosystem, researchLeaderboard, researc
 export default async function handler(request, response) {
   if (request.method !== 'GET') return response.status(405).end();
   const {view = 'leaderboard', id, cursor, page = '1', q = ''} = request.query;
-  if (!['leaderboard','project','candidates','narratives','ecosystem'].includes(view)) return response.status(400).json({error:'Invalid view'});
+  if (!['leaderboard','investment','project','candidates','narratives','ecosystem'].includes(view)) return response.status(400).json({error:'Invalid view'});
   if (view === 'project' && (typeof id !== 'string' || !/^[a-z0-9-]{1,64}$/.test(id))) {
     return response.status(400).json({error:'A valid project ID is required'});
   }
@@ -30,7 +31,8 @@ export default async function handler(request, response) {
       'SELECT results FROM invisible.ranking_run WHERE methodology=ANY($1::text[]) ORDER BY cutoff DESC LIMIT 1',
       [[warehouseActivityMethodology,'activity-warehouse-v4']]);
     const snapshot = latest?.results ?? null;
-    const result = view === 'project' ? await researchProject(id, snapshot) : researchLeaderboard(snapshot);
+    const result = view === 'project' ? await researchProject(id, snapshot)
+      : view === 'investment' ? await investmentLeaderboard(researchLeaderboard(snapshot)) : researchLeaderboard(snapshot);
     if (!result) return response.status(404).json({error:'Project not found'});
     response.setHeader('Cache-Control',view === 'project' ? 'public, s-maxage=300' : 'public, s-maxage=60');
     return response.status(200).json(result);

@@ -120,7 +120,7 @@ export default function Terminal({view,id,coverage:initialCoverage}:{view:string
           <section className="discovery-projects" aria-labelledby="project-rankings">
             <div className="research-intro">
               <h1 id="project-rankings">NEAR project rankings</h1>
-              <p>Compare verified-token projects by onchain activity. Open a project for market data and research evidence.</p>
+              <p>Compare verified-token projects by onchain activity and market data. Open a project for the evidence behind its score.</p>
             </div>
             <ActivityRankings/>
           </section>

@@ -64,7 +64,12 @@ export function researchEcosystem(page, query = '') {
     counts:Object.fromEntries(Object.entries(Object.groupBy(catalog.projects, project=>project.status))
       .map(([status,projects])=>[status,projects.length])),
     nextPage:start+size < matching.length ? page+1 : null,
-    projects:matching.slice(start,start+size),
+    projects:matching.slice(start,start+size).map(project=>({
+      ...project,
+      investmentEligibility:project.registryId && byId.get(project.registryId)?.tokens.length
+        ? 'see_verified_token_comparison' : project.status==='verified_registry'
+          ? 'no_verified_token_in_registry' : project.status,
+    })),
   };
 }
 

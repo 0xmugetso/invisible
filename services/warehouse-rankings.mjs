@@ -24,18 +24,17 @@ export async function refreshWarehouseRankings(db, query, today) {
   const [{cutoff:day} = {}] = await query(coverageQuery, {day:today}, options);
   if (!day) return {status:'waiting_for_warehouse'};
   const cutoff = day+'T00:00:00.000Z';
-  const methodology = 'activity-warehouse-v2';
+  const methodology = 'activity-warehouse-v3';
   const {rows:projects} = await db.query(`SELECT p.id,p.name,
     ARRAY(SELECT c.account_id FROM invisible.project_contract c WHERE c.project_id=p.id ORDER BY c.account_id) AS contracts,
-    (SELECT jsonb_agg(jsonb_build_object('symbol',t.symbol,'account',t.account_id,'evidence',t.evidence_url) ORDER BY t.account_id)
-      FROM invisible.project_token t WHERE t.project_id=p.id AND t.active) AS tokens,
+    COALESCE((SELECT jsonb_agg(jsonb_build_object('symbol',t.symbol,'account',t.account_id,'evidence',t.evidence_url) ORDER BY t.account_id)
+      FROM invisible.project_token t WHERE t.project_id=p.id AND t.active),'[]'::jsonb) AS tokens,
     (SELECT jsonb_agg(jsonb_build_object('kind',l.kind,'url',l.url) ORDER BY l.kind,l.url)
       FROM invisible.project_link l WHERE l.project_id=p.id) AS links
     FROM invisible.project p WHERE NOT p.benchmark
     AND EXISTS (SELECT 1 FROM invisible.project_contract c WHERE c.project_id=p.id)
-    AND EXISTS (SELECT 1 FROM invisible.project_token t WHERE t.project_id=p.id AND t.active)
     ORDER BY p.id`);
-  if (!projects.length) throw new Error('Seed the verified project registry first.');
+  if (!projects.length) throw new Error('Seed a project with verified product contracts first.');
   const registry = projects.flatMap(p => p.contracts.map(contract => ({project:p.id, contract})));
   const registryVersion = createHash('sha256').update(JSON.stringify(projects)).digest('hex');
   const existing = await db.query(

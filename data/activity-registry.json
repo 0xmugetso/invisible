@@ -320,5 +320,159 @@
     "links": {
       "website": "https://hapi.one/"
     }
+  },
+  {
+    "id": "near-intents",
+    "name": "NEAR Intents",
+    "category": "Infrastructure",
+    "description": "Cross-chain settlement through the Verifier. Direct signers include relayers.",
+    "contracts": {
+      "intents.near": "https://docs.near-intents.org/integration/verifier-contract/account-abstraction"
+    },
+    "tokens": [],
+    "links": {
+      "website": "https://intents.near.org/",
+      "documentation": "https://docs.near-intents.org/integration/verifier-contract/account-abstraction"
+    },
+    "benchmark": true
+  },
+  {
+    "id": "delta-trade",
+    "name": "DeltaTrade",
+    "category": "DeFi",
+    "description": "Automated grid and recurring purchase strategies.",
+    "contracts": {
+      "dca.deltatrade.near": "https://docs.deltatrade.ai/sdk/js",
+      "grid.deltatrade.near": "https://docs.deltatrade.ai/sdk/js"
+    },
+    "tokens": [],
+    "links": {
+      "website": "https://www.deltatrade.ai/",
+      "documentation": "https://docs.deltatrade.ai/sdk/js"
+    }
+  },
+  {
+    "id": "near-social",
+    "name": "NEAR Social",
+    "category": "Social",
+    "description": "Onchain writes to the social data store.",
+    "contracts": {
+      "social.near": "https://github.com/NearSocial/social-db"
+    },
+    "tokens": [],
+    "links": {
+      "website": "https://near.social/",
+      "documentation": "https://github.com/NearSocial/social-db"
+    }
+  },
+  {
+    "id": "potlock",
+    "name": "POTLOCK",
+    "category": "Public goods",
+    "description": "Public goods funding on NEAR. The mapping covers project registration.",
+    "contracts": {
+      "registry.potlock.near": "https://docs.potlock.org/docs/welcome-to-potlock/revenue-model/current-fees"
+    },
+    "tokens": [],
+    "links": {
+      "website": "https://www.potlock.io/chains/near",
+      "documentation": "https://docs.potlock.org/docs/welcome-to-potlock/revenue-model/current-fees"
+    }
+  },
+  {
+    "id": "keypom",
+    "name": "Keypom",
+    "category": "Developer tooling",
+    "description": "Access-key onboarding and drop infrastructure.",
+    "contracts": {},
+    "tokens": [],
+    "links": {
+      "website": "https://keypom.xyz/",
+      "documentation": "https://github.com/keypom/keypom"
+    }
+  },
+  {
+    "id": "templar-protocol",
+    "name": "Templar Protocol",
+    "category": "DeFi",
+    "description": "Cross-chain lending markets deployed on NEAR.",
+    "contracts": {},
+    "tokens": [],
+    "links": {
+      "website": "https://www.templarfi.org/",
+      "documentation": "https://docs.templarfi.org/guide/addresses.html"
+    }
+  },
+  {
+    "id": "fastnear",
+    "name": "FastNear",
+    "category": "RPC",
+    "description": "NEAR RPC and indexed data services.",
+    "contracts": {},
+    "tokens": [],
+    "links": {
+      "website": "https://fastnear.com/",
+      "documentation": "https://docs.fastnear.com/rpc"
+    }
+  },
+  {
+    "id": "near-blocks",
+    "name": "NearBlocks",
+    "category": "Explorer",
+    "description": "NEAR explorer and indexed data APIs.",
+    "contracts": {},
+    "tokens": [],
+    "links": {
+      "website": "https://nearblocks.io/",
+      "documentation": "https://api.nearblocks.io/api-docs/index.html.md"
+    }
+  },
+  {
+    "id": "pikespeak",
+    "name": "Pikespeak",
+    "category": "Analytics",
+    "description": "NEAR explorer and portfolio analytics.",
+    "contracts": {},
+    "tokens": [],
+    "links": {
+      "website": "https://pikespeak.ai/",
+      "documentation": "https://pikespeak.ai/"
+    }
+  },
+  {
+    "id": "meteor-wallet",
+    "name": "Meteor Wallet",
+    "category": "Wallet",
+    "description": "NEAR wallet with staking and app access.",
+    "contracts": {},
+    "tokens": [],
+    "links": {
+      "website": "https://meteorwallet.app/",
+      "documentation": "https://docs.meteorwallet.app/"
+    }
+  },
+  {
+    "id": "nightly",
+    "name": "Nightly",
+    "category": "Wallet",
+    "description": "Wallet for NEAR and other networks.",
+    "contracts": {},
+    "tokens": [],
+    "links": {
+      "website": "https://nightly.app/",
+      "documentation": "https://github.com/near/ecosystem/blob/main/entities.json"
+    }
+  },
+  {
+    "id": "near-devhub",
+    "name": "NEAR DevHub",
+    "category": "Developer tooling",
+    "description": "Developer community, funding and tooling.",
+    "contracts": {},
+    "tokens": [],
+    "links": {
+      "website": "https://neardevhub.org/",
+      "documentation": "https://github.com/NEAR-DevHub"
+    }
   }
 ]

@@ -1,0 +1,56 @@
+{
+  "rhea": {
+    "tokenAccount": "token.rhealab.near",
+    "stage": {
+      "summary": "Live token with published team vesting terms",
+      "source": "https://guide.rhea.finance/docs/tokenomics"
+    },
+    "vesting": {
+      "teamAndAdvisorsAllocationPercent": 11.8,
+      "cliffMonths": 6,
+      "linearVestingMonths": 30,
+      "unlockedAtLaunchPercent": 0,
+      "source": "https://guide.rhea.finance/docs/tokenomics"
+    },
+    "roadmap": {
+      "status": "published_plan",
+      "summary": "The Vault guide describes three planned phases for the product directory.",
+      "source": "https://guide.rhea.finance/near-chain-guides/vault"
+    }
+  },
+  "justhoot": {
+    "tokenAccount": "hoot-8ecf65.launchpad.justhoot.near",
+    "stage": {
+      "summary": "Live token with published team vesting and a milestone reserve",
+      "source": "https://justhoot.fun/hoot"
+    },
+    "vesting": {
+      "teamAllocationPercent": 10,
+      "cliffMonths": 6,
+      "vestingMonths": 12,
+      "source": "https://justhoot.fun/hoot"
+    },
+    "upcomingUnlocks": {
+      "status": "schedule_incomplete",
+      "reservePercent": 20,
+      "source": "https://justhoot.fun/hoot"
+    },
+    "burns": {
+      "status": "issuer_reported",
+      "launchBurnPercent": 11.53,
+      "source": "https://justhoot.fun/hoot"
+    }
+  },
+  "publicai": {
+    "tokenAccount": "token.publicailab.near",
+    "stage": {
+      "summary": "Live token with staking on NEAR and BNB Chain.",
+      "source": "https://token.publicai.io/stake"
+    },
+    "buybacks": {
+      "status": "issuer_reported",
+      "summary": "The project publishes purchases and identifies its NEAR buyback wallet.",
+      "source": "https://token.publicai.io/buyback"
+    }
+  }
+}

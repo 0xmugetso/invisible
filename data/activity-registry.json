@@ -474,5 +474,57 @@
       "website": "https://neardevhub.org/",
       "documentation": "https://github.com/NEAR-DevHub"
     }
+  },
+  {
+    "id": "publicai",
+    "name": "PublicAI",
+    "category": "AI",
+    "description": "AI training data marketplace with a project token on NEAR. Token and buyback activity alone do not measure marketplace usage.",
+    "contracts": {},
+    "tokens": [
+      {
+        "accountId": "token.publicailab.near",
+        "symbol": "PUBLIC",
+        "evidence": "https://nearblocks.io/tokens/token.publicailab.near"
+      }
+    ],
+    "links": {
+      "website": "https://publicai.io/",
+      "buybacks": "https://token.publicai.io/buyback"
+    }
+  },
+  {
+    "id": "sender-ai",
+    "name": "Sender AI",
+    "category": "Wallet",
+    "description": "NEAR wallet and AI tooling. Product activity still needs a reliable attribution method.",
+    "contracts": {},
+    "tokens": [
+      {
+        "accountId": "token.sendertge.near",
+        "symbol": "ASI",
+        "evidence": "https://nearblocks.io/tokens/token.sendertge.near"
+      }
+    ],
+    "links": {
+      "website": "https://www.senderdao.io/"
+    }
+  },
+  {
+    "id": "aurigami",
+    "name": "Aurigami",
+    "category": "DeFi",
+    "description": "Lending protocol on Aurora. Requires Aurora application metrics for a meaningful comparison.",
+    "contracts": {},
+    "tokens": [
+      {
+        "accountId": "1ab43204a195a0fd37edec621482afd3792ef90b.factory.bridge.near",
+        "symbol": "PLY",
+        "evidence": "https://nearblocks.io/tokens/1ab43204a195a0fd37edec621482afd3792ef90b.factory.bridge.near"
+      }
+    ],
+    "links": {
+      "website": "https://www.aurigami.finance/"
+    }
   }
 ]

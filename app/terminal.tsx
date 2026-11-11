@@ -3,6 +3,7 @@ import {useEffect,useState} from 'react';
 import Link from 'next/link';
 import {ResearchChart, ReturningShare, CountUp} from './research-graphics';
 import ActivityRankings from './activity-rankings';
+import EcosystemCoverage from './ecosystem-coverage';
 import activityRegistry from '../data/activity-registry.json';
 import DeploymentAtlas from './deployment-atlas';
 import EcosystemStory from './ecosystem-story';
@@ -40,6 +41,7 @@ export default function Terminal({view,id,coverage:initialCoverage}:{view:string
   const [real,setReal]=useState<boolean|null>(null),[cat,setCat]=useState('All'),[query,setQuery]=useState(''),[minGrowth,setGrowth]=useState('all'),[minRetention,setRetention]=useState('all'),[minScore,setScore]=useState('all');
   const [sort,setSort]=useState('score');
   const [dark,setDark]=useState(false);
+  const [catalogOpen,setCatalogOpen]=useState(false);
   useEffect(()=>{
     const saved=localStorage.getItem('invisible-theme');
     const preferred=saved?saved==='dark':matchMedia('(prefers-color-scheme: dark)').matches;
@@ -115,22 +117,10 @@ export default function Terminal({view,id,coverage:initialCoverage}:{view:string
       {!useReal&&view!=='deployments'&&view!=='discovery'&&view!=='ecosystem'&&<p className="sample-note">Simulation · illustrative metrics</p>}
       {view==='discovery'&&<>
         {useReal ? <>
-          <section className="discovery-hero" aria-labelledby="discovery-title">
-            <div className="discovery-lead">
-              <h1 id="discovery-title">Find what’s<br/>growing on NEAR.</h1>
-              <p>Follow the projects gaining signers and bringing them back. See the contracts and transactions behind each ranking.</p>
-              <div className="discovery-actions">
-                <a className="discovery-primary" href="#project-rankings">Explore rankings <span aria-hidden="true">↓</span></a>
-                <Link href="/thesis/?data=observed">Read the research <span aria-hidden="true">↗</span></Link>
-              </div>
-            </div>
-            <LiveActivity/>
-          </section>
           <section className="discovery-projects" aria-labelledby="project-rankings">
-            <div className="discovery-section-heading">
-              <div><h2 id="project-rankings">Project rankings</h2>
-                <p>NEAR projects with verified tokens, scored on signer growth, return rate, and activity across days.</p></div>
-              <a href="#project-registry">View project coverage <span aria-hidden="true">↓</span></a>
+            <div className="research-intro">
+              <h1 id="project-rankings">NEAR project rankings</h1>
+              <p>Compare verified-token projects by onchain activity. Open a project for market data and research evidence.</p>
             </div>
             <ActivityRankings/>
           </section>
@@ -139,7 +129,10 @@ export default function Terminal({view,id,coverage:initialCoverage}:{view:string
               <div><h2 id="project-registry">Project coverage</h2>
                 <p>{activityRegistry.length} reviewed ecosystem projects · {activityRegistry.reduce((count, entry)=>count+Object.keys(entry.contracts).length,0)} mapped contracts. Open a project to see its sources.</p></div>
             </div>
-            <div className="discovery-registry">{activityRegistry.map(entry=><details key={entry.id}>
+            <details className="discovery-details" onToggle={event=>setCatalogOpen(event.currentTarget.open)}>
+              <summary>Search ecosystem listings</summary>{catalogOpen && <EcosystemCoverage/>}
+            </details>
+            <details className="discovery-details"><summary>Reviewed project sources</summary><div className="discovery-registry">{activityRegistry.map(entry=><details key={entry.id}>
               <summary><strong>{entry.name}</strong><span>{entry.tokens.map(token=>token.symbol).join(', ') || entry.category}</span></summary>
               <div className="registry-evidence">
                 <p>{entry.description} {entry.benchmark ? 'Tracked for reference.' : !Object.keys(entry.contracts).length ? 'Product metrics pending.' : ''}</p>
@@ -150,9 +143,9 @@ export default function Terminal({view,id,coverage:initialCoverage}:{view:string
                   </li>)}
                 </ul>
               </div>
-            </details>)}</div>
+            </details>)}</div></details>
           </section>
-          <div className="discovery-contracts"><DeploymentAtlas snapshotPath={release?.deployments} compact /></div>
+          <details className="discovery-details"><summary>Mainnet block activity</summary><LiveActivity/></details>
         </> : <section className="intro">
           <h1>Explore a simulated ranking</h1>
           <p>Compare signer growth and return activity using sample data.</p>

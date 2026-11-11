@@ -1,3 +1,4 @@
+import {unmetActivityThresholds} from './activity-eligibility.mjs';
 import {createHash} from 'node:crypto';
 import {readFile} from 'node:fs/promises';
 
@@ -48,10 +49,7 @@ export async function refreshWarehouseRankings(db, query, today) {
   const byProject = new Map(rows.map(row => [row.project_id,row]));
   if (rows.length !== projects.length || projects.some(p => !byProject.has(p.id))) throw new Error('Incomplete warehouse ranking result.');
   const analysis = projects.map(({id,name,tokens,links}) => ({...byProject.get(id),name,tokens,links}));
-  const eligible = analysis.filter(row =>
-    row.current_signers >= 50 && row.prior_signers >= 50 && row.prior_weekly_signers >= 10 &&
-    row.repeat_signers >= 10 && row.active_days >= 14
-  ).map(row => ({
+  const eligible = analysis.filter(row => !unmetActivityThresholds(row).length).map(row => ({
     ...row,
     adjusted_return: row.repeat_signers / (row.prior_signers + 50),
     adjusted_growth: (row.current_signers - row.prior_signers) / (row.prior_signers + 50),

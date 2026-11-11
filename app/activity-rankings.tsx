@@ -1,6 +1,8 @@
 'use client';
 
+import ProjectMark from './project-mark';
 import {useEffect, useState} from 'react';
+import {getResearch, useResearchBoard, type ResearchProject, type ResearchBoard} from './use-research-board';
 
 const metrics:Record<string,string> = {
   current_signers:'Current 28-day signers', prior_signers:'Previous 28-day signers',
@@ -20,24 +22,13 @@ const money = new Intl.NumberFormat('en-US',{style:'currency',currency:'USD',not
 const format = (value:number|null|undefined) => value == null ? '—' : num.format(value);
 const percent = (value:number|null|undefined) => value == null ? '—' : (value > 0 ? '+' : '')+Math.round(value*100)+'%';
 
-type Project = {
-  id:string; name:string; status:string; activityRank:number|null; activityScore:number|null;
-  tokens:{symbol:string; accountId:string; evidence:string}[];
-  activity:{current_signers:number; repeat_signers:number; monthly_growth:number|null; evidence:string[]} | null;
-  performanceRank:number|null; performanceScore:number|null; investmentStatus:string;
-  market:{liquidityUsd:number; source:string; fdvUsd:number|null; marketCapUsd:number|null; volume24hUsd:number|null}|null;
-  circulatingShare:number|null;
-  scoreComponents?:Record<string,number>|null;
-  unmetThresholds:{metric:string; minimum:number; observed:number|null}[];
-};
-type Board = {cutoff:string|null; marketCheckedAt?:string; performanceRankingStatus?:string; weights?:Record<string,number>|null; coverage:{catalogEntries:number;tokenLeads:number;noTokenEvidence:number}; projects:Project[]};
 type Sourced = {source:string; summary?:string; status?:string; [key:string]:unknown};
 type Market = {
   status:string; source:string; checkedAt?:string; marketCapRank?:number|null; marketCapRankSource?:{url:string}|null;
   nearSupplySource?:string|null; marketCapUsd?:string|null; fullyDilutedValuationUsd?:string|null; circulatingSupply?:string|null; totalSupplyOnNear?:string|null;
 };
 type Dossier = {
-  tokens:(Project['tokens'][number] & {market:Market})[];
+  tokens:(ResearchProject['tokens'][number] & {market:Market})[];
   contracts:Record<string,string>;
   tokenomics:Record<string,Sourced|null>;
   roadmap:Sourced|null; socialActivity:Sourced|null; narrativeMomentum:Sourced|null;
@@ -54,13 +45,8 @@ const evidenceFields:Record<string,string> = {
   cliffMonths:'Cliff (months)', vestingMonths:'Vesting (months)', linearVestingMonths:'Linear vesting (months)',
   unlockedAtLaunchPercent:'Unlocked at launch (%)', reservePercent:'Reserve (%)', launchBurnPercent:'Launch burn (%)',
 };
-async function getResearch<T>(params:Record<string,string>, signal:AbortSignal):Promise<T> {
-  const response = await fetch('/api/research?'+new URLSearchParams(params),{signal});
-  if (!response.ok) throw new Error('Research data unavailable');
-  return response.json();
-}
 
-function ProjectEvidence({project,weights}:{project:Project; weights?:Board['weights']}) {
+export function ProjectEvidence({project,weights}:{project:ResearchProject; weights?:ResearchBoard['weights']}) {
   const [data,setData] = useState<Dossier|null>(null);
   const [failed,setFailed] = useState(false);
   useEffect(()=>{
@@ -105,19 +91,9 @@ function ProjectEvidence({project,weights}:{project:Project; weights?:Board['wei
 }
 
 export default function ActivityRankings() {
-  const [board,setBoard] = useState<Board|null>(null);
-  const [failed,setFailed] = useState(false);
+  const {board, failed} = useResearchBoard();
   const [view,setView] = useState<'investment'|'activity'|'unranked'>('investment');
   const [expanded,setExpanded] = useState<string|null>(null);
-  useEffect(()=>{
-    const controller = new AbortController();
-    const load = ()=>getResearch<Board>({view:'investment'},controller.signal).then(result=>{
-      setBoard(result); setFailed(false);
-    }).catch(()=>{if (!controller.signal.aborted) setFailed(true);});
-    void load();
-    const interval = window.setInterval(load,60000);
-    return ()=>{controller.abort();window.clearInterval(interval);};
-  },[]);
   if (!board) return <p className="research-loading" role="status">{failed ? 'Rankings are temporarily unavailable. This page retries every minute.' : 'Loading verified projects…'}</p>;
   const ranked = board.projects.filter(project=>project.activityRank!==null);
   const investment = board.projects.filter(project=>project.performanceRank!==null)
@@ -141,7 +117,7 @@ export default function ActivityRankings() {
       {projects.map(project=><tbody key={project.id}>
         <tr><td>{(showMarket ? project.performanceRank : project.activityRank) ?? '—'}</td>
           <th scope="row"><button type="button" aria-expanded={expanded===project.id} aria-controls={'research-'+project.id}
-            onClick={()=>setExpanded(expanded===project.id ? null : project.id)}>{project.name}</button>
+            onClick={()=>setExpanded(expanded===project.id ? null : project.id)}><ProjectMark id={project.id}/><span>{project.name}</span></button>
             <small>{project.tokens.map(token=>token.symbol).join(', ')}{view==='unranked' && <> · {project.activityRank===null ? status[project.status] : investmentStatus[project.investmentStatus]}</>}</small></th>
           <td>{format(project.activity?.current_signers)}</td>
           <td>{showMarket ? (project.market ? money.format(project.market.liquidityUsd) : '—') : format(project.activity?.repeat_signers)}</td>

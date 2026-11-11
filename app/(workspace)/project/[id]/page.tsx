@@ -1,5 +1,5 @@
-import Terminal from '../../terminal';
-import projects from '../../../data/projects.json';
+import Terminal from '../../../terminal';
+import projects from '../../../../data/projects.json';
 import {notFound} from 'next/navigation';
 export const dynamicParams=false;
 export function generateStaticParams(){return projects.map(({id})=>({id}));}

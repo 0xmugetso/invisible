@@ -3,6 +3,7 @@ import {useEffect,useState} from 'react';
 import Link from 'next/link';
 import {ResearchChart, ReturningShare, CountUp} from './research-graphics';
 import ActivityRankings from './activity-rankings';
+import ProjectMark from './project-mark';
 import EcosystemCoverage from './ecosystem-coverage';
 import activityRegistry from '../data/activity-registry.json';
 import DeploymentAtlas from './deployment-atlas';
@@ -19,7 +20,6 @@ import type {Metric,Snapshot,Row} from '../lib/model.mjs';
 const fictional=demo(projects) as Snapshot;
 const fmt=(n:number|null|undefined)=>n==null?'—':n.toLocaleString('en-US');
 const warehouse='https://github.com/near/near-public-lakehouse#examples';
-const views=[['discovery','/','Discovery'],['deployments','/deployments/','Deployments'],['ecosystem','/ecosystem/','Ecosystem'],['thesis','/thesis/','Research']];
 const marks:Record<string,string>={linear:'linear.jpg',metapool:'metapool.svg',social:'social.svg',ref:'ref.png',burrow:'ref.png',intents:'intents.png',aurora:'aurora.jpg',sweat:'sweat.svg',sputnik:'sputnik.jpg',wrap:'wrap.png'};
 function Sparkline({values,label}:{values:number[];label:string}){
   if(values.length<2)return null;
@@ -40,20 +40,7 @@ function Signal({r,demoMode}:{r:Row;demoMode:boolean}){
 export default function Terminal({view,id,coverage:initialCoverage}:{view:string;id?:string;coverage?:DeploymentSummary}){
   const [real,setReal]=useState<boolean|null>(null),[cat,setCat]=useState('All'),[query,setQuery]=useState(''),[minGrowth,setGrowth]=useState('all'),[minRetention,setRetention]=useState('all'),[minScore,setScore]=useState('all');
   const [sort,setSort]=useState('score');
-  const [dark,setDark]=useState(false);
   const [catalogOpen,setCatalogOpen]=useState(false);
-  useEffect(()=>{
-    const saved=localStorage.getItem('invisible-theme');
-    const preferred=saved?saved==='dark':matchMedia('(prefers-color-scheme: dark)').matches;
-    setDark(preferred);
-    document.documentElement.dataset.theme=preferred?'dark':'light';
-  },[]);
-  function toggleTheme(){
-    const next=!dark;
-    setDark(next);
-    document.documentElement.dataset.theme=next?'dark':'light';
-    localStorage.setItem('invisible-theme',next?'dark':'light');
-  }
   const useReal=real??true;
   const release = useRankingRelease();
   const [ranking, setRanking] = useState<{snapshot:Snapshot; coverage:DeploymentSummary; report:string; deployments:string} | null>(null);
@@ -76,7 +63,12 @@ export default function Terminal({view,id,coverage:initialCoverage}:{view:string
   const params=(useReal?'?data=observed':'?data=demo');
   // Preserve the selected dataset across directly addressable pages.
   useEffect(()=>{const v=new URLSearchParams(window.location.search).get('data');setReal(v==='observed'?true:v==='demo'?false:null);},[view,id]);
-  function switchMode(v:boolean){setReal(v);window.history.replaceState(null,'',window.location.pathname+(v?'?data=observed':'?data=demo'));}
+  function switchMode(v:boolean){
+    setReal(v);
+    const url=new URL(window.location.href);
+    url.searchParams.set('data',v?'observed':'demo');
+    window.history.replaceState(null,'',url);
+  }
   const {rows,mode,eligible}=rank(projects,snap);
   const signals=rows.filter(r=>r.signal),featured=signals[0],project=rows.find(r=>r.id===id);
   const visible=rows.filter(r=>(cat==='All'||cat===r.category)&&[r.name,...r.contracts].some(x=>x.toLowerCase().includes(query.trim().toLowerCase()))&&(minGrowth==='all'||(r.g28??-Infinity)>=Number(minGrowth))&&(minRetention==='all'||(r.ret??-Infinity)>=Number(minRetention))&&(minScore==='all'||(r.score??-Infinity)>=Number(minScore)));
@@ -88,39 +80,25 @@ export default function Terminal({view,id,coverage:initialCoverage}:{view:string
   const prior=concentration(rows.flatMap(r=>r.m?.contracts.map((c:Metric['contracts'][number])=>c.prevTx)??[]));
   const footer=<footer><span>INVISIBLE RESEARCH</span><span>NEAR MAINNET SCOPE &nbsp; / &nbsp; MODEL 1.0</span></footer>;
   const history=project?.m?.daily??[];
-  return <div className="shell" data-view={view}>
-    <a className="skip-link" href="#main-content">Skip to content</a>
-    <header className="masthead">
-      <div className="masthead-inner">
-        <Link href={'/'+params} className="brand" aria-label="Invisible home">
-          <img src="/icon.svg" className="brandmark" width="30" height="30" alt=""/>
-          <span>Invisible</span>
-        </Link>
-        <nav aria-label="Workspace">{views.map(([v,url,name])=>{
-          const active=v===view||(v==='discovery'&&view==='project');
-          return <Link key={v} className={active?'active':''} aria-current={v===view?'page':undefined} href={url+params}>{name}</Link>;
-        })}</nav>
-        <div className="header-actions">
-          {view!=='deployments'&&<div className="modes" aria-label="Data mode">
-            <button onClick={()=>switchMode(true)} aria-pressed={useReal}>Observed</button>
-            <button onClick={()=>switchMode(false)} aria-pressed={!useReal}>Simulation</button>
-          </div>}
-          <button className="theme-toggle" onClick={toggleTheme} aria-label={dark?'Switch to light mode':'Switch to dark mode'} title={dark?'Light mode':'Dark mode'}>
-            <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">{dark?<><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2M5 5l1.5 1.5m11 11L19 19M19 5l-1.5 1.5m-11 11L5 19"/></>:<path d="M20.5 15A8.5 8.5 0 0 1 9 3.5 8.6 8.6 0 1 0 20.5 15Z"/>}</svg>
-          </button>
-        </div>
-      </div>
-    </header>
+  const dataMode=<div className="iv-switch" aria-label="Data mode">
+    <button type="button" onClick={()=>switchMode(true)} aria-pressed={useReal}>Observed</button>
+    <button type="button" onClick={()=>switchMode(false)} aria-pressed={!useReal}>Simulation</button>
+  </div>;
+  return <div className="shell iv-terminal" data-view={view}>
     <div className="workspace">
     <main id="main-content">
+      {view!=='deployments' && (view!=='discovery' || !useReal) && <div className="iv-data-tools">{dataMode}</div>}
       {view==='deployments'&&<DeploymentAtlas snapshotPath={release?.deployments}/>}
       {!useReal&&view!=='deployments'&&view!=='discovery'&&view!=='ecosystem'&&<p className="sample-note">Simulation · illustrative metrics</p>}
       {view==='discovery'&&<>
         {useReal ? <>
           <section className="discovery-projects" aria-labelledby="project-rankings">
             <div className="research-intro">
-              <h1 id="project-rankings">NEAR project rankings</h1>
-              <p>Compare verified-token projects by onchain activity and market data. Open a project for the evidence behind its score.</p>
+              <div>
+                <h1 id="project-rankings">NEAR project rankings</h1>
+                <p>Compare verified-token projects by on-chain activity and market data. Open a project for the evidence behind its score.</p>
+              </div>
+              {dataMode}
             </div>
             <ActivityRankings/>
           </section>
@@ -133,7 +111,7 @@ export default function Terminal({view,id,coverage:initialCoverage}:{view:string
               <summary>Search ecosystem listings</summary>{catalogOpen && <EcosystemCoverage/>}
             </details>
             <details className="discovery-details"><summary>Reviewed project sources</summary><div className="discovery-registry">{activityRegistry.map(entry=><details key={entry.id}>
-              <summary><strong>{entry.name}</strong><span>{entry.tokens.map(token=>token.symbol).join(', ') || entry.category}</span></summary>
+              <summary><strong><ProjectMark id={entry.id}/>{entry.name}</strong><span>{entry.tokens.map(token=>token.symbol).join(', ') || entry.category}</span></summary>
               <div className="registry-evidence">
                 <p>{entry.description} {entry.benchmark ? 'Tracked for reference.' : !Object.keys(entry.contracts).length ? 'Product metrics pending.' : ''}</p>
                 <ul>
@@ -195,7 +173,7 @@ export default function Terminal({view,id,coverage:initialCoverage}:{view:string
         </>}
       </>}
       {view==='project'&&project&&<>
-        <Link className="back" href={'/'+params}>← Back to discovery</Link>
+        <Link className="back" href={'/discovery/'+params}>← Back to discovery</Link>
         <section className="detail-head"><div className="detail-name"><Badge r={project}/><h1>{project.name}</h1></div><p>{project.description}</p>{useReal&&<Link className="back" href={'/deployments/?contract='+encodeURIComponent(project.contracts[0])}>View three-window signer evidence ↗</Link>}</section>
         {useReal&&<><LiveActivity contract={project.contracts[0]}/><CohortEvidence projectId={project.id}/></>}
         <div className="stats"><Stat label={mode.toUpperCase()} value={project.score??'—'} note={project.benchmark?'Benchmark · excluded from ranking':`${eligible} eligible peers`}/><Stat label="ACTIVE SIGNERS / 28D" value={fmt(project.m?.a28)} note={`${change(project.g28)} vs previous 28 days`}/><Stat label="RETURNING / 28D" value={pct(project.ret)} note={`${fmt(project.m?.repeat)} of ${fmt(project.m?.b28)} previous signers`}/><Stat label="TRANSACTIONS / 28D" value={fmt(project.m?.tx)} note={`Previous: ${fmt(project.m?.prevTx)}`}/></div>
@@ -249,6 +227,16 @@ export default function Terminal({view,id,coverage:initialCoverage}:{view:string
             <a href={ranking?.deployments ?? '/deployments.json'} download>Download source rows ↓</a>
           </div>
         </section>}
+        <section className="panel iv-ranking-method">
+          <h2>How the investment leaderboard works</h2>
+          <p>Verified-token projects need qualifying on-chain activity, a NEAR liquidity pool, and comparable valuation data to earn an investment rank.</p>
+          <div className="iv-weights">
+            <article className="iv-card"><strong>70%</strong><h3>On-chain activity</h3><p>Usage across the project’s attributed contracts.</p></article>
+            <article className="iv-card"><strong>20%</strong><h3>Pool reserves</h3><p>Largest indexed NEAR pool, compared with ranked peers.</p></article>
+            <article className="iv-card"><strong>10%</strong><h3>Market cap / FDV</h3><p>Reported market cap as a share of fully diluted valuation.</p></article>
+          </div>
+          <p className="iv-method-links"><a href={warehouse}>NEAR Public Lakehouse ↗</a><a href="https://nearblocks.io/">NearBlocks ↗</a><a href="https://dexscreener.com/near">DEX Screener ↗</a></p>
+        </section>
         <div className="thesis-article">
         <section className="panel"><h2>The claim and the evidence</h2><p>Smaller NEAR deployments may gain repeat signers before public attention catches up. If activity spreads across more contracts, the top three should account for a smaller share over time.</p>{signals.map(r=><p key={r.id}><Link href={'/project/'+r.id+'/'+params}>{r.name} ↗</Link> · {change(r.g28)} growth, {pct(r.ret)} returning</p>)}<p>The concentration figures above cover the tracked contracts. Use <Link href={'/ecosystem/'+params}>Ecosystem</Link> to see where transaction volume changed.</p></section>
         <section className="panel"><h2>Methodology</h2><p>Count distinct originating signers and distinct transactions containing direct function-call attempts. Compare adjacent 7- and 28-day UTC windows. Returning share divides the overlap of adjacent 28-day signer cohorts by the previous cohort.</p><p>Midpoint percentiles against eligible pilot peers: 40% adoption (25% 7-day and 75% 28-day growth), 30% returning share, 15% commit growth, 15% growth minus attention growth. A missing dimension for any peer removes it for the whole cohort and the remaining weights rescale. At least three peers, 50 signers in both 28-day windows and 10 in the prior 7-day window are required. This small mixed-category cohort is exploratory.</p><p><a href={warehouse}>NEAR Public Lakehouse ↗</a> · <a href="https://docs.github.com/en/rest/commits/commits#list-commits">GitHub commits API ↗</a> · <a href="https://nearhackathon.com/">Track brief ↗</a></p></section>

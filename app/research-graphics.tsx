@@ -166,11 +166,22 @@ export function CountUp({value}: {value:string|number}) {
     const state = {number:0};
     const motion = gsap.matchMedia();
     motion.add('(prefers-reduced-motion: no-preference)',()=>{
-      gsap.to(state,{number:target,duration:.85,ease:'power3.out',onUpdate:()=>{
-        node.textContent = sign+format(Math.round(state.number))+unit;
-      },onComplete:()=>{node.textContent=String(value);}});
+      const observer = new IntersectionObserver(([entry])=>{
+        if (!entry.isIntersecting) return;
+        observer.disconnect();
+        gsap.to(state,{number:target,duration:.85,ease:'power3.out',onUpdate:()=>{
+          node.textContent = sign+format(Math.round(state.number))+unit;
+        },onComplete:()=>{node.textContent=String(value);}});
+      });
+      observer.observe(node);
+      return ()=>{
+        observer.disconnect();
+        gsap.killTweensOf(state);
+        state.number=0;
+        node.textContent=String(value);
+      };
     });
-    return ()=>{motion.revert();node.textContent=String(value);};
+    return ()=>motion.revert();
   },[value]);
   return <><span className="sr-only">{value}</span><span ref={visual} aria-hidden="true">{value}</span></>;
 }

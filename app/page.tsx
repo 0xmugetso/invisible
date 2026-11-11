@@ -1,6 +1,6 @@
-import Terminal from "./terminal";
-import {deploymentSummary} from "./deployment-summary";
+import Landing from './landing';
+import './landing.css';
 
 export default function Page() {
-  return <Terminal view="discovery" coverage={deploymentSummary()}/>;
+  return <Landing/>;
 }

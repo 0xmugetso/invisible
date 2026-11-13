@@ -140,7 +140,7 @@ The production Vercel project serves the static Next.js export and the Node func
 
 ### Scheduled research refresh
 
-Use the repository root and the build settings in `vercel.json`. It deploys the static Next.js export and Node API functions. Vercel calls `/api/refresh-activity` twice daily, at 00:00 and 12:00 UTC.
+Use the repository root and the build settings in `vercel.json`. It deploys the static Next.js export and Node API functions. Vercel schedules one refresh in the 00:00 UTC hour. GitHub Actions schedules a second refresh at 12:17 UTC, using the repository Actions secret `INVISIBLE_REFRESH_SECRET` with the same value as Vercel’s `CRON_SECRET`. Both invoke the same authenticated endpoint.
 
 Set `CRON_SECRET`, `DATABASE_URL`, and `BQ_PROJECT` in the production environment. Use a random cron secret. For keyless BigQuery access, follow the [Vercel Google Cloud federation guide](https://vercel.com/docs/oidc/gcp). Use the team issuer and allowed audience `https://vercel.com/TEAM_SLUG`, map `google.subject` to `assertion.sub`, and restrict the provider with `assertion.sub == 'owner:TEAM_SLUG:project:invisible:environment:production'`. Grant that exact subject Workload Identity User on the service account. The service account needs BigQuery Job User on the query project. Enable the BigQuery, Security Token Service, and IAM Service Account Credentials APIs in Google Cloud.
 

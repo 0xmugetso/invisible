@@ -1,0 +1,22 @@
+name: Refresh NEAR data
+
+on:
+  schedule:
+    - cron: '17 12 * * *'
+  workflow_dispatch:
+
+permissions: {}
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - name: Refresh the production snapshot
+        env:
+          REFRESH_SECRET: ${{ secrets.INVISIBLE_REFRESH_SECRET }}
+        run: |
+          test -n "$REFRESH_SECRET"
+          curl --fail-with-body --silent --show-error --max-time 310 \
+            --header "Authorization: Bearer $REFRESH_SECRET" \
+            'https://invisible-gray.vercel.app/api/refresh-activity'

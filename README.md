@@ -10,11 +10,11 @@
 
 [Open dashboard](https://invisible-gray.vercel.app/app/) · [Read the docs](https://invisible-gray.vercel.app/docs/) · [Connect an agent](https://invisible-gray.vercel.app/#connect) · [View roadmap](https://invisible-gray.vercel.app/#roadmap)
 
-[Features](#features) · [Methodology](#methodology) · [Agent setup](#agent-setup) · [Local setup](#local-setup) · [Deployment](#deployment)
+[Features](#features) · [Methodology](#methodology) · [Agent setup](#agent-setup) · [Roadmap](#roadmap) · [Local setup](#local-setup) · [Deployment](#deployment)
 
 ---
 
-<a href="https://invisible-gray.vercel.app/app/"><img src="public/dashboard-walkthrough.webp" width="100%" alt="Invisible overview with NEAR project metrics, the leaderboard, and signer activity charts"></a>
+<a href="https://invisible-gray.vercel.app/app/"><img src="public/readme/overview.webp" width="100%" alt="Invisible overview with NEAR project metrics, the leaderboard, and signer activity charts"></a>
 
 ## Features
 
@@ -28,9 +28,17 @@
 | [Signer forecast](https://invisible-gray.vercel.app/app/discovery/?data=forecast) | Compare a cohort-based estimate with a flat baseline. When a third complete window exists, see how both estimates performed against observed activity. |
 | [NEAR wallet access](https://invisible-gray.vercel.app/docs/#dashboard) | Connect Meteor or another supported NEAR wallet through HOT Connect and sign a message to open your profile. Copy your address, open it in NearBlocks, or disconnect from the header. |
 
-| Deployment explorer | Signer forecast |
+### Inside the dashboard
+
+| Project Evidence | Signer Forecast |
 | --- | --- |
-| ![NEAR contract explorer with mainnet activity](public/guide/deployments.webp) | ![Forecast with measured cohorts, a flat baseline, and historical error](public/guide/forecast.webp) |
+| [![Rhea Finance evidence panel with score contributions, tokenomics, and market data](public/readme/project-evidence.webp)](https://invisible-gray.vercel.app/app/discovery/) | [![Rhea Finance forecast with measured signer cohorts, a baseline, and a historical check](public/readme/forecast.webp)](https://invisible-gray.vercel.app/app/discovery/?data=forecast) |
+| Open a project from the leaderboard to see how it scored and inspect its available vesting and market data. | Compare the next-window signer estimate with a flat baseline and check how both performed on historical data. |
+
+| Deployments | Ecosystem |
+| --- | --- |
+| [![NEAR Contract Explorer with a mainnet block chart and contract activity](public/readme/deployments.webp)](https://invisible-gray.vercel.app/app/deployments/) | [![NEAR Ecosystem Activity with network gas and changes in signer participation](public/readme/ecosystem.webp)](https://invisible-gray.vercel.app/app/ecosystem/) |
+| Find the contracts behind a project and follow example calls to NearBlocks. | See where signer activity moved across projects and how much tracked activity is concentrated among the largest projects. |
 
 ## Methodology
 
@@ -46,6 +54,8 @@ The activity leaderboard requires a verified token, 50 signers in each 28-day wi
 The [NEAR Public Lakehouse](https://github.com/near/near-public-lakehouse) supplies indexed history, [NearBlocks](https://nearblocks.io/) supplies recent samples and transaction links, and [DEX Screener](https://dexscreener.com/near) supplies pool and valuation evidence. [Full methodology](https://invisible-gray.vercel.app/docs/#investment-methodology) · [Data sources](https://invisible-gray.vercel.app/docs/#sources)
 
 ## Agent setup
+
+[![Two-step Invisible MCP setup with tabs for Claude Code, Cursor, Codex, and Antigravity](public/readme/agent-setup.webp)](https://invisible-gray.vercel.app/#connect)
 
 | Interface | Start here |
 | --- | --- |
@@ -83,6 +93,18 @@ curl -fsS 'https://invisible-gray.vercel.app/api/v1/projects/rhea/market'
 ```
 
 </details>
+
+## Roadmap
+
+[![Invisible roadmap showing two shipped milestones and three upcoming areas of work](public/readme/roadmap.webp)](https://invisible-gray.vercel.app/#roadmap)
+
+| Status | Milestone | What it covers |
+| --- | --- | --- |
+| Shipped | Verify NEAR Activity | Map projects to contracts, compare signer activity across two 28-day windows, and link the underlying evidence. |
+| Shipped | Publish the Research Workspace | Ship the dashboard, project evidence, and agent access through MCP, REST, A2A, and the skill. |
+| Coming soon | Track Social and Product Activity | Gather dated evidence from official channels and release notes. Show where it came from and compare it with on-chain activity before using it in rankings. |
+| Coming soon | Follow Projects and Unlocks | Follow projects in a watchlist and surface changes in signer retention, upcoming unlocks, and new deployments. |
+| Exploration | Explore an Invisible Token | Define potential utility, distribution, and launch criteria. |
 
 ## Local setup
 

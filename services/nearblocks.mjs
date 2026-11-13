@@ -70,11 +70,19 @@ export async function ingestProjectSample(db) {
     ORDER BY s.sampled_at NULLS FIRST, c.account_id LIMIT 12`);
   const results = new Map();
   const sampled=[];
+  let credential = apiKey;
   let failure;
+  let failedContracts = 0;
   for (const {account_id:contract} of contracts) {
     try {
-      await wait(apiKey ? 750 : 1500);
-      const {data} = await request('accounts/'+encodeURIComponent(contract)+'/txns', {limit:20});
+      await wait(credential ? 750 : 1500);
+      const path = 'accounts/'+encodeURIComponent(contract)+'/txns';
+      const {data} = await request(path, {limit:20}, credential).catch(async error => {
+        if (!credential || !/HTTP (401|403|429)$/.test(error.message)) throw error;
+        credential = null;
+        await wait(1500);
+        return request(path, {limit:20}, credential);
+      });
       for (const tx of data) {
         if (tx.receiver_account_id !== contract) continue;
         const call = directCall(tx, contract, timestamp(tx.block_timestamp));
@@ -83,6 +91,7 @@ export async function ingestProjectSample(db) {
       sampled.push(contract);
     } catch(error) {
       failure=error;
+      failedContracts++;
       if (error.message.endsWith('HTTP 429')) break;
     }
   }
@@ -91,8 +100,9 @@ export async function ingestProjectSample(db) {
   if (sampled.length) await db.query(`INSERT INTO invisible.contract_sample
     SELECT account,now() FROM unnest($1::text[]) AS account
     ON CONFLICT (account_id) DO UPDATE SET sampled_at=EXCLUDED.sampled_at`,[sampled]);
-  if (failure) throw failure;
-  return {sampled:sampled.length};
+  if (failure && !sampled.length) throw failure;
+  if (failure) console.warn('Some NearBlocks contract samples failed', failure.message);
+  return {sampled:sampled.length,failed:failedContracts,deferred:contracts.length-sampled.length-failedContracts};
 }
 
 async function fetchCalls(contract, start, end) {

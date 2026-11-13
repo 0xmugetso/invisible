@@ -311,7 +311,6 @@ html:has(.iv-landing) { scroll-behavior:smooth; }
   .iv-developer-links a:hover { transform:none; }
   .iv-section-contour path { stroke-dasharray:none; }
 }
-.iv-source-mark[src$="nearblocks.webp"] { background:#edf5f4; border-radius:4px; padding:1px; }
 .iv-mobile-navigation,.iv-mobile-panel { display:contents; }
 .iv-menu-toggle,.iv-header nav .iv-icon { display:none; }
 .iv-header { position:relative; z-index:11; }

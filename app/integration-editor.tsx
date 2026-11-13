@@ -1,5 +1,5 @@
 'use client';
-import {useEffect,useId,useLayoutEffect,useRef,useState,type KeyboardEvent,type RefObject} from 'react';
+import {useEffect,useId,useRef,useState,type KeyboardEvent,type RefObject} from 'react';
 import Link from 'next/link';
 import {gsap} from 'gsap';
 import Icon,{type IconName} from './interface-icon';
@@ -94,34 +94,11 @@ export function IntegrationEditor({only}:{only?:keyof typeof integrations}) {
   const protocol = only ?? protocols[protocolIndex];
   const protocolId=uid+'-protocol';
   const envId=uid+'-environment';
-  const variants = integrations[protocol];
-  const variant = variants[envIndex];
   const stepPanel = useRef<HTMLDivElement>(null);
-  const editor = useRef<HTMLDivElement>(null);
-  const height = useRef(0);
-  useLayoutEffect(()=>{
-    const panel=editor.current;
-    if (!panel) return;
-    function measure() {
-      if (panel && !panel.style.height) height.current=panel.getBoundingClientRect().height;
-    }
-    const observer=new ResizeObserver(measure);
-    const steps=stepPanel.current;
-    if (steps) observer.observe(steps);
-    measure();
-    return ()=>observer.disconnect();
-  },[]);
-  useLayoutEffect(()=>{
-    const panel=editor.current;
-    if (!panel || !height.current || !matchMedia('(prefers-reduced-motion: no-preference)').matches) return;
-    panel.style.removeProperty('height');
-    const next=panel.getBoundingClientRect().height;
-    if (Math.abs(height.current-next)<2) return;
-    const motion=gsap.fromTo(panel,{height:height.current},{height:next,duration:0.59,ease:'power3.inOut',clearProps:'height'});
-    height.current=next;
-    return ()=>{motion.kill();panel.style.removeProperty('height');};
-  },[protocolIndex,envIndex]);
-  usePanelReveal(stepPanel, variant.env+protocol);
+  const visibleProtocols = only ? [only] : protocols;
+  const docsAnchors = {'REST API':'rest',MCP:'mcp',A2A:'a2a',Skill:'skill'};
+  const copyError = 'Clipboard unavailable. Select the code to copy it.';
+  usePanelReveal(stepPanel, protocol+envIndex);
 
   async function copy(code:string,index:number) {
     try {
@@ -129,23 +106,43 @@ export function IntegrationEditor({only}:{only?:keyof typeof integrations}) {
       setCopiedStep(index);
       setCopyStatus(`Step ${index+1} copied`);
     } catch {
-      setCopyStatus('Clipboard unavailable. Select the code to copy it.');
+      setCopyStatus(copyError);
     }
   }
 
   return <div className="iv-setup" data-reveal>
       {!only && <Tabs id={protocolId} label="Protocol" items={protocols} icons={['connect','api','ecosystem','research']} active={protocolIndex} onChange={index=>{setProtocol(index);setEnv(0);setCopyStatus('');setCopiedStep(null);}}/>}
-      <div className="iv-editor iv-card" ref={editor} id={protocolId+'-panel'} role={only ? undefined : 'tabpanel'} aria-labelledby={only ? undefined : `${protocolId}-${protocolIndex}`}>
-        <div className="iv-editor-top">
-          <Tabs id={envId} label="Environment" items={variants.map(item=>item.env)} marks={variants.every(item=>agentMarks[item.env]) ? variants.map(item=>agentMarks[item.env]) : undefined} active={envIndex} onChange={index=>{setEnv(index);setCopyStatus('');setCopiedStep(null);}}/>
-          {!only && <Link className="iv-text-link" href={'/docs/#'+({'REST API':'rest',MCP:'mcp',A2A:'a2a',Skill:'skill'}[protocol])}><Icon name="research"/> Docs</Link>}
+      <div className="iv-editor iv-card" id={protocolId+'-panel'} role={only ? undefined : 'tabpanel'} aria-labelledby={only ? undefined : `${protocolId}-${protocolIndex}`}>
+        <div className="iv-editor-stack">
+          {visibleProtocols.map(item=>{
+            const active = item===protocol;
+            const environments = integrations[item].map(entry=>entry.env);
+            return <div className="iv-editor-top" key={item} data-active={active} inert={!active}>
+              <Tabs id={active ? envId : envId+'-'+docsAnchors[item]} label="Environment" items={environments}
+                marks={environments.every(name=>agentMarks[name]) ? environments.map(name=>agentMarks[name]) : undefined}
+                active={active ? envIndex : 0} onChange={index=>{setEnv(index);setCopyStatus('');setCopiedStep(null);}}/>
+              {!only && <Link className="iv-text-link" href={'/docs/#'+docsAnchors[item]}><Icon name="research"/> Docs</Link>}
+            </div>;
+          })}
         </div>
-        <div className="iv-steps" ref={stepPanel} id={envId+'-panel'} role="tabpanel" aria-labelledby={`${envId}-${envIndex}`}>
-          {variant.steps.map(([title,code],index)=><div className="iv-step" key={index}>
-            <div><h3>{index+1}. {title}</h3><button className="iv-outline" type="button" onClick={()=>void copy(code,index)} aria-label={`Copy step ${index+1}`}><Icon name={copiedStep===index ? 'check' : 'copy'}/>{copiedStep===index ? 'Copied' : 'Copy'}</button></div>
-            <pre><SetupCode code={code}/></pre>
-          </div>)}
-          <p className="iv-copy-status" role="status">{copyStatus}</p>
+        <div className="iv-steps">
+          <div className="iv-editor-stack">
+            {visibleProtocols.flatMap(item=>integrations[item].map((entry,env)=>{
+              const active = item===protocol && env===envIndex;
+              return <div key={item+':'+entry.env} data-active={active} inert={!active}
+                ref={active ? stepPanel : undefined} id={active ? envId+'-panel' : undefined}
+                role={active ? 'tabpanel' : undefined} aria-labelledby={active ? `${envId}-${envIndex}` : undefined}>
+                {entry.steps.map(([title,code],index)=><div className="iv-step" key={index}>
+                  <div><h3>{index+1}. {title}</h3><button className="iv-outline" type="button" onClick={()=>void copy(code,index)} aria-label={`Copy step ${index+1}`}><Icon name={active && copiedStep===index ? 'check' : 'copy'}/>{active && copiedStep===index ? 'Copied' : 'Copy'}</button></div>
+                  <pre><SetupCode code={code}/></pre>
+                </div>)}
+              </div>;
+            }))}
+          </div>
+          <div className="iv-editor-stack iv-copy-status">
+            <span aria-hidden="true">{copyError}</span>
+            <p role="status">{copyStatus}</p>
+          </div>
         </div>
       </div>
     </div>;

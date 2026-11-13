@@ -21,6 +21,7 @@ function Navigation({dataset}: {dataset?:'forecast'|'observed'}) {
       const active = pathname===href || href==='/app/discovery/' && pathname.startsWith('/app/project/');
       return <Link key={href} href={dataset && href!=='/app/' && href!=='/app/deployments/' ? href+'?data='+dataset : href} aria-current={active ? 'page' : undefined}><Icon name={icon}/>{label}</Link>;
     })}
+    <Link className="iv-mobile-route" href="/docs/"><Icon name="research"/>Docs</Link>
   </nav>;
 }
 

@@ -57,7 +57,7 @@ The [NEAR Public Lakehouse](https://github.com/near/near-public-lakehouse) suppl
 
 1. Run `npm ci` and `npm test`. The tests cover cohort eligibility, rank calculations, export safety, and NEAR wallet signature verification.
 2. Fetch the [returning-signer ranking](https://invisible-gray.vercel.app/api/v1/returning-signers?limit=10). The response includes the exclusive UTC cutoff, ranked signer counts, and transaction examples. Open a row’s evidence endpoint to find the project’s mapped contracts.
-3. To recompute cohorts from chain history, run [`analytics/warehouse-rankings.sql`](analytics/warehouse-rankings.sql) in the BigQuery US location. Supply the exclusive cutoff as `@day`, the first UTC date as `@history_start`, and the project-to-contract mapping as `@registry` (a JSON array of `{ "project": "…", "contract": "…" }` records). Use 56 days of history for two windows or 84 days for the historical forecast check. [`services/warehouse-rankings.mjs`](services/warehouse-rankings.mjs) applies the eligibility thresholds and peer-percentile weights.
+3. To recompute cohorts from chain history, run [`analytics/warehouse-rankings.sql`](analytics/warehouse-rankings.sql) in the BigQuery `us-east1` location. Supply the exclusive cutoff as `@day`, the first UTC date as `@history_start`, and the project-to-contract mapping as `@registry` (a JSON array of `{ "project": "…", "contract": "…" }` records). Use 56 days of history for two windows or 84 days for the historical forecast check. [`services/warehouse-rankings.mjs`](services/warehouse-rankings.mjs) applies the eligibility thresholds and peer-percentile weights.
 
 Repeated contract use supports a thesis of persistent NEAR application demand. It measures signing accounts within the mapped cohort. Automation, shared signers, missing contracts, and changes in attribution can affect that finding. A larger repeat cohort alone cannot establish token value capture. Compare the forecast with the flat baseline before treating it as a useful estimate.
 
@@ -140,7 +140,7 @@ The production Vercel project serves the static Next.js export and the Node func
 
 ### Scheduled research refresh
 
-Use the repository root and the build settings in `vercel.json`. It deploys the static Next.js export and Node API functions. Four daily cron entries call `/api/refresh-activity` in the 00:00, 06:00, 12:00, and 18:00 UTC hours. Each entry has a distinct slot query parameter.
+Use the repository root and the build settings in `vercel.json`. It deploys the static Next.js export and Node API functions. Vercel calls `/api/refresh-activity` twice daily, at 00:00 and 12:00 UTC.
 
 Set `CRON_SECRET`, `DATABASE_URL`, and `BQ_PROJECT` in the production environment. Use a random cron secret. For keyless BigQuery access, follow the [Vercel Google Cloud federation guide](https://vercel.com/docs/oidc/gcp). Use the team issuer and allowed audience `https://vercel.com/TEAM_SLUG`, map `google.subject` to `assertion.sub`, and restrict the provider with `assertion.sub == 'owner:TEAM_SLUG:project:invisible:environment:production'`. Grant that exact subject Workload Identity User on the service account. The service account needs BigQuery Job User on the query project. Enable the BigQuery, Security Token Service, and IAM Service Account Credentials APIs in Google Cloud.
 

@@ -22,19 +22,25 @@ export default async function handler(request, response) {
     lock = await db.connect();
     const {rows:[{acquired}]} = await lock.query('SELECT pg_try_advisory_lock(61398420) AS acquired');
     if (!acquired) return response.status(200).json({status:'already running'});
-    await seedRegistry(db);
+
     const query = bigQueryForInvocation(request.headers['x-vercel-oidc-token']);
     const today = date(Date.now()-day);
     const [result, blocks, sample] = await Promise.allSettled([
-      refreshWarehouseRankings(db, query, today),
+      seedRegistry(db).then(() => refreshWarehouseRankings(db, query, today)),
       ingestBlocks(db),
       ingestProjectSample(db),
     ]);
     for (const feed of [blocks,sample]) {
       if (feed.status === 'rejected') console.error('Live activity sample failed', feed.reason.message);
     }
-    if (result.status === 'rejected') throw result.reason;
-    return response.status(200).json(result.value);
+    const summary = {
+      ranking: result.status === 'fulfilled' ? result.value : {status:'failed'},
+      blocks: blocks.status === 'fulfilled' ? {status:'saved', latestBlock:new Date(blocks.value).toISOString()} : {status:'failed'},
+      contractSample: sample.status === 'fulfilled' ? {status:'saved', ...sample.value} : {status:'failed'},
+    };
+    if (result.status === 'rejected') console.error('Warehouse ranking refresh failed', result.reason.message);
+    const failed = [result,blocks,sample].some(feed => feed.status === 'rejected');
+    return response.status(failed ? 502 : 200).json(summary);
   } catch (error) {
     console.error('Activity refresh failed', error.message);
     return response.status(502).json({error:'Activity refresh failed. See function logs.'});

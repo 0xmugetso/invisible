@@ -1,5 +1,5 @@
 import {signerForecast} from '../lib/signer-forecast.mjs';
-import {activityThresholds, unmetActivityThresholds} from './activity-eligibility.mjs';
+import {activityThresholds, isMemeProject, rankActivity, unmetActivityThresholds} from './activity-eligibility.mjs';
 import registry from '../data/activity-registry.json' with {type:'json'};
 import catalog from '../data/ecosystem-catalog.json' with {type:'json'};
 import reviewed from '../data/project-research.json' with {type:'json'};
@@ -67,7 +67,8 @@ export function researchEcosystem(page, query = '') {
     nextPage:start+size < matching.length ? page+1 : null,
     projects:matching.slice(start,start+size).map(project=>({
       ...project,
-      investmentEligibility:project.registryId && byId.get(project.registryId)?.tokens.length
+      investmentEligibility:isMemeProject(project.registryId ?? project.id) ? 'excluded_meme_category'
+        : project.registryId && byId.get(project.registryId)?.tokens.length
         ? 'see_verified_token_comparison' : project.status==='verified_registry'
           ? 'no_verified_token_in_registry' : project.status,
     })),
@@ -123,7 +124,7 @@ function projectSummary(project, snapshot, rank) {
   const {contract_activity:contractActivity, ...activity} = record ?? {};
   return {
     id:project.id, name:project.name, tokens:project.tokens,
-    status:!project.tokens.length ? 'research_only' : project.benchmark ? 'reference'
+    status:isMemeProject(project.id) ? 'excluded_meme_category' : !project.tokens.length ? 'research_only' : project.benchmark ? 'reference'
       : rank ? 'ranked' : record ? (unmetActivityThresholds(activity).length ? 'below_ranking_thresholds' : 'awaiting_comparable_cohort')
       : Object.keys(project.contracts).length ? 'awaiting_measurement' : 'unattributed_activity',
     activityRank:rank?.rank ?? null, activityScore:rank?.score ?? null,
@@ -135,10 +136,10 @@ function projectSummary(project, snapshot, rank) {
 }
 
 export function researchLeaderboard(snapshot) {
-  const eligible = registry.filter(project => project.tokens.length > 0);
+  const eligible = registry.filter(project => project.tokens.length > 0 && !isMemeProject(project.id));
   const tokenProjectIds = new Set(eligible.map(project => project.id));
-  const ranked = (snapshot?.highestRanked ?? []).filter(row => tokenProjectIds.has(row.project_id) &&
-    !byId.get(row.project_id).benchmark && !unmetActivityThresholds(row).length);
+  const {ranked,weights} = rankActivity((snapshot?.analysis ?? []).filter(row =>
+    tokenProjectIds.has(row.project_id) && !byId.get(row.project_id).benchmark));
   const ranks = new Map(ranked.map((row,index) => [row.project_id, {rank:index+1, score:row.score, components:row.components}]));
   return {
     version:1,
@@ -147,7 +148,7 @@ export function researchLeaderboard(snapshot) {
     performanceRankingStatus:'awaiting_evidence',
     cutoff:snapshot?.cutoff ?? null,
     methodology:snapshot?.methodology ?? null,
-    weights:snapshot?.weights ?? null,
+    weights:snapshot ? weights : null,
     thresholds:activityThresholds,
     coverage:{
       catalogEntries:catalog.projects.length,
@@ -170,7 +171,7 @@ export function researchForecast(snapshot) {
     methodology:'adjacent-signer-cohorts-v1',
     projects:(snapshot?.analysis ?? []).flatMap(activity=>{
       const project=byId.get(activity.project_id);
-      if (!project?.tokens.length || project.benchmark) return [];
+      if (!project?.tokens.length || project.benchmark || isMemeProject(project.id)) return [];
       const contracts=activity.contracts;
       if (!Array.isArray(contracts) || contracts.length!==Object.keys(project.contracts).length ||
           contracts.some(account=>!Object.hasOwn(project.contracts,account))) return [];

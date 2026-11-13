@@ -13,7 +13,7 @@ type CohortRun = {end:string; projects:Record<string,Cohort|{unavailable:string}
 const cohorts = cohortData as CohortRun | null;
 const fmt = (value:number) => value.toLocaleString('en-US');
 const rate = (n:number,d:number) => d ? Math.round(100*n/d)+'%' : '—';
-const sixHours=6*60*60*1000;
+const refreshInterval=12*60*60*1000;
 type Block = {block_height:string; block_hash:string; block_timestamp:string; transactions_agg:{count:number}};
 type Call = {transaction_hash:string; signer_account_id:string; block_timestamp:string; receiver_account_id:string; actions?:{method?:string}[]; outcomes?:{status?:boolean}};
 
@@ -58,7 +58,7 @@ export function LiveActivity({contract}:{contract?:string}) {
       }
     }
     void refresh();
-    const interval = window.setInterval(refresh,sixHours);
+    const interval = window.setInterval(refresh,refreshInterval);
     return () => {
       stopped = true;
       controller?.abort();
@@ -68,7 +68,7 @@ export function LiveActivity({contract}:{contract?:string}) {
 
   const latest = blocks.at(-1);
   const sampledAt = sampleTime==null ? null : new Date(sampleTime).toISOString().slice(0,16).replace('T',' ')+' UTC';
-  const stale = !contract && sampleTime!=null && Date.now()-sampleTime > 2*sixHours;
+  const stale = !contract && sampleTime!=null && Date.now()-sampleTime > refreshInterval+2*60*60*1000;
   if (!failed && !loaded && !latest) return <div className="iv-block-placeholder"><LoadingPanel title={contract ? 'Recent Contract Transactions' : 'Mainnet Block Activity'} description="Loading the latest saved sample…"/></div>;
   return <section className="panel live-panel">
     <div className="section-title"><h2>{contract?'Recent Contract Transactions':'Mainnet Block Activity'}</h2><span className="live-state">{failed?'Feed unavailable':sampledAt ? `${stale ? 'Stale sample' : contract ? 'Latest saved call' : 'Sampled'} · ${sampledAt}` : loaded?'Sample available':'Saved sample'}</span></div>
@@ -78,7 +78,7 @@ export function LiveActivity({contract}:{contract?:string}) {
         <ResearchChart values={blocks.map(block=>block.transactions_agg.count)} days={blocks.map(block=>'Block '+block.block_height)} label="Transactions per recent mainnet block" bars/>
         <p>Transactions per block · {blocks.length} indexed blocks</p></>
       : <p>{failed?'The saved activity sample is unavailable.':'Loading recent blocks…'}</p>}
-    <p className="source-line"><a href="https://api.nearblocks.io/api-docs/">NearBlocks</a> · {contract ? 'Contracts sampled in rotation' : 'Refresh scheduled every six hours'}</p>
+    <p className="source-line"><a href="https://api.nearblocks.io/api-docs/">NearBlocks</a> · {contract ? 'Contracts sampled in rotation' : 'Refresh scheduled every twelve hours'}</p>
   </section>;
 }
 

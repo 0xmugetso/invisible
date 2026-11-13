@@ -61,20 +61,8 @@
   ],
   "crons": [
     {
-      "path": "/api/refresh-activity?slot=00",
-      "schedule": "0 0 * * *"
-    },
-    {
-      "path": "/api/refresh-activity?slot=06",
-      "schedule": "0 6 * * *"
-    },
-    {
-      "path": "/api/refresh-activity?slot=12",
-      "schedule": "0 12 * * *"
-    },
-    {
-      "path": "/api/refresh-activity?slot=18",
-      "schedule": "0 18 * * *"
+      "path": "/api/refresh-activity",
+      "schedule": "0 0,12 * * *"
     }
   ],
   "redirects": [

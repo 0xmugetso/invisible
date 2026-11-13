@@ -507,3 +507,20 @@ html:has(.iv-landing) { scroll-behavior:smooth; }
 }
 .iv-preview video { padding:0; border:0; border-radius:10px; background:#0b0a0d; box-shadow:none; }
 .iv-landing .iv-preview { padding:clamp(4px,1vw,10px); border:1px solid #393139; border-radius:17px; background:#151217; box-shadow:0 24px 72px #0008; }
+
+.iv-header nav .iv-mobile-route { display:none; }
+@media(max-width:1100px) {
+  .iv-landing .iv-header { grid-template-columns:minmax(0,1fr) auto; }
+  .iv-header > .iv-header-actions { display:none; }
+  .iv-header .iv-menu-toggle { grid-column:2; }
+  .iv-header .iv-mobile-panel nav .iv-mobile-route { display:flex; }
+}
+@media(max-width:600px) {
+  .iv-announcement { min-height:44px; gap:8px; padding:6px 14px; text-align:start; line-height:1.2; }
+  .iv-announcement > span:nth-child(2) { display:grid; gap:2px; font-size:.69rem; }
+  .iv-announcement b { margin:0; font-size:.79rem; }
+  .iv-announcement .iv-icon { flex:none; }
+  .iv-footer { grid-template-columns:1fr; justify-items:center; gap:12px; padding-block:24px; }
+  .iv-footer-nav { grid-area:auto; justify-content:center; flex-wrap:wrap; gap:2px 12px; }
+  .iv-developer-links { justify-self:center; }
+}

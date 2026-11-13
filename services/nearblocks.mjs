@@ -6,12 +6,12 @@ const gap = 30*60*1000;
 const apiKey = process.env.NEARBLOCKS_API_KEY;
 const pageCap = Number(process.env.NEARBLOCKS_PAGE_CAP ?? 100);
 
-async function request(path, params) {
+async function request(path, params, credential = apiKey) {
   const url = new URL(path, base);
   url.search = new URLSearchParams(params).toString();
   const response = await fetch(url, {
     signal: AbortSignal.timeout(15000),
-    headers: apiKey ? {Authorization:'Bearer '+apiKey} : {},
+    headers: credential ? {Authorization:'Bearer '+credential} : {},
   });
   if (!response.ok) throw new Error('NearBlocks '+path+' returned HTTP '+response.status);
   const payload = await response.json();
@@ -25,8 +25,18 @@ function timestamp(value) {
 }
 
 export async function ingestBlocks(db) {
-  const {data} = await request('blocks', {limit:20});
-  if (!data.length) throw new Error('No NearBlocks blocks returned.');
+  const params = {limit:20};
+  const freshBlocks = async credential => {
+    const {data} = await request('blocks', params, credential);
+    if (!data.length || Date.now() - timestamp(data[0].block_timestamp) > 60*60*1000) {
+      throw new Error('NearBlocks did not return a recent block sample.');
+    }
+    return data;
+  };
+  const data = await freshBlocks(apiKey).catch(error => {
+    if (!apiKey) throw error;
+    return freshBlocks(null);
+  });
   const blocks = data.map(block => ({
     hash:block.block_hash, height:block.block_height,
     block_time:new Date(timestamp(block.block_timestamp)).toISOString(),
@@ -52,7 +62,7 @@ function directCall(tx, contract, time) {
 }
 
 export async function ingestProjectSample(db) {
-  // Rotate through a fixed batch so one six-hour refresh cannot use the whole provider allowance.
+  // Rotate through a fixed batch so one scheduled refresh cannot use the whole provider allowance.
   const {rows:contracts} = await db.query(`SELECT c.account_id FROM invisible.project_contract c
     JOIN invisible.project p ON p.id=c.project_id
     LEFT JOIN invisible.contract_sample s ON s.account_id=c.account_id

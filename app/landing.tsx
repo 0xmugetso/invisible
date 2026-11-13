@@ -379,6 +379,8 @@ export default function Landing() {
           <a href="#connect"><Icon name="connect"/>Setup</a>
           <a href="#ranking"><Icon name="ranking"/>Methodology</a>
           <a href="#roadmap"><Icon name="growth"/>Roadmap</a>
+          <Link className="iv-mobile-route" href="/docs/"><Icon name="research"/>Docs</Link>
+          <Link className="iv-mobile-route" href="/app/"><Icon name="dashboard"/>Dashboard</Link>
         </nav>
       </MobileNavigation>
       <div className="iv-header-actions">

@@ -696,3 +696,23 @@ html:has(.iv-workspace) { scroll-behavior:smooth; }
 @media(max-width:360px) {
   .iv-workspace .iv-dashboard .iv-project-charts :is(.iv-cohorts,.iv-chart-details) { grid-template-columns:minmax(0,1fr); }
 }
+
+.iv-app-header nav .iv-mobile-route { display:none; }
+@media(max-width:1100px) {
+  .iv-app-header .iv-app-actions .iv-app-docs { display:none; }
+  .iv-app-header .iv-mobile-panel nav .iv-mobile-route { display:flex; }
+}
+@media(max-width:600px) {
+  .iv-app-header-inner { min-height:58px; }
+  .iv-app-content .iv-find { width:100%; min-height:44px; justify-self:stretch; }
+  .iv-app-content .iv-find input { font-size:16px; }
+  .iv-observed-head,.iv-observed-tools { align-items:stretch; }
+  .iv-observed-head > *,.iv-observed-tools > * { flex-basis:100%; }
+  .iv-app-content .iv-switch { flex-wrap:wrap; }
+  .iv-app-content .iv-switch button { min-height:36px; }
+  .iv-app-content .iv-sort { width:100%; }
+  .iv-app-content .iv-sort select { min-height:40px; font-size:16px; }
+  .iv-workspace-footer { align-items:center; flex-direction:column; gap:8px; }
+  .iv-workspace-footer nav { justify-content:center; column-gap:12px; }
+  .iv-workspace-footer nav a { min-height:40px; }
+}

@@ -398,7 +398,7 @@ export default function Landing() {
       <IntegrationSetup/>
       <section className="iv-section iv-insights iv-width" id="insights" data-reveal-section aria-labelledby="iv-insights-title">
         <div className="iv-section-copy">
-          <h2 data-flow id="iv-insights-title"><Words text="How we measure and rank projects"/></h2>
+          <h2 data-flow id="iv-insights-title"><Words text="How rankings work"/></h2>
           <p data-flow><Words text="Follow a NEAR contract call from the activity we count to the score you see."/></p>
         </div>
         <ol className="iv-method-steps">
@@ -410,7 +410,7 @@ export default function Landing() {
           </li>
           <li data-flow>
             <span className="iv-method-number" aria-hidden="true">02</span>
-            <div className="iv-method-example iv-method-windows"><span>Previous 28 days</span><span>Latest 28 days</span></div>
+            <div className="iv-method-example"><Icon name="repeat"/> Two 28-day windows</div>
             <h3>Find who came back</h3>
             <p>Compare two adjacent 28-day UTC windows. An account that appears in both counts as a returning signer.</p>
           </li>

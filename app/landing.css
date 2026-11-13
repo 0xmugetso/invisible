@@ -211,9 +211,6 @@ html:has(.iv-landing) { scroll-behavior:smooth; }
   border-bottom:1px solid var(--iv-line); color:var(--iv-ink); font: .78rem/1.3 var(--mono);
 }
 .iv-method-example .iv-icon { width:19px; height:19px; color:var(--iv-pink); }
-.iv-method-windows { gap:4px; }
-.iv-method-windows span { padding:5px; border:1px solid #634052; border-radius:5px; }
-.iv-method-windows span + span { color:var(--iv-pink); background:var(--iv-tint); }
 .iv-method-steps h3 { font-size:1rem; line-height:1.3; }
 .iv-method-steps p { margin:7px 0 0; color:var(--iv-muted); font-size:.9rem; line-height:1.55; }
 @media(max-width:900px) {

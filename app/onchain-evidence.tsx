@@ -20,7 +20,7 @@ type Call = {transaction_hash:string; signer_account_id:string; block_timestamp:
 export function LiveActivity({contract}:{contract?:string}) {
   const [blocks,setBlocks] = useState<Block[]>([]);
   const [calls,setCalls] = useState<Call[]>([]);
-  const [updated,setUpdated] = useState('');
+  const [sampleTime,setSampleTime] = useState<number|null>(null);
   const [failed,setFailed] = useState(false);
   const [loaded,setLoaded] = useState(false);
 
@@ -44,7 +44,8 @@ export function LiveActivity({contract}:{contract?:string}) {
           if (!valid.length) throw new Error('No valid blocks returned');
           setBlocks(valid.sort((a:Block,b:Block) => Number(a.block_height)-Number(b.block_height)));
         }
-        setUpdated(typeof checkedAt==='string' ? new Date(checkedAt).toLocaleString() : '');
+        const timestamp = typeof checkedAt==='string' ? Date.parse(checkedAt) : NaN;
+        setSampleTime(Number.isFinite(timestamp) ? timestamp : null);
         setFailed(false);
         setLoaded(true);
       } catch {
@@ -66,16 +67,18 @@ export function LiveActivity({contract}:{contract?:string}) {
   },[contract]);
 
   const latest = blocks.at(-1);
+  const sampledAt = sampleTime==null ? null : new Date(sampleTime).toISOString().slice(0,16).replace('T',' ')+' UTC';
+  const stale = !contract && sampleTime!=null && Date.now()-sampleTime > 2*sixHours;
   if (!failed && !loaded && !latest) return <div className="iv-block-placeholder"><LoadingPanel title={contract ? 'Recent Contract Transactions' : 'Mainnet Block Activity'} description="Loading the latest saved sample…"/></div>;
   return <section className="panel live-panel">
-    <div className="section-title"><h2>{contract?'Recent Contract Transactions':'Mainnet Block Activity'}</h2><span className="live-state">{failed?(updated?'Update failed · last checked '+updated:'Feed unavailable'):updated?'Sampled '+updated:loaded?'Sample available':'Saved sample'}</span></div>
+    <div className="section-title"><h2>{contract?'Recent Contract Transactions':'Mainnet Block Activity'}</h2><span className="live-state">{failed?'Feed unavailable':sampledAt ? `${stale ? 'Stale sample' : contract ? 'Latest saved call' : 'Sampled'} · ${sampledAt}` : loaded?'Sample available':'Saved sample'}</span></div>
     {contract ? calls.length>0 ? <ul className="call-list">{calls.map(tx=><li key={tx.transaction_hash}><span>{tx.actions?.find(a=>a.method)?.method??'Transaction'}</span><span>{tx.outcomes?.status===true?'Succeeded':tx.outcomes?.status===false?'Failed':'Status unknown'}</span><a href={'https://nearblocks.io/txns/'+tx.transaction_hash}>View transaction ↗</a></li>)}</ul>
       : <p>{failed?'The saved activity sample is unavailable.':'No incoming transactions in the latest results.'}</p>
-      : latest ? <><div className="live-summary"><a href={'https://nearblocks.io/blocks/'+latest.block_hash}>{fmt(Number(latest.block_height))}</a><span>{updated?'Latest indexed block':'Saved block sample'} · {new Date(Number(BigInt(latest.block_timestamp)/1000000n)).toISOString().slice(0,19).replace('T',' ')} UTC</span></div>
+      : latest ? <><div className="live-summary"><a href={'https://nearblocks.io/blocks/'+latest.block_hash}>{fmt(Number(latest.block_height))}</a><span>Latest saved block · {new Date(Number(BigInt(latest.block_timestamp)/1000000n)).toISOString().slice(0,19).replace('T',' ')} UTC</span></div>
         <ResearchChart values={blocks.map(block=>block.transactions_agg.count)} days={blocks.map(block=>'Block '+block.block_height)} label="Transactions per recent mainnet block" bars/>
         <p>Transactions per block · {blocks.length} indexed blocks</p></>
       : <p>{failed?'The saved activity sample is unavailable.':'Loading recent blocks…'}</p>}
-    <p className="source-line"><a href="https://api.nearblocks.io/api-docs/">NearBlocks</a> · {contract ? 'Contracts sampled in rotation' : 'Samples updated every six hours'}</p>
+    <p className="source-line"><a href="https://api.nearblocks.io/api-docs/">NearBlocks</a> · {contract ? 'Contracts sampled in rotation' : 'Refresh scheduled every six hours'}</p>
   </section>;
 }
 

@@ -53,6 +53,14 @@ The activity leaderboard requires a verified token, 50 signers in each 28-day wi
 
 The [NEAR Public Lakehouse](https://github.com/near/near-public-lakehouse) supplies indexed history, [NearBlocks](https://nearblocks.io/) supplies recent samples and transaction links, and [DEX Screener](https://dexscreener.com/near) supplies pool and valuation evidence. [Full methodology](https://invisible-gray.vercel.app/docs/#investment-methodology) · [Data sources](https://invisible-gray.vercel.app/docs/#sources)
 
+### Reproduce the research
+
+1. Run `npm ci` and `npm test`. The tests cover cohort eligibility, rank calculations, export safety, and NEAR wallet signature verification.
+2. Fetch the [returning-signer ranking](https://invisible-gray.vercel.app/api/v1/returning-signers?limit=10). The response includes the exclusive UTC cutoff, ranked signer counts, and transaction examples. Open a row’s evidence endpoint to find the project’s mapped contracts.
+3. To recompute cohorts from chain history, run [`analytics/warehouse-rankings.sql`](analytics/warehouse-rankings.sql) in the BigQuery US location. Supply the exclusive cutoff as `@day`, the first UTC date as `@history_start`, and the project-to-contract mapping as `@registry` (a JSON array of `{ "project": "…", "contract": "…" }` records). Use 56 days of history for two windows or 84 days for the historical forecast check. [`services/warehouse-rankings.mjs`](services/warehouse-rankings.mjs) applies the eligibility thresholds and peer-percentile weights.
+
+Repeated contract use supports a thesis of persistent NEAR application demand. It measures signing accounts within the mapped cohort. Automation, shared signers, missing contracts, and changes in attribution can affect that finding. A larger repeat cohort alone cannot establish token value capture. Compare the forecast with the flat baseline before treating it as a useful estimate.
+
 ## Agent setup
 
 [![Two-step Invisible MCP setup with tabs for Claude Code, Cursor, Codex, and Antigravity](public/readme/agent-setup.webp)](https://invisible-gray.vercel.app/#connect)

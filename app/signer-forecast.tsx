@@ -18,15 +18,23 @@ const signed = new Intl.NumberFormat('en-US',{signDisplay:'exceptZero'});
 const utc = (date:number) => new Date(date).toISOString().slice(0,10);
 const day = 86_400_000;
 const warehouse = 'https://github.com/near/near-public-lakehouse';
+let lastForecast:Forecast|null = null;
+let forecastFetchedAt = 0;
 
 export default function SignerForecast({projectId}:{projectId?:string}) {
   const [query,setQuery]=useState('');
-  const [board,setBoard]=useState<Forecast|null>(null);
+  const [board,setBoard]=useState<Forecast|null>(()=>lastForecast);
   const [failed,setFailed]=useState(false);
   const [selection,setSelection]=useState(projectId==='ref' || projectId==='burrow' ? 'rhea' : projectId ?? '');
   useEffect(()=>{
+    if (lastForecast && Date.now()-forecastFetchedAt<60_000) return;
     const controller=new AbortController();
-    getResearch<Forecast>({view:'forecast'},controller.signal).then(setBoard).catch(()=>{
+    getResearch<Forecast>({view:'forecast'},controller.signal).then(result=>{
+      if (controller.signal.aborted) return;
+      lastForecast=result;
+      forecastFetchedAt=Date.now();
+      setBoard(result);
+    }).catch(()=>{
       if (!controller.signal.aborted) setFailed(true);
     });
     return ()=>controller.abort();
@@ -49,6 +57,7 @@ export default function SignerForecast({projectId}:{projectId?:string}) {
   const rate=new Intl.NumberFormat('en-US',{style:'percent',maximumFractionDigits:1}).format(overlap/previous);
   return <div className="iv-forecast iv-ready-fade">
     <section className="iv-card iv-forecast-panel" aria-label="28-day signer forecast">
+      {failed && <p role="status">Showing the last available forecast.</p>}
       <div className="iv-forecast-head">
         <div className="iv-forecast-project"><ProjectMark id={selected.id}/><div><h2>{selected.name}</h2><p>{selected.contracts.length} mapped {selected.contracts.length===1 ? 'contract' : 'contracts'} · Observed through {utc(cutoff-day)} UTC</p></div></div>
       </div>

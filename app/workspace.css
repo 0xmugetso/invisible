@@ -597,8 +597,9 @@ html:has(.iv-evidence-dialog[open]) { overflow:hidden; }
   .iv-app-docs span { display:none; }
 }
 
-.iv-ready-fade { animation:iv-ready-fade .65s ease-out both; }
-@keyframes iv-ready-fade { from { opacity:.72; } to { opacity:1; } }
+.iv-ready-fade { animation:iv-ready-fade .28s cubic-bezier(.2,.72,.26,1) both; }
+.iv-ready-fade .iv-ready-fade { animation:none; }
+@keyframes iv-ready-fade { from { opacity:.96; transform:translateY(2px); } to { opacity:1; transform:none; } }
 .iv-auth-main { min-height:calc(100svh - 90px); }
 .iv-auth-card { background:var(--iv-surface); border:1px solid var(--iv-line); border-radius:16px; gap:18px; }
 .iv-auth-heading { display:grid; gap:9px; }

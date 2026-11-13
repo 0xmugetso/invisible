@@ -146,6 +146,19 @@ html:has(.iv-landing) { scroll-behavior:smooth; }
 .iv-setup-note { margin-bottom:8px; }
 .iv-copy-status { margin-top:7px; }
 .iv-copy-status p { color:inherit; }
+.iv-full-example-link {
+  display:inline-flex; align-items:center; gap:4px; margin-top:5px; padding:4px 0;
+  border:0; background:none; font:inherit; font-size:.8rem;
+}
+.iv-full-example-link .iv-icon { width:13px; height:13px; }
+.iv-full-example {
+  width:min(700px,calc(100% - 24px)); max-height:calc(100dvh - 24px);
+  padding:clamp(12px,3vw,22px); color:var(--iv-ink); overflow:auto;
+}
+.iv-full-example::backdrop { background:#000b; }
+.iv-full-example-head { display:flex; align-items:center; justify-content:space-between; gap:8px; }
+.iv-full-example-head h3 { margin:0; font-size:1rem; }
+.iv-full-example pre { white-space:pre-wrap; overflow-wrap:anywhere; font: .85rem/1.6 var(--mono); }
 .iv-weights p { color:var(--iv-muted); font-size:.84rem; }
 .iv-weights { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:9px; }
 .iv-weights article { padding:clamp(13px,2.6vw,26px); }

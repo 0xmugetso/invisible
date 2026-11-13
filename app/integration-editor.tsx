@@ -95,6 +95,7 @@ export function IntegrationEditor({only}:{only?:keyof typeof integrations}) {
   const protocolId=uid+'-protocol';
   const envId=uid+'-environment';
   const stepPanel = useRef<HTMLDivElement>(null);
+  const fullExample = useRef<HTMLDialogElement>(null);
   const visibleProtocols = only ? [only] : protocols;
   const docsAnchors = {'REST API':'rest',MCP:'mcp',A2A:'a2a',Skill:'skill'};
   const copyError = 'Clipboard unavailable. Select the code to copy it.';
@@ -135,6 +136,8 @@ export function IntegrationEditor({only}:{only?:keyof typeof integrations}) {
                 {entry.steps.map(([title,code],index)=><div className="iv-step" key={index}>
                   <div><h3>{index+1}. {title}</h3><button className="iv-outline" type="button" onClick={()=>void copy(code,index)} aria-label={`Copy step ${index+1}`}><Icon name={active && copiedStep===index ? 'check' : 'copy'}/>{active && copiedStep===index ? 'Copied' : 'Copy'}</button></div>
                   <pre tabIndex={0} aria-label={`Step ${index+1} code`}><SetupCode code={code}/></pre>
+                  {item==='A2A' && index===1 && <button type="button" className="iv-full-example-link iv-text-link"
+                    onClick={()=>fullExample.current?.showModal()}>View full example <Icon name="launch"/></button>}
                 </div>)}
               </div>;
             }))}
@@ -145,5 +148,12 @@ export function IntegrationEditor({only}:{only?:keyof typeof integrations}) {
           </div>
         </div>
       </div>
+      {protocol==='A2A' && <dialog className="iv-full-example iv-card" ref={fullExample} aria-labelledby={uid+'-example'}>
+        <div className="iv-full-example-head">
+          <h3 id={uid+'-example'}>A2A request · {integrations.A2A[envIndex].env}</h3>
+          <button type="button" className="iv-outline" onClick={()=>fullExample.current?.close()}>Close</button>
+        </div>
+        <pre tabIndex={0} aria-label="Full request code"><SetupCode code={integrations.A2A[envIndex].steps[1][1]}/></pre>
+      </dialog>}
     </div>;
 }

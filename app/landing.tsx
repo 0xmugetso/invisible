@@ -68,12 +68,6 @@ const sectionContours = {
       `M -30 ${47+line*7.5} C 137 ${48+line*9} 225 ${198+line*6} 386 ${175+line*7.4} C 563 ${151+line*9} 535 ${36+line*4} 714 ${54+line*5} C 877 ${70+line*3} 918 ${172+line*5.2} 1202 ${126+line*3}`,
     ],
   },
-  insights: {
-    count:13,
-    paths:(line:number)=>[
-      `M 1214 ${112+line*14} C 1020 ${118+line*13} 1008 ${47+line*7} 861 ${57+line*5} C 709 ${65+line*7} 722 ${194+line*6} 544 ${162+line*8.5} C 425 ${140+line*7} 379 ${57+line*5} 265 ${70+line*3} S 137 ${125+line*2} 0 ${116+line}`,
-    ],
-  },
   ranking: {
     count:15,
     paths:(line:number)=>[
@@ -272,10 +266,6 @@ export default function Landing() {
         gsap.set(words.length ? words : element,words.length ? {clipPath:'inset(0 0 100% 0)',y:9} : {opacity:.22,y:9});
         revealObserver.observe(element);
       });
-      gsap.fromTo(node.querySelectorAll('.iv-evidence-visual > *'),
-        {opacity:0,y:6},
-        {opacity:1,y:0,duration:.48,stagger:.07,ease:'power2.out',clearProps:'opacity,transform',
-          scrollTrigger:{trigger:node.querySelector('.iv-insight'),start:'top 82%',once:true}});
       const pulses = new Map(Array.from(node.querySelectorAll('[data-iv-traces]'),area=>[
         area,
         gsap.to(area.querySelectorAll('[data-iv-trace]'),{
@@ -307,7 +297,7 @@ export default function Landing() {
         const middle = (lineCount-1)/2;
         const offset = (index:number)=>{
           const line = paired ? Math.floor(index/2) : index;
-          const order = pattern==='insights' ? (lineCount-1-line)/middle : Math.abs(line-middle)/middle;
+          const order = Math.abs(line-middle)/middle;
           const jitter = (Math.sin((line+1)*73.17)+1)*.23;
           return order*.63+jitter;
         };
@@ -406,29 +396,38 @@ export default function Landing() {
       </section>
       <DashboardPreview/>
       <IntegrationSetup/>
-      <section className="iv-section iv-split iv-insights iv-width" id="insights" data-reveal-section aria-labelledby="iv-insights-title">
-        <div className="iv-section-copy" data-reveal>
-          <h2 data-flow id="iv-insights-title"><Words text="What brought signers back?"/></h2><p data-flow><Words text="Follow a change in activity down to the contract calls behind it."/></p>
-          <SectionContour pattern="insights"/>
+      <section className="iv-section iv-insights iv-width" id="insights" data-reveal-section aria-labelledby="iv-insights-title">
+        <div className="iv-section-copy">
+          <h2 data-flow id="iv-insights-title"><Words text="How we measure and rank projects"/></h2>
+          <p data-flow><Words text="Follow a NEAR contract call from the activity we count to the score you see."/></p>
         </div>
-        <article className="iv-card iv-insight" aria-labelledby="iv-evidence-title">
-          <h3 data-flow id="iv-evidence-title">Did signers return for the same actions?</h3>
-          <ol>
-            <li data-flow>
-              <div className="iv-evidence-visual iv-evidence-cohort" aria-hidden="true"><i/><i/><b/></div>
-              <div><strong>Compare the cohorts</strong><p>Find the signers who appeared in both 28-day windows.</p></div>
-            </li>
-            <li data-flow>
-              <div className="iv-evidence-visual iv-evidence-methods" aria-hidden="true"><Icon name="terminal"/><i/><i/></div>
-              <div><strong>Read the actions</strong><p>Group their function calls by contract and method.</p></div>
-            </li>
-            <li data-flow>
-              <div className="iv-evidence-visual iv-evidence-tx" aria-hidden="true"><Icon name="research"/><Icon name="launch"/></div>
-              <div><strong>Check the transactions</strong><p>Open a source transaction to see what executed.</p></div>
-            </li>
-          </ol>
-          <Link data-flow className="iv-text-link" href="/app/deployments/?sort=repeat">Explore contract evidence <Icon name="launch"/></Link>
-        </article>
+        <ol className="iv-method-steps">
+          <li data-flow>
+            <span className="iv-method-number" aria-hidden="true">01</span>
+            <div className="iv-method-example"><Icon name="contracts"/> Mapped NEAR contracts</div>
+            <h3>Count signing accounts</h3>
+            <p>Count distinct accounts that directly attempt a function call to a project’s mapped contracts. Count each account once per project in each window.</p>
+          </li>
+          <li data-flow>
+            <span className="iv-method-number" aria-hidden="true">02</span>
+            <div className="iv-method-example iv-method-windows"><span>Previous 28 days</span><span>Latest 28 days</span></div>
+            <h3>Find who came back</h3>
+            <p>Compare two adjacent 28-day UTC windows. An account that appears in both counts as a returning signer.</p>
+          </li>
+          <li data-flow>
+            <span className="iv-method-number" aria-hidden="true">03</span>
+            <div className="iv-method-example"><Icon name="check"/> 50 signers per window</div>
+            <h3>Check eligibility</h3>
+            <p>Require a verified token and at least 50 signers in each window, plus minimums for returning signers, weekly activity, and active days.</p>
+          </li>
+          <li data-flow>
+            <span className="iv-method-number" aria-hidden="true">04</span>
+            <div className="iv-method-example"><Icon name="ranking"/> Activity score / 100</div>
+            <h3>Rank eligible projects</h3>
+            <p>Compare adjusted return rate, returning signer count, adjusted signer growth, and activity spread against eligible peers. Higher scores rank first.</p>
+          </li>
+        </ol>
+        <Link data-flow className="iv-text-link" href="/app/deployments/?sort=repeat">Explore contract evidence <Icon name="launch"/></Link>
       </section>
       <section className="iv-section iv-width" id="ranking" data-reveal-section aria-labelledby="iv-method-title">
         <div className="iv-method-head" data-reveal><h2 data-flow id="iv-method-title"><Words text="What moves a project up?"/></h2><Link data-flow className="iv-text-link" href="/docs/#investment-methodology">Read the methodology <Icon name="launch"/></Link></div>

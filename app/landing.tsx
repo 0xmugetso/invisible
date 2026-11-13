@@ -272,6 +272,10 @@ export default function Landing() {
         gsap.set(words.length ? words : element,words.length ? {clipPath:'inset(0 0 100% 0)',y:9} : {opacity:.22,y:9});
         revealObserver.observe(element);
       });
+      gsap.fromTo(node.querySelectorAll('.iv-evidence-visual > *'),
+        {opacity:0,y:6},
+        {opacity:1,y:0,duration:.48,stagger:.07,ease:'power2.out',clearProps:'opacity,transform',
+          scrollTrigger:{trigger:node.querySelector('.iv-insight'),start:'top 82%',once:true}});
       const pulses = new Map(Array.from(node.querySelectorAll('[data-iv-traces]'),area=>[
         area,
         gsap.to(area.querySelectorAll('[data-iv-trace]'),{
@@ -407,12 +411,21 @@ export default function Landing() {
           <h2 data-flow id="iv-insights-title"><Words text="What brought signers back?"/></h2><p data-flow><Words text="Follow a change in activity down to the contract calls behind it."/></p>
           <SectionContour pattern="insights"/>
         </div>
-        <article className="iv-card iv-insight" data-reveal>
-          <h3 data-flow>Did signers come back to do the same thing?</h3>
+        <article className="iv-card iv-insight" aria-labelledby="iv-evidence-title">
+          <h3 data-flow id="iv-evidence-title">Did signers return for the same actions?</h3>
           <ol>
-            <li data-flow><strong>Compare the cohorts</strong><span>Find the signers who appeared in both 28-day windows.</span></li>
-            <li data-flow><strong>Read the actions</strong><span>Group their function calls by contract and method.</span></li>
-            <li data-flow><strong>Check the transactions</strong><span>Open a source transaction to see what executed.</span></li>
+            <li data-flow>
+              <div className="iv-evidence-visual iv-evidence-cohort" aria-hidden="true"><i/><i/><b/></div>
+              <div><strong>Compare the cohorts</strong><p>Find the signers who appeared in both 28-day windows.</p></div>
+            </li>
+            <li data-flow>
+              <div className="iv-evidence-visual iv-evidence-methods" aria-hidden="true"><Icon name="terminal"/><i/><i/></div>
+              <div><strong>Read the actions</strong><p>Group their function calls by contract and method.</p></div>
+            </li>
+            <li data-flow>
+              <div className="iv-evidence-visual iv-evidence-tx" aria-hidden="true"><Icon name="research"/><Icon name="launch"/></div>
+              <div><strong>Check the transactions</strong><p>Open a source transaction to see what executed.</p></div>
+            </li>
           </ol>
           <Link data-flow className="iv-text-link" href="/app/deployments/?sort=repeat">Explore contract evidence <Icon name="launch"/></Link>
         </article>

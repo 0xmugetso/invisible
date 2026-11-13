@@ -97,7 +97,7 @@ export function IntegrationEditor({only}:{only?:keyof typeof integrations}) {
   const stepPanel = useRef<HTMLDivElement>(null);
   const visibleProtocols = only ? [only] : protocols;
   const docsAnchors = {'REST API':'rest',MCP:'mcp',A2A:'a2a',Skill:'skill'};
-  const copyError = 'Clipboard unavailable. Select the code to copy it.';
+  const copyError = 'Copy failed. Select the code.';
   usePanelReveal(stepPanel, protocol+envIndex);
 
   async function copy(code:string,index:number) {

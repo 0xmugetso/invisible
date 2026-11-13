@@ -1,123 +1,116 @@
-# INVISIBLE · NEAR research terminal
+<p align="center">
+  <a href="https://invisible-gray.vercel.app/">
+    <img src="public/brand/readme-hero.png" alt="Invisible — On-chain research for the NEAR ecosystem" width="100%">
+  </a>
+</p>
 
-Discover what’s growing before everyone starts talking about it. INVISIBLE looks for growth and repeat activity on attributed NEAR contracts, then shows the evidence needed to challenge each signal. Built for [NEAR Hackathon Track 2](https://nearhackathon.com/).
+# Invisible
 
-```sh
-npm ci
-npm run dev
-# Open http://localhost:3000
-npm test
-npm run build
-```
+**Research NEAR projects from the contracts people actually use.** Invisible compares activity across two 28-day windows, shows which signing accounts came back, and links project scores to the on-chain and market evidence behind them. Analysts can inspect the dashboard, and agents can query the same research through MCP, REST, or A2A.
 
-Node.js 22 recommended. Next.js and TypeScript export a static site to `out/`; use any static host or run `python3 -m http.server 3000 --directory out`. CSS and inline SVG keep the UI dependency-light. No account, wallet, or database is required to run the demo.
+[Open dashboard](https://invisible-gray.vercel.app/app/) · [Read the docs](https://invisible-gray.vercel.app/docs/) · [Connect an agent](https://invisible-gray.vercel.app/#connect) · [View roadmap](https://invisible-gray.vercel.app/#roadmap)
 
-**Observed** opens by default and uses the dated BigQuery exports. **Simulation** uses fictional metrics on documented deployments. Public attention is currently unmeasured.
+[Features](#features) · [Methodology](#methodology) · [Agent setup](#agent-setup) · [Local setup](#local-setup) · [Deployment](#deployment)
 
-### Walkthrough
+---
 
-1. Open Discovery in Observed mode. The curated project scores and the deployment directory measure different cohorts.
-2. Open Research to compare pilot concentration and review the three biggest repeat-signer gains in the deployment export.
-3. Follow a contract to see its cohorts, methods and example transactions. The Research page links to the full ranking and downloadable source rows.
-4. Open Ecosystem to compare the distribution of transactions across the tracked projects.
+<a href="https://invisible-gray.vercel.app/app/"><img src="public/dashboard-walkthrough.webp" width="100%" alt="Invisible overview with NEAR project metrics, the leaderboard, and signer activity charts"></a>
 
-### Refresh the research
+## Features
 
-Install the Google Cloud CLI with `bq`, authenticate with `gcloud auth login`, enable BigQuery in a query project, and make sure your identity can create query jobs. Copy `.env.example` to `.env`, set the project and an exclusive UTC end date at least one day old. The public dataset is in `us-east1`; dry run before export. Google’s [first 1 TiB/month free tier and byte caps](https://cloud.google.com/bigquery/pricing) apply subject to account usage. A dry run can report more bytes than the configured cap; confirm the estimate before increasing the cap.
-
-
-For a project-local SDK on macOS, add its bin directory to the current shell before signing in. Use an existing project or create one in the BigQuery sandbox.
-
-```sh
-export PATH="$PWD/.local/gcloud/google-cloud-sdk/bin:$PATH"
-export CLOUDSDK_CONFIG="$PWD/.local/gcloud-config"
-gcloud auth login
-gcloud projects list --format='table(projectId,name)'
-```
-
-```sh
-node --env-file=.env scripts/refresh.mjs --dry-run
-node --env-file=.env scripts/refresh.mjs
-npm run build
-```
-
-The SQL returns one JSON payload with project, signer cohort, daily, contract and network aggregates. The exporter checks coverage for 56 days, enriches public GitHub commit counts, hashes the SQL and registry, then atomically updates `data/observed.json`. Rebuild after refresh. A missing GitHub token is fine at low volumes; an inaccessible or truncated repo produces unknown. The published dataset ID and field definitions were verified against the [Lakehouse code](https://github.com/near/near-public-lakehouse/tree/main/src/lakehouse/notebooks). The dry run checks the query against the warehouse schema and reports the estimated bytes before execution.
-
-Before using an observed report as evidence, check the public tables’ freshness and compare indexed volumes with an independent source. For one contract/day, query transaction_actions grouped by transaction hash and signer and reconcile its distinct counts to the snapshot. Spot check hashes in an explorer, check for partial ingestion or high-volume relayers, and check fee charges against an independent chain aggregate. Daily presence alone cannot detect partial ingestion.
-
-### Method
-
-- Each deployment has exact receiver IDs and attribution links in `data/projects.json`. Some are benchmarks rather than app signers (e.g. Intents and Aurora). Two Rhea deployments are separate analysis units. Registry verification is documentary; it does not establish whether a deployment is currently in use.
-- Count direct signed function-call attempts, including failures. Deduplicate by transaction and signer. No internal receipts, delegate actions or proxy routing are attributed. Signers are accounts and may be shared or automated. Read-only calls and indirect actions are outside scope.
-- Compare adjacent 7- and 28-day windows. Return rate is the share of prior 28-day signers also seen in the current window. Growth against zero is undefined. The scoring model is an exploratory ranking within a small cohort, not a prediction.
-- HHI and top-three shares use tracked contract transaction counts. Gas charges, when available, add transaction conversion and receipt execution amounts in NEAR, deduplicated by stage and outcome identifier. These are an accounting proxy, not net burn, revenue or proof of token value capture. Missing amounts remain unknown.
-- Reports are generated from the same snapshots and scoring functions as the UI. Run `npm run report` to reproduce the Markdown in `public/`.
-
-Observed mode opens by default. The NearBlocks panels refresh recent blocks and contract transactions every 30 seconds while visible. These samples are separate from the historical adoption score. The discovery page can show a dated saved block sample if a live refresh fails.
-
-To collect the separate repeat-signer study, run `node --env-file=.env scripts/nearblocks-evidence.mjs` and rebuild. Set `NEARBLOCKS_API_KEY` in that file for authenticated throughput and optionally `NEARBLOCKS_PAGE_CAP` (default 8, maximum 200). The collector compares three 28-day UTC windows, lists methods called by repeat signers, and records how many returned in the third window. It counts successful direct calls and excludes `epoch_` methods. Failed or capped histories remain unavailable. This study does not replace the BigQuery adoption snapshot.
-
-The deployment directory uses `analytics/deployments.sql`. It includes every account observed receiving a direct function call attempt or deployment-related action in three 28-day windows. Contract rankings and the curated project rankings use separate peer groups. The directory shows repeat signer gains between adjacent window pairs, how many earlier repeat signers appeared in the third window, and decoded methods with transaction examples. Historical deployments with no qualifying action during the window and contracts seen only in indirect receipts fall outside this export.
-
-```sh
-node --env-file=.env scripts/deployments.mjs --dry-run
-node --env-file=.env scripts/deployments.mjs
-npm run build
-```
-
-Set a separate `BQ_MAX_BYTES` for this query after reviewing its dry-run estimate. The deployment export defaults to a 120 GB cap when no override is set.
-
-### Live dashboard
-
-Discovery polls NearBlocks every 30 seconds while the tab is visible. The panel shows the latest indexed block time and keeps the last available sample if an update fails.
-
-Observed rankings use complete UTC days. Open tabs check `/rankings/current.json` once a minute and load a new release without rebuilding. Each release contains matching project rankings, contract data, and the observed report.
-
-With the BigQuery CLI authenticated and `BQ_PROJECT` configured, run:
-
-```sh
-node --env-file=.env scripts/live-rankings.mjs          # refresh once
-node --env-file=.env scripts/live-rankings.mjs --watch  # refresh now and daily at 06:00 UTC
-```
-
-The watcher runs only while the process is running. It leaves one complete UTC day for ingestion and publishes only after both exports and the report succeed. Set `BQ_PROJECT_MAX_BYTES` and `BQ_DEPLOYMENT_MAX_BYTES` to control per-query scan limits. Defaults are 35 GB and 130 GB respectively. For static hosting, serve the new release files before updating `rankings/current.json`.
-
-To publish the existing matching exports without running BigQuery, use `node scripts/live-rankings.mjs --publish-existing`.
-
-### PostgreSQL Activity service
-
-Set up a PostgreSQL 14+ database and put its connection string in `DATABASE_URL` in your local `.env`. The worker is the only component that needs that connection string, the BigQuery credentials, or the NearBlocks key.
-
-| Input | Storage and use |
+| Feature | What you can do |
 | --- | --- |
-| Project names, websites, social accounts and their sources | `project`, `project_link` |
-| Verified project contract mappings and NEAR token accounts | `project_contract`, `project_token` |
-| BigQuery `transaction_actions` and NearBlocks account transactions | `direct_call`, keyed by transaction hash. Same receiver, signer, UTC time and decoded method representation for both feeds. NearBlocks can also supply execution status. |
-| Completed imports and latest blocks | `call_coverage`, `live_block` |
-| Published scores and evidence per six-hour cutoff | `ranking_run` |
+| [Overview](https://invisible-gray.vercel.app/app/) | Scan verified-token coverage, ranking eligibility, and the largest measured returning-signer cohort. Select a project to compare signer counts, returning share, turnover, and score contributions. |
+| [Leaderboard](https://invisible-gray.vercel.app/app/discovery/) | Compare on-chain activity or switch to the investment ranking for projects with comparable market data. Open a project’s evidence to see why it qualified and which inputs affected its score. |
+| [Project evidence](https://invisible-gray.vercel.app/docs/#evidence) | Inspect mapped contracts, example transactions, market source and observation date, and published tokenomics or vesting terms where available. |
+| [Deployment explorer](https://invisible-gray.vercel.app/app/deployments/) | Search NEAR contract accounts or browse project mappings. Inspect example calls and measured signer cohorts alongside a saved mainnet block sample. |
+| [Ecosystem](https://invisible-gray.vercel.app/app/ecosystem/) | Compare changes in signer participation and contract volume across tracked projects. Review the indexed network gas series when coverage is complete. |
+| [Signer forecast](https://invisible-gray.vercel.app/app/discovery/?data=forecast) | Compare a cohort-based estimate with a flat baseline. When a third complete window exists, see how both estimates performed against observed activity. |
+| [NEAR wallet access](https://invisible-gray.vercel.app/docs/#dashboard) | Connect Meteor or another supported NEAR wallet through HOT Connect and sign a message to open your profile. Copy your address, open it in NearBlocks, or disconnect from the header. |
 
-Prepare the following before starting the worker:
+| Deployment explorer | Signer forecast |
+| --- | --- |
+| ![NEAR contract explorer with mainnet activity](public/guide/deployments.webp) | ![Forecast with measured cohorts, a flat baseline, and historical error](public/guide/forecast.webp) |
 
-1. A PostgreSQL database and a worker host that can write to the dashboard's data directory.
-2. An authenticated `bq` CLI, a query project in `BQ_PROJECT`, and a scan limit in `BQ_HISTORY_MAX_BYTES`. The importer scans one UTC partition per data query. Confirm an uninterrupted range and enough query budget before backfilling.
-3. A NearBlocks key in `NEARBLOCKS_API_KEY` for the contract ingestion workload. The public endpoint can serve the block feed. Account ingestion must reach the saved watermark before it records coverage, so provider quotas and the page cap determine how far it can catch up.
-4. A registry of project identities, official links, mapped NEAR contracts and evidence for each token account. The starter file covers Rhea Finance, Meta Pool and LiNEAR. Copy and expand it, then set `ACTIVITY_REGISTRY` to its path. Seed at least three projects that qualify on signer volume. The starter is not a network-wide ranking.
+## Methodology
+
+Invisible counts distinct NEAR signing accounts that directly attempted a function call to a mapped product contract. A returning signer appears in both adjacent 28-day UTC windows. The same account is counted once per project per window, even if it used several of that project’s contracts. Relayers, automation, and multiple accounts affect the interpretation of signer counts.
+
+| Ranking | Inputs |
+| --- | --- |
+| **Activity** | 35% adjusted return rate, 30% returning signers, 25% adjusted signer growth, and 10% activity spread across days. |
+| **Investment** | 70% activity, 20% pool liquidity, and 10% market cap as a share of fully diluted valuation. Comparable market evidence is required. |
+
+The activity leaderboard requires a verified token, 50 signers in each 28-day window, 10 in the prior weekly window, 10 returning signers, and activity on at least 14 days in the latest window. Projects outside the ranking cohort can still appear in project coverage.
+
+The [NEAR Public Lakehouse](https://github.com/near/near-public-lakehouse) supplies indexed history, [NearBlocks](https://nearblocks.io/) supplies recent samples and transaction links, and [DEX Screener](https://dexscreener.com/near) supplies pool and valuation evidence. [Full methodology](https://invisible-gray.vercel.app/docs/#investment-methodology) · [Data sources](https://invisible-gray.vercel.app/docs/#sources)
+
+## Agent setup
+
+| Interface | Start here |
+| --- | --- |
+| **MCP** | Use Streamable HTTP at `https://invisible-gray.vercel.app/api/mcp`. See setup for [Claude Code, Cursor, Codex, and Antigravity](https://invisible-gray.vercel.app/docs/#mcp). |
+| **REST** | Request JSON from `/api/v1/`. See the [endpoint reference and examples](https://invisible-gray.vercel.app/docs/#rest). |
+| **A2A** | Read the [agent card](https://invisible-gray.vercel.app/.well-known/agent-card.json), then send a JSON-RPC `message/send` request to `/api/a2a`. See the [request example](https://invisible-gray.vercel.app/docs/#a2a). |
+| **Agent skill** | Install [SKILL.md](https://invisible-gray.vercel.app/skill/SKILL.md) for guidance on researching projects and citing evidence. See the [installation instructions](https://invisible-gray.vercel.app/docs/#skill). |
+
+<details open>
+<summary><strong>Connect with MCP</strong></summary>
 
 ```sh
-node --env-file=.env services/activity.mjs setup
-node --env-file=.env services/activity.mjs backfill START_UTC_DATE END_UTC_DATE
-node --env-file=.env services/activity.mjs watch
+# Codex
+codex mcp add invisible --url https://invisible-gray.vercel.app/api/mcp
+
+# Claude Code
+claude mcp add --transport http invisible https://invisible-gray.vercel.app/api/mcp
 ```
 
-Replace the date arguments with ISO dates spanning at least 56 complete UTC days. The exclusive end must be before today's UTC date and close enough to the current cutoff for NearBlocks to bridge the gap. The BigQuery importer checks for both the requested and following partitions, and skips ranges already recorded as covered. Partition presence is an ingestion check and cannot prove that upstream indexing is gap-free. NearBlocks uses a 30-minute overlap on each update and a 15-minute delay after the ranking cutoff.
+Try asking **“Which NEAR projects brought the most signers back? Show me the evidence.”**
 
-The worker checks blocks every 30 seconds and produces rankings for 00:00, 06:00, 12:00 and 18:00 UTC. It writes `activity/blocks.json` and `activity/rankings.json` under `public/` and the existing `out/` export. Serve those outputs from the dashboard origin. Run one worker per database and output location. The browser checks for published recommendations every minute and can still read blocks directly from NearBlocks when the database feed is unavailable.
+- `search_projects` finds projects by name, ID, or contract.
+- `get_project_evidence` reads mapped deployments, signer cohorts, and available tokenomics for a verified project ID.
+- `get_rankings` reads activity, investment, or returning-signer rankings and their cutoff.
 
-The ranking requires 50 signers in each 28-day window and 10 in the preceding seven-day comparison window. The score uses peer percentiles for returning share (40%), 28-day signer growth (40%) and days with activity (20%). Fastest rising uses positive seven-day signer growth. It counts direct function-call attempts, including failures, with a signer counted once per project per window. Ranking history records the cutoff, methodology and evidence hashes. If ingestion fails or there is insufficient comparable coverage, the worker retains the previous published rankings.
+</details>
 
-### Vercel cron
+<details>
+<summary><strong>Try the REST API</strong></summary>
 
-Use the repository root and the build settings in `vercel.json`. It deploys the static Next.js export and two Node functions. Four daily cron entries call `/api/refresh-activity` in the 00:00, 06:00, 12:00, and 18:00 UTC hours. Each entry has a distinct slot query parameter. Vercel Hobby can invoke each entry any time within its scheduled hour.
+```sh
+curl -fsS 'https://invisible-gray.vercel.app/api/v1/returning-signers?limit=10'
+curl -fsS 'https://invisible-gray.vercel.app/api/v1/projects/rhea'
+curl -fsS 'https://invisible-gray.vercel.app/api/v1/projects/rhea/market'
+```
+
+</details>
+
+## Local setup
+
+1. Install Node.js 22 or later and npm.
+2. Clone the repository and install its dependencies.
+
+   ```sh
+   git clone https://github.com/0xmugetso/invisible.git
+   cd invisible
+   npm ci
+   npm run dev
+   ```
+
+3. Open [localhost:3000](http://localhost:3000/). The Next.js dev server serves the landing page and docs and proxies selected research requests to the public deployment. To try wallet sign-in immediately, use the [live dashboard](https://invisible-gray.vercel.app/app/).
+
+Run `npm test` for the test suite or `npm run build` to generate the static export in `out/`.
+
+## Deployment
+
+The production Vercel project serves the static Next.js export and the Node functions in [`api/`](api/). See [`vercel.json`](vercel.json) for the build, routing, and cron configuration.
+
+1. Provision PostgreSQL and set `DATABASE_URL`. Apply [`analytics/postgres.sql`](analytics/postgres.sql) and apply the production wallet schema from the current deployment source.
+2. Set the deployment’s public origin and provider credentials using [`.env.example`](.env.example) as a reference. Keep database, cron, and provider credentials on the server.
+3. Configure the research refresh below. Wallet sign-in verifies a single-use NEP-413 message against a current full-access key on NEAR mainnet and stores a database session.
+
+### Scheduled research refresh
+
+Use the repository root and the build settings in `vercel.json`. It deploys the static Next.js export and Node API functions. Four daily cron entries call `/api/refresh-activity` in the 00:00, 06:00, 12:00, and 18:00 UTC hours. Each entry has a distinct slot query parameter.
 
 Set `CRON_SECRET`, `DATABASE_URL`, and `BQ_PROJECT` in the production environment. Use a random cron secret. For keyless BigQuery access, follow the [Vercel Google Cloud federation guide](https://vercel.com/docs/oidc/gcp). Use the team issuer and allowed audience `https://vercel.com/TEAM_SLUG`, map `google.subject` to `assertion.sub`, and restrict the provider with `assertion.sub == 'owner:TEAM_SLUG:project:invisible:environment:production'`. Grant that exact subject Workload Identity User on the service account. The service account needs BigQuery Job User on the query project. Enable the BigQuery, Security Token Service, and IAM Service Account Credentials APIs in Google Cloud.
 
@@ -125,27 +118,8 @@ Set `BQ_WIF_PROVIDER` to `projects/PROJECT_NUMBER/locations/global/workloadIdent
 
 Set `NEARBLOCKS_API_KEY` for recent account samples and optionally `BQ_PROJECT_MAX_BYTES` for the ranking scan cap. The cron uses the BigQuery API.
 
-Run the database setup before the first scheduled run. The cron finds the latest complete 56-day warehouse window with a following partition present. BigQuery computes signer cohorts across that window and returns one summary per verified project. PostgreSQL stores the summaries, scores, and transaction evidence alongside the project registry. The cutoff advances when the next complete UTC day is available. NearBlocks supplies recent activity independently of that cutoff.
+Run the database setup before the first scheduled run. The cron finds the latest complete 56-day warehouse window with a following partition present. BigQuery computes signer cohorts across that window for mapped projects. Each summary includes the exact receiver accounts used, a signer breakdown per contract, and transaction links. PostgreSQL stores these summaries alongside the project registry. Signers are deduplicated at the project level, so per-contract totals cannot be added together. Projects without a verified token can have measured activity in Project coverage and are ineligible for either leaderboard. The cutoff advances when the next complete UTC day is available. NearBlocks supplies recent activity independently of that cutoff.
 
-Run `node scripts/screen-projects.mjs [snapshot-path]` to screen the deployment export. The script flags contracts with at least 50 signers in each of the two latest 28-day windows and 10 in the earlier week of the weekly comparison. It distinguishes mapped contracts, reference deployments, token contracts, and accounts that need attribution. Treat the output as a review queue. Several individually small contracts can still qualify together after being mapped to a project.
+## Brand assets
 
-The production leaderboard uses direct function-call attempts to the verified project’s mapped product contracts. It deduplicates signers across those contracts. It requires 50 signers in each 28-day window, 10 in the prior week, 10 returning signers and activity on 14 of the latest 28 days. The score blends peer percentiles for adjusted return rate (35%), repeat signer count (30%), adjusted 28-day growth (25%) and spread of activity across days (10%). Return rate and growth use a baseline with 50 extra signers so small cohorts have less influence. Spread is one minus the busiest day’s share of the sum of daily unique signers. Fastest rising sorts by net weekly growth divided by prior weekly signers plus 25. These scores measure activity on mapped contracts and do not infer unique people, financial value or off-chain adoption.
-
-## Project research preview
-
-The Vercel research handler supplies six views for the dashboard and research preview.
-
-- `GET /api/research?view=ecosystem&page=1` returns the merged review inventory and source links. Set `q` to search by name or account. Refresh it with `node scripts/import-ecosystem-catalog.mjs`. The import merges known aliases, screens every listing against CoinGecko’s NEAR token addresses, and retains unmatched listings with an explicit evidence status. An absent match means the screened sources did not identify a token. It does not establish that the project has never issued one.
-- `GET /api/research?view=candidates` reads one page from the NearBlocks fungible token index. Pass the returned `nextCursor` as the URL-encoded `cursor` to continue. Candidate status identifies known project tokens and assets that need attribution review. A shared or bridged asset can still qualify when evidence identifies the project and its NEAR product contracts.
-- `GET /api/research?view=leaderboard` joins the verified registry to the latest warehouse ranking. Projects with verified tokens appear with their activity rank, or the reason their rank is absent. The ecosystem catalog includes projects without a verified token.
-- `GET /api/research?view=investment` applies the activity and market score to the verified-token cohort. Every verified-token project receives an investment rank or an eligibility reason. The ecosystem view records investment eligibility for each catalog listing.
-- `GET /api/research?view=narratives` returns the categories featured in CoinGecko’s search trends as market-wide attention context.
-- `GET /api/research?view=project&id=rhea` joins a project’s activity, contract and token evidence to market data. NearBlocks supplies supply on NEAR for the exact token contract. The service uses a CoinGecko market quote when it can map the address to an asset and falls back to NearBlocks market fields otherwise. The market lookup time and warehouse cutoff can differ. Missing evidence is represented by null.
-
-To review several pages at once, run `node scripts/discover-token-candidates.mjs 10`. The command prints one JSON record per page. Pass the last `nextCursor` as the second argument to resume.
-
-A candidate needs a documented product or ecosystem contribution and evidence of its connection to NEAR. The activity leaderboard requires a verified token, attributable product contracts, and enough measured activity. Projects without a verified token remain available for ecosystem research. For wallets, RPCs, and developer tools, collect comparable metrics such as active integrations, requests, or funded work before ranking. Record a standalone meme or test deployment as excluded once there is evidence of its purpose. A token contract can count as product activity when it implements the product itself, as with a liquid staking contract. Token transfers alone, listings, and affiliate pools do not establish adoption. Preserve measured projects with low activity in the registry so users can see the evidence for their status.
-
-Keep onchain activity as its own rank. Use FDV, supply, upcoming unlocks, realized burns and buybacks to describe exposure and dilution. Record roadmap dates and evidence for shipped milestones. Measure social posting and engagement over dated windows from attributed channels. Compare sector momentum over the same dates for projects with documented category assignments. These signals need separate dates and provenance. The preview leaves the overall performance rank empty while coverage is incomplete. The agent-facing API and MCP can use the same evidence model once the ranking criteria and coverage rules are finalized.
-
-The investment score uses the existing onchain activity score (70%), the peer percentile of reported reserves in the largest exact-base-token NEAR pool (20%), and reported market cap divided by FDV (10%). A rank requires a qualified activity score, one verified token, positive pool reserves, consistent positive valuation fields, and at least three comparable projects. DEX Screener supplies the exact token and pool evidence. Pool reserves describe the indexed pool, and the valuation ratio describes the provider's estimate. Both depend on source coverage. Vesting, roadmap, social activity, and narrative evidence remain research fields while their coverage is too uneven for a comparable score.
+[Keyhole mark](app/icon.svg) · [README banner](public/brand/readme-hero.png) · [Social banner · 1200 × 630](public/brand/social-hero.png) · [Dashboard walkthrough](public/dashboard-walkthrough.mp4)

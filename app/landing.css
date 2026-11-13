@@ -542,24 +542,28 @@ html:has(.iv-landing) { scroll-behavior:smooth; }
 }
 
 .iv-connect, .iv-insights { padding-block:clamp(62px,7.5vw,108px); }
-.iv-connect { min-height:0; }
+.iv-connect { min-height:0; overflow-anchor:none; }
 .iv-insights { min-height:clamp(360px,42vw,560px); }
 .iv-connect .iv-editor-top {
   display:grid;
   grid-template-columns:minmax(0,1fr) auto;
   padding:7px 10px;
 }
-.iv-connect .iv-steps { padding:12px clamp(11px,1.5vw,17px) 8px; }
+.iv-connect .iv-steps { position:relative; padding:12px clamp(11px,1.5vw,17px) 32px; }
+.iv-connect .iv-editor { position:relative; isolation:isolate; background:none; border-color:transparent; }
+.iv-editor-surface {
+  position:absolute; z-index:-1; inset:-1px -1px auto;
+  height:var(--iv-editor-height,100%); background:var(--iv-surface);
+  border:1px solid var(--iv-line); border-radius:inherit; pointer-events:none;
+  transition:height .36s cubic-bezier(.22,.75,.25,1);
+}
 .iv-connect .iv-steps > .iv-editor-stack:first-child {
-  /* Keep long examples within the editor instead of sizing it to hidden tabs. */
-  grid-template-rows:minmax(0,1fr);
-  block-size:clamp(274px,32vw,296px);
+  /* All variants reserve space; each panel keeps its own natural height. */
+  align-items:start;
 }
 .iv-connect .iv-steps [data-active] {
   display:grid;
-  grid-template-rows:auto minmax(0,1fr);
   gap:10px;
-  min-block-size:0;
 }
 .iv-connect .iv-step { display:flex; flex-direction:column; min-block-size:0; }
 .iv-connect .iv-step + .iv-step { margin-top:0; }
@@ -575,8 +579,8 @@ html:has(.iv-landing) { scroll-behavior:smooth; }
 }
 .iv-step pre.iv-a2a-request { max-height:calc(9lh + 16px); }
 .iv-connect .iv-step:has(+ .iv-step .iv-a2a-request) pre { max-height:calc(2lh + 16px); }
-.iv-connect .iv-step pre.iv-a2a-request { flex:1; max-height:none; }
-.iv-connect .iv-copy-status { margin-top:4px; }
+.iv-connect .iv-step pre.iv-a2a-request { max-height:calc(7lh + 16px); }
+.iv-connect .iv-copy-status { position:absolute; inset-inline:clamp(11px,1.5vw,17px); margin-top:4px; }
 @media(max-width:780px) {
   .iv-connect { gap:14px; }
   .iv-section-contour-connect { height:clamp(48px,13vw,90px); margin-block-top:8px; }

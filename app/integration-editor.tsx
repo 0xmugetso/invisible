@@ -1,5 +1,5 @@
 'use client';
-import {useEffect,useId,useRef,useState,type KeyboardEvent,type RefObject} from 'react';
+import {useEffect,useId,useLayoutEffect,useRef,useState,type KeyboardEvent,type RefObject} from 'react';
 import Link from 'next/link';
 import {gsap} from 'gsap';
 import Icon,{type IconName} from './interface-icon';
@@ -56,7 +56,7 @@ export function Tabs({id,label,items,icons,marks,active,onChange}:{id:string; la
     if (index == null) return;
     event.preventDefault();
     onChange(index);
-    event.currentTarget.querySelectorAll('button')[index]?.focus();
+    event.currentTarget.querySelectorAll('button')[index]?.focus({preventScroll:true});
   }
   return <div className="iv-switch" role="tablist" aria-label={label} onKeyDown={move}>
     {items.map((item,index)=><button key={index} id={`${id}-${index}`} type="button" role="tab" aria-selected={active===index}
@@ -95,10 +95,32 @@ export function IntegrationEditor({only}:{only?:keyof typeof integrations}) {
   const protocolId=uid+'-protocol';
   const envId=uid+'-environment';
   const stepPanel = useRef<HTMLDivElement>(null);
+  const editor = useRef<HTMLDivElement>(null);
+  const status = useRef<HTMLDivElement>(null);
   const visibleProtocols = only ? [only] : protocols;
   const docsAnchors = {'REST API':'rest',MCP:'mcp',A2A:'a2a',Skill:'skill'};
   const copyError = 'Copy failed. Select the code.';
   usePanelReveal(stepPanel, protocol+envIndex);
+  useLayoutEffect(()=>{
+    const card = editor.current;
+    const panel = stepPanel.current;
+    const feedback = status.current;
+    if (only || !card || !panel || !feedback) return;
+    const measure = ()=>{
+      const steps = panel.closest('.iv-steps');
+      if (!steps) return;
+      const bottom = panel.getBoundingClientRect().bottom;
+      feedback.style.top = `${bottom - steps.getBoundingClientRect().top}px`;
+      const height = bottom - card.getBoundingClientRect().top + feedback.offsetHeight + 12;
+      card.style.setProperty('--iv-editor-height', `${Math.ceil(height)}px`);
+    };
+    measure();
+    const observer = new ResizeObserver(measure);
+    observer.observe(card);
+    observer.observe(panel);
+    observer.observe(feedback);
+    return ()=>observer.disconnect();
+  },[only,protocol,envIndex]);
 
   async function copy(code:string,index:number) {
     try {
@@ -112,7 +134,8 @@ export function IntegrationEditor({only}:{only?:keyof typeof integrations}) {
 
   return <div className="iv-setup" data-reveal>
       {!only && <Tabs id={protocolId} label="Protocol" items={protocols} icons={['connect','api','ecosystem','research']} active={protocolIndex} onChange={index=>{setProtocol(index);setEnv(0);setCopyStatus('');setCopiedStep(null);}}/>}
-      <div className="iv-editor iv-card" id={protocolId+'-panel'} role={only ? undefined : 'tabpanel'} aria-labelledby={only ? undefined : `${protocolId}-${protocolIndex}`}>
+      <div className="iv-editor iv-card" ref={editor} id={protocolId+'-panel'} role={only ? undefined : 'tabpanel'} aria-labelledby={only ? undefined : `${protocolId}-${protocolIndex}`}>
+        {!only && <div className="iv-editor-surface" aria-hidden="true"/>}
         <div className="iv-editor-stack">
           {visibleProtocols.map(item=>{
             const active = item===protocol;
@@ -140,7 +163,7 @@ export function IntegrationEditor({only}:{only?:keyof typeof integrations}) {
               </div>;
             }))}
           </div>
-          <div className="iv-editor-stack iv-copy-status">
+          <div className="iv-editor-stack iv-copy-status" ref={status}>
             <span aria-hidden="true">{copyError}</span>
             <p role="status">{copyStatus}</p>
           </div>

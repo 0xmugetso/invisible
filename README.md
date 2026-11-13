@@ -126,7 +126,7 @@ Run `npm test` for the test suite or `npm run build` to generate the static expo
 
 The production Vercel project serves the static Next.js export and the Node functions in [`api/`](api/). See [`vercel.json`](vercel.json) for the build, routing, and cron configuration.
 
-1. Provision PostgreSQL and set `DATABASE_URL`. Apply [`analytics/postgres.sql`](analytics/postgres.sql) and apply the production wallet schema from the current deployment source.
+1. Provision PostgreSQL and set `DATABASE_URL`. Apply [`analytics/postgres.sql`](analytics/postgres.sql) and [`analytics/wallet-auth.sql`](analytics/wallet-auth.sql).
 2. Set the deployment’s public origin and provider credentials using [`.env.example`](.env.example) as a reference. Keep database, cron, and provider credentials on the server.
 3. Configure the research refresh below. Wallet sign-in verifies a single-use NEP-413 message against a current full-access key on NEAR mainnet and stores a database session.
 

@@ -46,7 +46,7 @@ Flat or falling signer cohorts: Rhea Lending -48%; Rhea Exchange -65%; NEAR Soci
 
 ## Method and reproduction
 
-Model 1.0. Run `npm run report`. Demo inputs: lib/demo.mjs. Observed inputs: data/observed.json and data/projects.json; see analytics/snapshot.sql and README.md for the extract.
+Model 1.0. Run `npm run report`. Observed inputs: data/observed.json and data/projects.json; see analytics/snapshot.sql and README.md for the extract.
 
 Count distinct originating signers on direct signed function-call attempts, including failures. Do not add receipts, inner calls, or daily uniques to estimate 28-day users. Repeat share is the adjacent-window overlap divided by prior signers. Compare disjoint UTC windows.
 

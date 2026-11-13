@@ -10,15 +10,221 @@
     }
   },
   "rewrites": [
-    { "source": "/activity/projects.json", "destination": "/api/activity?dataset=projects" },
-    { "source": "/activity/blocks.json", "destination": "/api/activity?dataset=blocks" },
-    { "source": "/activity/rankings.json", "destination": "/api/activity?dataset=rankings" },
-    { "source": "/activity/coverage.json", "destination": "/api/activity?dataset=coverage" }
+    {
+      "source": "/activity/projects.json",
+      "destination": "/api/activity?dataset=projects"
+    },
+    {
+      "source": "/activity/blocks.json",
+      "destination": "/api/activity?dataset=blocks"
+    },
+    {
+      "source": "/activity/rankings.json",
+      "destination": "/api/activity?dataset=rankings"
+    },
+    {
+      "source": "/activity/coverage.json",
+      "destination": "/api/activity?dataset=coverage"
+    },
+    {
+      "source": "/api/v1/projects/:id/market",
+      "destination": "/api/rest?resource=market&id=:id"
+    },
+    {
+      "source": "/api/v1/projects/:id",
+      "destination": "/api/rest?resource=project&id=:id"
+    },
+    {
+      "source": "/api/v1/projects",
+      "destination": "/api/rest?resource=projects"
+    },
+    {
+      "source": "/api/v1/rankings",
+      "destination": "/api/rest?resource=rankings"
+    },
+    {
+      "source": "/api/v1/investment",
+      "destination": "/api/rest?resource=investment"
+    },
+    {
+      "source": "/api/v1/forecast",
+      "destination": "/api/rest?resource=forecast"
+    },
+    {
+      "source": "/api/v1/returning-signers",
+      "destination": "/api/rest?resource=returning"
+    },
+    {
+      "source": "/.well-known/agent-card.json",
+      "destination": "/api/a2a"
+    }
   ],
   "crons": [
-    { "path": "/api/refresh-activity?slot=00", "schedule": "0 0 * * *" },
-    { "path": "/api/refresh-activity?slot=06", "schedule": "0 6 * * *" },
-    { "path": "/api/refresh-activity?slot=12", "schedule": "0 12 * * *" },
-    { "path": "/api/refresh-activity?slot=18", "schedule": "0 18 * * *" }
+    {
+      "path": "/api/refresh-activity?slot=00",
+      "schedule": "0 0 * * *"
+    },
+    {
+      "path": "/api/refresh-activity?slot=06",
+      "schedule": "0 6 * * *"
+    },
+    {
+      "path": "/api/refresh-activity?slot=12",
+      "schedule": "0 12 * * *"
+    },
+    {
+      "path": "/api/refresh-activity?slot=18",
+      "schedule": "0 18 * * *"
+    }
+  ],
+  "redirects": [
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "host",
+          "value": "invisible-gray-app.vercel.app"
+        }
+      ],
+      "destination": "https://invisible-gray.vercel.app/app/",
+      "permanent": false
+    },
+    {
+      "source": "/app/",
+      "has": [
+        {
+          "type": "host",
+          "value": "invisible-gray-app.vercel.app"
+        }
+      ],
+      "destination": "https://invisible-gray.vercel.app/app/",
+      "permanent": false
+    },
+    {
+      "source": "/app/:path+/",
+      "has": [
+        {
+          "type": "host",
+          "value": "invisible-gray-app.vercel.app"
+        }
+      ],
+      "destination": "https://invisible-gray.vercel.app/app/:path/",
+      "permanent": false
+    },
+    {
+      "source": "/:path*",
+      "has": [
+        {
+          "type": "host",
+          "value": "invisible-gray-app.vercel.app"
+        }
+      ],
+      "destination": "https://invisible-gray.vercel.app/:path*",
+      "permanent": false
+    },
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "host",
+          "value": "invisible-gray-docs.vercel.app"
+        }
+      ],
+      "destination": "https://invisible-gray.vercel.app/docs/",
+      "permanent": false
+    },
+    {
+      "source": "/docs/",
+      "has": [
+        {
+          "type": "host",
+          "value": "invisible-gray-docs.vercel.app"
+        }
+      ],
+      "destination": "https://invisible-gray.vercel.app/docs/",
+      "permanent": false
+    },
+    {
+      "source": "/docs/:path+/",
+      "has": [
+        {
+          "type": "host",
+          "value": "invisible-gray-docs.vercel.app"
+        }
+      ],
+      "destination": "https://invisible-gray.vercel.app/docs/:path/",
+      "permanent": false
+    },
+    {
+      "source": "/:path*",
+      "has": [
+        {
+          "type": "host",
+          "value": "invisible-gray-docs.vercel.app"
+        }
+      ],
+      "destination": "https://invisible-gray.vercel.app/:path*",
+      "permanent": false
+    },
+    {
+      "source": "/dashboard",
+      "destination": "/app/",
+      "permanent": true
+    },
+    {
+      "source": "/dashboard/",
+      "destination": "/app/",
+      "permanent": true
+    },
+    {
+      "source": "/discovery",
+      "destination": "/app/discovery/",
+      "permanent": true
+    },
+    {
+      "source": "/discovery/",
+      "destination": "/app/discovery/",
+      "permanent": true
+    },
+    {
+      "source": "/deployments",
+      "destination": "/app/deployments/",
+      "permanent": true
+    },
+    {
+      "source": "/deployments/",
+      "destination": "/app/deployments/",
+      "permanent": true
+    },
+    {
+      "source": "/ecosystem",
+      "destination": "/app/ecosystem/",
+      "permanent": true
+    },
+    {
+      "source": "/ecosystem/",
+      "destination": "/app/ecosystem/",
+      "permanent": true
+    },
+    {
+      "source": "/project/:id",
+      "destination": "/app/project/:id/",
+      "permanent": true
+    },
+    {
+      "source": "/project/:id/",
+      "destination": "/app/project/:id/",
+      "permanent": true
+    },
+    {
+      "source": "/thesis",
+      "destination": "/docs/",
+      "permanent": true
+    },
+    {
+      "source": "/thesis/",
+      "destination": "/docs/",
+      "permanent": true
+    }
   ]
 }

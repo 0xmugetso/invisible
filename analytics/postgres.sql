@@ -68,3 +68,8 @@ CREATE TABLE IF NOT EXISTS invisible.ranking_run (
   methodology text NOT NULL,
   results jsonb NOT NULL
 );
+
+CREATE TABLE IF NOT EXISTS invisible.contract_sample (
+  account_id text PRIMARY KEY REFERENCES invisible.project_contract(account_id) ON DELETE CASCADE,
+  sampled_at timestamptz NOT NULL
+);

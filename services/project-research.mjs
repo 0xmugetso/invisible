@@ -1,3 +1,4 @@
+import {signerForecast} from '../lib/signer-forecast.mjs';
 import {activityThresholds, unmetActivityThresholds} from './activity-eligibility.mjs';
 import registry from '../data/activity-registry.json' with {type:'json'};
 import catalog from '../data/ecosystem-catalog.json' with {type:'json'};
@@ -9,15 +10,15 @@ const byId = new Map(registry.map(project => [project.id, project]));
 const byToken = new Map(registry.flatMap(project => project.tokens.map(token => [token.accountId, project])));
 const sharedAsset = /(?:^|\.)(?:factory\.bridge\.near|omft\.near|contract\.portalbridge\.near)$/;
 
-async function request(url, headers) {
-  const response = await fetch(url, {headers, signal:AbortSignal.timeout(8000)});
+async function request(url, headers, timeout=8000) {
+  const response = await fetch(url, {headers, signal:AbortSignal.timeout(timeout)});
   if (!response.ok) throw new Error('Upstream HTTP '+response.status);
   return response.json();
 }
 
-function nearBlocksRequest(path) {
+function nearBlocksRequest(path, timeout) {
   const key = process.env.NEARBLOCKS_API_KEY;
-  return request(nearBlocks+path, key ? {Authorization:'Bearer '+key} : undefined);
+  return request(nearBlocks+path, key ? {Authorization:'Bearer '+key} : undefined, timeout);
 }
 
 function decimal(value) {
@@ -89,20 +90,22 @@ async function marketEvidence(token) {
   const path = '/fts/'+encodeURIComponent(token.accountId);
   const checkedAt = new Date().toISOString();
   const nearSource = nearBlocks+path;
-  const data = await nearBlocksRequest(path).then(result=>
+  const near = nearBlocksRequest(path,2500).then(result=>
     result.data?.contract === token.accountId ? result.data : null).catch(()=>null);
   const exactListings = (catalog.indexedTokens ?? []).filter(row=>row.accountId===token.accountId);
-  // An exact address is evidence. A matching ticker or project name is only a lead.
-  const marketId = exactListings.length === 1 ? exactListings[0].id : data?.coingecko_id;
-  let quote, quoteSource;
-  if (typeof marketId === 'string' && /^[a-z0-9-]+$/.test(marketId)) {
-    const params = new URLSearchParams({vs_currency:'usd', ids:marketId});
-    quoteSource = coinGecko+'/coins/markets?'+params;
-    quote = await request(quoteSource).then(rows=>rows.find(row=>row.id===marketId)).catch(()=>null);
-  }
+  const quoteFor = async id => {
+    if (typeof id !== 'string' || !/^[a-z0-9-]+$/.test(id)) return {};
+    const params = new URLSearchParams({vs_currency:'usd', ids:id});
+    const quoteSource = coinGecko+'/coins/markets?'+params;
+    const quote = await request(quoteSource,undefined,2500).then(rows=>rows.find(row=>row.id===id)).catch(()=>null);
+    return {quote,quoteSource};
+  };
+  // Start both reads together when the market listing is already verified by address.
+  const market = exactListings.length===1 ? quoteFor(exactListings[0].id) : near.then(data=>quoteFor(data?.coingecko_id));
+  const [data,{quote,quoteSource}]=await Promise.all([near,market]);
   if (!quote && !data) return {status:'unavailable',checkedAt,source:nearSource};
   return {
-    status:'reported', checkedAt, source:quote ? quoteSource : nearSource,
+    status:'reported', tokenName:typeof data?.name==='string' ? data.name : null, checkedAt, source:quote ? quoteSource : nearSource,
     priceUsd:decimal(quote ? quote.current_price : data?.price),
     volume24hUsd:decimal(quote ? quote.total_volume : data?.volume_24h),
     marketCapUsd:decimal(quote ? quote.market_cap : data?.market_cap),
@@ -116,16 +119,18 @@ async function marketEvidence(token) {
 }
 
 function projectSummary(project, snapshot, rank) {
-  const activity = snapshot?.analysis?.find(row => row.project_id === project.id) ?? null;
+  const record = snapshot?.analysis?.find(row => row.project_id === project.id);
+  const {contract_activity:contractActivity, ...activity} = record ?? {};
   return {
     id:project.id, name:project.name, tokens:project.tokens,
     status:!project.tokens.length ? 'research_only' : project.benchmark ? 'reference'
-      : rank ? 'ranked' : activity ? (unmetActivityThresholds(activity).length ? 'below_ranking_thresholds' : 'awaiting_comparable_cohort') : 'awaiting_measurement',
+      : rank ? 'ranked' : record ? (unmetActivityThresholds(activity).length ? 'below_ranking_thresholds' : 'awaiting_comparable_cohort')
+      : Object.keys(project.contracts).length ? 'awaiting_measurement' : 'unattributed_activity',
     activityRank:rank?.rank ?? null, activityScore:rank?.score ?? null,
     performanceRank:null,
-    activity,
+    activity:record ? activity : null,
     scoreComponents:rank?.components ?? null,
-    unmetThresholds:activity ? unmetActivityThresholds(activity) : [],
+    unmetThresholds:record ? unmetActivityThresholds(activity) : [],
   };
 }
 
@@ -146,6 +151,9 @@ export function researchLeaderboard(snapshot) {
     thresholds:activityThresholds,
     coverage:{
       catalogEntries:catalog.projects.length,
+      reviewedProjects:registry.length,
+      mappedProjects:registry.filter(project=>Object.keys(project.contracts).length).length,
+      measuredProjects:snapshot?.analysis?.filter(row=>byId.has(row.project_id)).length ?? 0,
       tokenLeads:catalog.projects.filter(project=>project.status==='unverified_token_lead').length,
       noTokenEvidence:catalog.projects.filter(project=>project.status==='no_token_found_in_sources').length,
       indexedTokenAccounts:new Set((catalog.indexedTokens ?? []).map(token=>token.accountId)).size,
@@ -155,21 +163,42 @@ export function researchLeaderboard(snapshot) {
   };
 }
 
-export async function researchProject(id, snapshot) {
+export function researchForecast(snapshot) {
+  return {
+    cutoff:snapshot?.cutoff ?? null,
+    source:'https://github.com/near/near-public-lakehouse',
+    methodology:'adjacent-signer-cohorts-v1',
+    projects:(snapshot?.analysis ?? []).flatMap(activity=>{
+      const project=byId.get(activity.project_id);
+      if (!project?.tokens.length || project.benchmark) return [];
+      const contracts=activity.contracts;
+      if (!Array.isArray(contracts) || contracts.length!==Object.keys(project.contracts).length ||
+          contracts.some(account=>!Object.hasOwn(project.contracts,account))) return [];
+      const scenario=signerForecast(activity,snapshot.forecastReady);
+      return scenario ? [{id:project.id,name:project.name,tokens:project.tokens,contracts,
+        ...scenario,evidence:activity.evidence?.[0] ?? null}] : [];
+    }).sort((a,b)=>b.latest-a.latest || a.name.localeCompare(b.name)),
+  };
+}
+
+export async function researchProjectMarket(id) {
+  const project = byId.get(id);
+  if (!project) return null;
+  const tokens = await Promise.all(project.tokens.map(async token => ({...token,market:await marketEvidence(token)})));
+  return {tokens};
+}
+
+export function researchProjectCore(id, snapshot) {
   const project = byId.get(id);
   if (!project) return null;
   const row = researchLeaderboard(snapshot).projects.find(item => item.id === id) ?? projectSummary(project, snapshot);
-  const tokens = await Promise.all(project.tokens.map(async token => {
-    try {
-      return {...token, market:await marketEvidence(token)};
-    } catch {
-      return {...token, market:{status:'unavailable', source:nearBlocks+'/fts/'+encodeURIComponent(token.accountId)}};
-    }
-  }));
   const evidence = reviewed[id];
   const tokenomics = project.tokens.some(token => token.accountId === evidence?.tokenAccount) ? evidence : {};
   return {
-    ...row, tokens, contracts:project.contracts, links:project.links,
+    ...row, weights:snapshot?.weights ?? null, contracts:project.contracts, links:project.links,
+    description:project.description, benchmark:!!project.benchmark,
+    measurement:project.measurement ?? null,
+    contractActivity:snapshot?.analysis?.find(item=>item.project_id===id)?.contract_activity ?? null,
     cutoff:snapshot?.cutoff ?? null,
     tokenomics:{
       status:project.tokens.length ? 'verified_token' : 'token_not_verified',
@@ -180,4 +209,10 @@ export async function researchProject(id, snapshot) {
     socialActivity:null,
     narrativeMomentum:null,
   };
+}
+
+
+export async function researchProject(id,snapshot) {
+  const core=researchProjectCore(id,snapshot);
+  return core ? {...core,...await researchProjectMarket(id)} : null;
 }

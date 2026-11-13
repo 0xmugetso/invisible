@@ -11,6 +11,7 @@ const aliases = new Map(Object.entries({
   inteartradealpha:'intear', stadernearx:'stader', templarlending:'templarprotocol',
   nearbridge:'rainbowbridge', herestaking:'herewallet', herewalletstaking:'herewallet',
   nearblock:'nearblocks', trustake:'trufin', neartradelol:'neartradeterminal', edgevideoai:'edgevideo', senderwallet:'senderai', daibymakerdao2:'daibymakerdao', neardevhub2:'neardevhub',
+  jumboexchange:'jumbo', hotnearwallettelegram:'hotwallet', intellexaiprotocoltoken:'intellex', allbridgezero:'allbridge', allbridgeclassic:'allbridge',
 }));
 const rows = new Map();
 const normalize = value => value.toLowerCase().replace(/[^a-z0-9]/g,'');

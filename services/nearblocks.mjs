@@ -52,22 +52,37 @@ function directCall(tx, contract, time) {
 }
 
 export async function ingestProjectSample(db) {
+  // Rotate through a fixed batch so one six-hour refresh cannot use the whole provider allowance.
   const {rows:contracts} = await db.query(`SELECT c.account_id FROM invisible.project_contract c
-    JOIN invisible.project p ON p.id=c.project_id WHERE NOT p.benchmark
-    AND EXISTS (SELECT 1 FROM invisible.project_token t WHERE t.project_id=p.id AND t.active)
-    ORDER BY c.account_id`);
+    JOIN invisible.project p ON p.id=c.project_id
+    LEFT JOIN invisible.contract_sample s ON s.account_id=c.account_id
+    WHERE NOT p.benchmark
+    ORDER BY s.sampled_at NULLS FIRST, c.account_id LIMIT 12`);
   const results = new Map();
+  const sampled=[];
+  let failure;
   for (const {account_id:contract} of contracts) {
-    await wait(apiKey ? 750 : 1500);
-    const {data} = await request('accounts/'+encodeURIComponent(contract)+'/txns', {limit:20});
-    for (const tx of data) {
-      if (tx.receiver_account_id !== contract) continue;
-      const call = directCall(tx, contract, timestamp(tx.block_timestamp));
-      if (call) results.set(call.transaction_hash, call);
+    try {
+      await wait(apiKey ? 750 : 1500);
+      const {data} = await request('accounts/'+encodeURIComponent(contract)+'/txns', {limit:20});
+      for (const tx of data) {
+        if (tx.receiver_account_id !== contract) continue;
+        const call = directCall(tx, contract, timestamp(tx.block_timestamp));
+        if (call) results.set(call.transaction_hash, call);
+      }
+      sampled.push(contract);
+    } catch(error) {
+      failure=error;
+      if (error.message.endsWith('HTTP 429')) break;
     }
   }
-  // A sample gives transaction evidence without establishing ranking coverage.
-  await storeCalls(db, [...results.values()], [], 'nearblocks');
+  // Save completed work even when a later contract hits the rate limit.
+  if (results.size) await storeCalls(db,[...results.values()],[],'nearblocks');
+  if (sampled.length) await db.query(`INSERT INTO invisible.contract_sample
+    SELECT account,now() FROM unnest($1::text[]) AS account
+    ON CONFLICT (account_id) DO UPDATE SET sampled_at=EXCLUDED.sampled_at`,[sampled]);
+  if (failure) throw failure;
+  return {sampled:sampled.length};
 }
 
 async function fetchCalls(contract, start, end) {

@@ -9,6 +9,7 @@ export type ResearchProject = {
   performanceRank:number|null; performanceScore:number|null; investmentStatus:string;
   market:{liquidityUsd:number; source:string; fdvUsd:number|null; marketCapUsd:number|null; volume24hUsd:number|null}|null;
   circulatingShare:number|null;
+  investmentComponents?:Record<string,number>|null;
   scoreComponents?:Record<string,number>|null;
   unmetThresholds:{metric:string; minimum:number; observed:number|null}[];
 };
@@ -20,18 +21,26 @@ export async function getResearch<T>(params:Record<string,string>, signal:AbortS
   return response.json();
 }
 
+let cachedBoard:ResearchBoard|null = null;
+let fetchedAt = 0;
+
 export function useResearchBoard() {
-  const [board,setBoard] = useState<ResearchBoard|null>(null);
+  const [board,setBoard] = useState<ResearchBoard|null>(()=>cachedBoard);
   const [failed,setFailed] = useState(false);
   useEffect(()=>{
     const controller = new AbortController();
     let pending = false;
     const load = async () => {
-      if (pending) return;
+      if (pending || document.hidden || Date.now()-fetchedAt<60_000) return;
       pending = true;
       try {
-        const result = await getResearch<ResearchBoard>({view:'investment'},controller.signal);
+        const result = await getResearch<ResearchBoard>({view:'investment'},controller.signal).catch(error=>{
+          if (cachedBoard || controller.signal.aborted) throw error;
+          return getResearch<ResearchBoard>({view:'leaderboard'},controller.signal);
+        });
         if (!controller.signal.aborted) {
+          cachedBoard=result;
+          fetchedAt=Date.now();
           setBoard(result);
           setFailed(false);
         }
@@ -43,7 +52,8 @@ export function useResearchBoard() {
     };
     void load();
     const interval = window.setInterval(load,60000);
-    return ()=>{controller.abort();window.clearInterval(interval);};
+    document.addEventListener('visibilitychange',load);
+    return ()=>{controller.abort();window.clearInterval(interval);document.removeEventListener('visibilitychange',load);};
   },[]);
   return {board, failed};
 }

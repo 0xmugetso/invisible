@@ -40,7 +40,7 @@ export function ResearchChart({values, label, split = false, days = [], bars = f
       const observer = new IntersectionObserver(([entry]) => {
         if (!entry.isIntersecting) return;
         observer.disconnect();
-        gsap.fromTo(mask, {attr: {width: 0}}, {attr: {width}, duration: .85, ease: 'power2.out', overwrite: true});
+        gsap.fromTo(mask, {attr: {width: 0}}, {attr: {width}, duration: 1.32, ease: 'power2.out', overwrite: true});
       });
       observer.observe(mask.ownerSVGElement!);
       return () => {
@@ -111,7 +111,7 @@ export function ContributionChart({rows}: {rows: {name: string; delta: number}[]
       const observer = new IntersectionObserver(([entry]) => {
         if (!entry.isIntersecting) return;
         observer.disconnect();
-        gsap.fromTo(node.querySelectorAll('.delta-bar'), {scaleX: 0}, {scaleX: 1, duration: .55, stagger: .025, ease: 'power3.out', overwrite: true});
+        gsap.fromTo(node.querySelectorAll('.delta-bar'), {scaleX: 0}, {scaleX: 1, duration: 0.85, stagger: .025, ease: 'power3.out', overwrite: true});
       });
       observer.observe(node);
       return () => {
@@ -169,7 +169,7 @@ export function CountUp({value}: {value:string|number}) {
       const observer = new IntersectionObserver(([entry])=>{
         if (!entry.isIntersecting) return;
         observer.disconnect();
-        gsap.to(state,{number:target,duration:.85,ease:'power3.out',onUpdate:()=>{
+        gsap.to(state,{number:target,duration:1.32,ease:'power3.out',onUpdate:()=>{
           node.textContent = sign+format(Math.round(state.number))+unit;
         },onComplete:()=>{node.textContent=String(value);}});
       });
@@ -192,7 +192,7 @@ export function CohortSculpture({counts,unit='distinct signers',period='28-day',
   useEffect(()=>{
     const motion = gsap.matchMedia();
     motion.add('(prefers-reduced-motion: no-preference)',()=>{
-      gsap.from('[data-cohort-object]',{y:14,opacity:.15,duration:.75,stagger:.12,ease:'power3.out'});
+      gsap.from('[data-cohort-object]',{y:14,opacity:.15,duration:1.16,stagger:.12,ease:'power3.out'});
     },ref);
     return ()=>motion.revert();
   },[counts[0],counts[1],counts[2]]);
@@ -201,9 +201,9 @@ export function CohortSculpture({counts,unit='distinct signers',period='28-day',
     {counts.map((count,i)=>{
       const x=29+i*111, height=count/max*106, y=151-height;
       return <g key={i} data-cohort-object="">
-        <path d={`M${x} ${y}l31 14 31-14v${height}l-31 14-31-14z`} fill={i===2?'#17805e':'#506f63'} stroke="#b0d0c0" strokeWidth=".6"/>
-        <path d={`M${x+31} ${y+14}l31-14v${height}l-31 14z`} fill="#133d32" opacity=".65"/>
-        <path d={`M${x} ${y}l31-14 31 14-31 14z`} fill={i===2?'#a2f6ce':'#9fbbaf'}/>
+        <path d={`M${x} ${y}l31 14 31-14v${height}l-31 14-31-14z`} fill={i===2?'var(--iv-tint)':'var(--subtle)'} stroke="var(--muted)" strokeWidth=".6"/>
+        <path d={`M${x+31} ${y+14}l31-14v${height}l-31 14z`} fill="var(--paper)" opacity=".65"/>
+        <path d={`M${x} ${y}l31-14 31 14-31 14z`} fill={i===2?'var(--iv-pink)':'var(--muted)'}/>
         <text x={x+31} y={Math.max(16,y-18)} textAnchor="middle" fill="currentColor" fontSize="11">{format(count)}</text>
         <text x={x+31} y="187" textAnchor="middle" fill="currentColor" fontSize="10">{labels[i]}</text>
       </g>;

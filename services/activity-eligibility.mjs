@@ -1,4 +1,5 @@
-export const warehouseActivityMethodology = 'activity-warehouse-v5';
+export const warehouseActivityMethodology = 'activity-warehouse-v7';
+export const warehouseReadMethodologies = [warehouseActivityMethodology,'activity-warehouse-v6','activity-warehouse-v5','activity-warehouse-v4'];
 
 export const activityThresholds = {
   current_signers:50,

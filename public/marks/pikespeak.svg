@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Pikespeak">
+	<rect width="512" height="512" rx="96" fill="#0f172a" />
+	<path d="M84 356 220 128 322 356H84Z" fill="#33d5c2" />
+	<path d="M226 356 340 200 432 356H226Z" fill="#77e6d8" />
+	<path d="M218 356 300 248 354 356H218Z" fill="#1b8ea6" />
+	<path d="M220 128 250 196 226 184 204 206 188 190Z" fill="#ffffff" />
+	<path d="M340 200 364 242 342 234 322 254 310 236Z" fill="#ffffff" />
+</svg>

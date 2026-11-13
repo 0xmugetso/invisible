@@ -1,7 +1,7 @@
-import Workspace from '../workspace-shell';
+import WalletAccess from '../wallet-access';
 import '../landing.css';
 import '../workspace.css';
 
 export default function Layout({children}: {children:React.ReactNode}) {
-  return <Workspace>{children}</Workspace>;
+  return <WalletAccess>{children}</WalletAccess>;
 }

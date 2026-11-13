@@ -7,7 +7,10 @@ export default function config(phase) {
   return {
     ...shared,
     async rewrites() {
-      return [{source:'/api/research', destination:'https://invisible-gray.vercel.app/api/research'}];
+      return [
+        {source:'/api/research', destination:'https://invisible-gray.vercel.app/api/research'},
+        {source:'/activity/blocks.json', destination:'https://invisible-gray.vercel.app/activity/blocks.json'},
+      ];
     },
   };
 }

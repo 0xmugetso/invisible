@@ -13,7 +13,7 @@
   --mono: ui-monospace, SFMono-Regular, Consolas, monospace;
 }
 * { box-sizing: border-box; }
-body { margin: 0; background: var(--paper); color: var(--ink); font: 15px/1.5 Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
+body { margin: 0; background: var(--paper); color: var(--ink); font: 15px/1.5 var(--font-supreme), sans-serif; }
 a { color: inherit; text-decoration: none; }
 button, input, select { font: inherit; }
 button, select { cursor: pointer; }
@@ -613,3 +613,84 @@ html[data-theme="dark"] {
 @media (max-width:840px) {
   .discovery-now { grid-template-columns:1fr; }
 }
+
+/* The Brief is a Discovery preview. */
+.shell[data-design="brief"] {
+  --paper:#f7f4eb;
+  --surface:#fffcf4;
+  --ink:#242920;
+  --muted:#555d50;
+  --line:#d8d7ca;
+  --subtle:#eeebdf;
+  --hover:#eeebdf;
+  --green:#255a41;
+  min-height:100vh;
+  background:var(--paper);
+  color:var(--ink);
+}
+html[data-theme="dark"] .shell[data-design="brief"] {
+  --paper:#161916;
+  --surface:#202420;
+  --ink:#eeeee5;
+  --muted:#b0b7a9;
+  --line:#3b4239;
+  --subtle:#282d27;
+  --hover:#282d27;
+  --green:#9dc8a9;
+}
+.shell[data-design="brief"] .masthead {
+  position:relative;
+  background:var(--paper);
+  border-bottom:1px solid var(--line);
+  backdrop-filter:none;
+  box-shadow:none;
+}
+.shell[data-design="brief"] .masthead-inner {
+  background:transparent;
+  border:0;
+  border-radius:0;
+  box-shadow:none;
+  margin-block:0;
+}
+.shell[data-design="brief"] .masthead nav a { border-radius:0; }
+.shell[data-design="brief"] .masthead nav .active { background:transparent; }
+.shell[data-design="brief"] .masthead nav .active::after { width:100%; inset:auto 0 0; }
+.shell[data-design="brief"] .intro { padding-block:clamp(24px,5vw,64px) 24px; }
+.shell[data-design="brief"] .intro h1,
+.shell[data-design="brief"] .discovery-scope h2,
+.shell[data-design="brief"] .feed h2 {
+  font-family: var(--font-technor), sans-serif;
+  font-weight:400;
+  letter-spacing:-.035em;
+}
+.shell[data-design="brief"] .intro h1 { font-size:clamp(2.65rem,7vw,5.4rem); }
+.shell[data-design="brief"] .intro p { margin-top:12px; max-width:58ch; }
+.shell[data-design="brief"] .panel {
+  background:transparent;
+  border:0;
+  border-top:1px solid var(--line);
+  border-radius:0;
+  box-shadow:none;
+  padding:20px 0;
+}
+.shell[data-design="brief"] .discovery-scope {
+  padding-block:24px;
+  margin-bottom:12px;
+  grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);
+  gap:clamp(20px,5vw,72px);
+}
+.shell[data-design="brief"] .discovery-scope h2,
+.shell[data-design="brief"] .feed h2 { font-size:clamp(1.8rem,3.5vw,2.85rem); }
+.shell[data-design="brief"] .discovery-scope p { margin-block:12px; }
+.shell[data-design="brief"] .cohort-object { width:min(100%,400px); }
+.shell[data-design="brief"] .discovery-now { gap:clamp(20px,5vw,72px); }
+.shell[data-design="brief"] .discovery-now h2 { font-size:1.4rem; letter-spacing:-.02em; }
+.shell[data-design="brief"] .feed { margin-top:32px; }
+.shell[data-design="brief"] .list-head { font-size:12px; font-family:inherit; line-height:1.4; letter-spacing:0; }
+.shell[data-design="brief"] .project-row { border-radius:0; box-shadow:none; }
+@media (max-width:720px) {
+  .shell[data-design="brief"] .discovery-scope { grid-template-columns:minmax(0,1fr); }
+  .shell[data-design="brief"] .cohort-object { justify-self:start; }
+}
+
+:is(h1,h2,h3,h4,h5,h6,.iv-wordmark) { font-family:var(--font-technor),sans-serif; }

@@ -1,5 +1,6 @@
 import {readFile} from 'node:fs/promises';
 import {ingestCalls} from './nearblocks.mjs';
+import {warehouseReadMethodologies} from './activity-eligibility.mjs';
 
 export const sixHours = 6*60*60*1000;
 export const rankLag = 15*60*1000;
@@ -10,7 +11,7 @@ export async function latestBlocks(db) {
     ((extract(epoch FROM block_time)*1000000000)::bigint)::text AS block_timestamp,
     jsonb_build_object('count',transaction_count) AS transactions_agg
     FROM invisible.live_block ORDER BY height DESC LIMIT 20`);
-  return {checkedAt:new Date().toISOString(), data:rows};
+  return {checkedAt:rows.length ? new Date(Number(BigInt(rows[0].block_timestamp)/1000000n)).toISOString() : null, data:rows};
 }
 
 export async function latestProjectActivity(db) {
@@ -32,7 +33,8 @@ export async function latestProjectActivity(db) {
 
 export async function rankingCoverage(db) {
   const {rows:[warehouse]} = await db.query(`SELECT cutoff, jsonb_array_length(results->'analysis') AS projects
-    FROM invisible.ranking_run WHERE methodology IN ('activity-warehouse-v1','activity-warehouse-v2','activity-warehouse-v3','activity-warehouse-v4','activity-warehouse-v5') ORDER BY cutoff DESC LIMIT 1`);
+    FROM invisible.ranking_run WHERE methodology=ANY($1::text[]) ORDER BY cutoff DESC LIMIT 1`,
+    [[...warehouseReadMethodologies,'activity-warehouse-v3','activity-warehouse-v2','activity-warehouse-v1']]);
   if (warehouse) return {coveredDays:56, totalDays:56, cutoff:warehouse.cutoff, projects:warehouse.projects};
   const cutoff = new Date(rankingCutoff()).toISOString();
   const {rows:[coverage]} = await db.query(`WITH contracts AS (

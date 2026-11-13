@@ -52,5 +52,18 @@
       "summary": "The project publishes purchases and identifies its NEAR buyback wallet.",
       "source": "https://token.publicai.io/buyback"
     }
+  },
+  "intellex": {
+    "tokenAccount": "itlx.intellex_xyz.near",
+    "stage": {
+      "summary": "Live token with issuer-published allocation and vesting terms",
+      "source": "https://www.intellex.xyz/tokenomics.pdf"
+    },
+    "vesting": {
+      "teamAllocationPercent": 8,
+      "cliffMonths": 12,
+      "vestingMonths": 24,
+      "source": "https://www.intellex.xyz/tokenomics.pdf"
+    }
   }
 }

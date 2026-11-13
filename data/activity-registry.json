@@ -8,7 +8,8 @@
       "v2.ref-finance.near": "https://github.com/ref-finance/guide/blob/main/developers/contracts.md",
       "contract.main.burrow.near": "https://github.com/NearDeFi/burrowland",
       "dclv2.ref-labs.near": "https://guide.rhea.finance/developers/contracts",
-      "boostfarm.ref-labs.near": "https://guide.rhea.finance/developers/contracts"
+      "boostfarm.ref-labs.near": "https://guide.rhea.finance/developers/contracts",
+      "aggregatedex.near": "https://github.com/rhea-finance/rhea-sdk-docs/blob/main/SmartRouterV2%28Aggregated%20DEX%29.md"
     },
     "tokens": [
       {
@@ -32,7 +33,8 @@
         "url": "https://t.me/rhea_finance",
         "evidence": "https://www.rhea.finance/"
       }
-    }
+    },
+    "measurement": "Direct calls to the exchange, lending, farming and aggregator contracts. Swaps routed through a token contract can appear only in downstream receipts."
   },
   {
     "id": "metapool",
@@ -191,7 +193,7 @@
     "id": "nearmobile",
     "name": "NEAR Mobile",
     "category": "Staking",
-    "description": "Calls to the wallet’s NPRO rewards validator.",
+    "description": "Calls to the wallet\u2019s NPRO rewards validator.",
     "contracts": {
       "npro.poolv1.near": "https://www.nearmobile.app/staking"
     },
@@ -384,24 +386,66 @@
     "name": "Keypom",
     "category": "Developer tooling",
     "description": "Access-key onboarding and drop infrastructure.",
-    "contracts": {},
+    "contracts": {
+      "v1.keypom.near": "https://github.com/keypom/keypom",
+      "v2.keypom.near": "https://github.com/keypom/keypom"
+    },
     "tokens": [],
     "links": {
       "website": "https://keypom.xyz/",
       "documentation": "https://github.com/keypom/keypom"
-    }
+    },
+    "measurement": "Direct calls to verified Keypom drop contracts. Claim keys and sponsored transactions can represent different actors than the end user."
   },
   {
     "id": "templar-protocol",
     "name": "Templar Protocol",
     "category": "DeFi",
     "description": "Cross-chain lending markets deployed on NEAR.",
-    "contracts": {},
+    "contracts": {
+      "iada-ixlmusdc.v1.tmplr.near": "https://docs.templarfi.org/guide/addresses.html",
+      "ibtc-iethusdc-1.v1.tmplr.near": "https://docs.templarfi.org/guide/addresses.html",
+      "ibtc-iethusdc.v1.tmplr.near": "https://docs.templarfi.org/guide/addresses.html",
+      "ibtc-ixlmusdc.v1.tmplr.near": "https://docs.templarfi.org/guide/addresses.html",
+      "ibtc-usdc-1.v1.tmplr.near": "https://docs.templarfi.org/guide/addresses.html",
+      "ibtc-usdc.v1.tmplr.near": "https://docs.templarfi.org/guide/addresses.html",
+      "idoge-ixlmusdc.v1.tmplr.near": "https://docs.templarfi.org/guide/addresses.html",
+      "iethfxrp-ixlmusdc.v1.tmplr.near": "https://docs.templarfi.org/guide/addresses.html",
+      "iethhemibtc-iethusdc.v1.tmplr.near": "https://docs.templarfi.org/guide/addresses.html",
+      "iethsusde-iethusdc.v1.tmplr.near": "https://docs.templarfi.org/guide/addresses.html",
+      "iethsusde-ixlmusdc.v1.tmplr.near": "https://docs.templarfi.org/guide/addresses.html",
+      "iethusde-iethusdc.v1.tmplr.near": "https://docs.templarfi.org/guide/addresses.html",
+      "iethusde-ixlmusdc.v1.tmplr.near": "https://docs.templarfi.org/guide/addresses.html",
+      "iethwbtc-iethusdc.v1.tmplr.near": "https://docs.templarfi.org/guide/addresses.html",
+      "iethwbtc-ixlmusdc.v1.tmplr.near": "https://docs.templarfi.org/guide/addresses.html",
+      "iltc-ixlmusdc.v1.tmplr.near": "https://docs.templarfi.org/guide/addresses.html",
+      "ixlm-ixlmpyusd.v1.tmplr.near": "https://docs.templarfi.org/guide/addresses.html",
+      "ixlm-ixlmusdc-1.v1.tmplr.near": "https://docs.templarfi.org/guide/addresses.html",
+      "ixlm-ixlmusdc.v1.tmplr.near": "https://docs.templarfi.org/guide/addresses.html",
+      "ixlmcetes-ixlmusdc.v1.tmplr.near": "https://docs.templarfi.org/guide/addresses.html",
+      "ixlmdejaaa-ixlmusdc-1.v1.tmplr.near": "https://docs.templarfi.org/guide/addresses.html",
+      "ixlmdejaaa-ixlmusdc-2.v1.tmplr.near": "https://docs.templarfi.org/guide/addresses.html",
+      "ixlmdejaaa-ixlmusdc.v1.tmplr.near": "https://docs.templarfi.org/guide/addresses.html",
+      "ixlmdejtrsy-ixlmusdc-1.v1.tmplr.near": "https://docs.templarfi.org/guide/addresses.html",
+      "ixlmdejtrsy-ixlmusdc.v1.tmplr.near": "https://docs.templarfi.org/guide/addresses.html",
+      "ixlmsolvbtc-ixlmusdc.v1.tmplr.near": "https://docs.templarfi.org/guide/addresses.html",
+      "ixlmustry-ixlmusdc.v1.tmplr.near": "https://docs.templarfi.org/guide/addresses.html",
+      "ixrp-ixlmusdc.v1.tmplr.near": "https://docs.templarfi.org/guide/addresses.html",
+      "izec-isolusdc.v1.tmplr.near": "https://docs.templarfi.org/guide/addresses.html",
+      "izec-ixlmusdc.v1.tmplr.near": "https://docs.templarfi.org/guide/addresses.html",
+      "linear-usdt.v1.tmplr.near": "https://docs.templarfi.org/guide/addresses.html",
+      "pyth-lazer.v1.tmplr.near": "https://docs.templarfi.org/guide/addresses.html",
+      "redstone-adapter.v1.tmplr.near": "https://docs.templarfi.org/guide/addresses.html",
+      "stnear-usdc-1.v1.tmplr.near": "https://docs.templarfi.org/guide/addresses.html",
+      "stnear-usdc.v1.tmplr.near": "https://docs.templarfi.org/guide/addresses.html",
+      "stnear-usdt.v1.tmplr.near": "https://docs.templarfi.org/guide/addresses.html"
+    },
     "tokens": [],
     "links": {
       "website": "https://www.templarfi.org/",
       "documentation": "https://docs.templarfi.org/guide/addresses.html"
-    }
+    },
+    "measurement": "Production market contracts in the on-chain registry. Includes historical markets that still allow repayments and withdrawals. Excludes oracle adapters, governance and liquidation tests."
   },
   {
     "id": "fastnear",
@@ -413,7 +457,8 @@
     "links": {
       "website": "https://fastnear.com/",
       "documentation": "https://docs.fastnear.com/rpc"
-    }
+    },
+    "measurement": "RPC requests and indexed data reads are off-chain service activity."
   },
   {
     "id": "near-blocks",
@@ -425,7 +470,8 @@
     "links": {
       "website": "https://nearblocks.io/",
       "documentation": "https://api.nearblocks.io/api-docs/index.html.md"
-    }
+    },
+    "measurement": "Explorer queries and indexer requests are off-chain service activity."
   },
   {
     "id": "pikespeak",
@@ -437,7 +483,8 @@
     "links": {
       "website": "https://pikespeak.ai/",
       "documentation": "https://pikespeak.ai/"
-    }
+    },
+    "measurement": "Explorer queries and portfolio analytics are off-chain service activity."
   },
   {
     "id": "meteor-wallet",
@@ -449,7 +496,15 @@
     "links": {
       "website": "https://meteorwallet.app/",
       "documentation": "https://docs.meteorwallet.app/"
-    }
+    },
+    "relatedDeployments": [
+      {
+        "account": "meta-pool.near",
+        "role": "Shared liquid staking integration",
+        "source": "https://docs.meteorwallet.app/meteor-guides/what-is-liquid-staking-and-how-to-do-it"
+      }
+    ],
+    "measurement": "Meteor documents its Meta Pool integration. Calls to the shared staking pool cannot identify the wallet that initiated them."
   },
   {
     "id": "nightly",
@@ -461,19 +516,23 @@
     "links": {
       "website": "https://nightly.app/",
       "documentation": "https://github.com/near/ecosystem/blob/main/entities.json"
-    }
+    },
+    "measurement": "Wallet clients can submit transactions to any supported receiver. Project-specific wallet activity needs a separate signal."
   },
   {
     "id": "near-devhub",
     "name": "NEAR DevHub",
     "category": "Developer tooling",
     "description": "Developer community, funding and tooling.",
-    "contracts": {},
+    "contracts": {
+      "devhub.near": "https://github.com/NEAR-DevHub/neardevhub-bos/blob/main/playwright-tests/tests/community/announcements.spec.js"
+    },
     "tokens": [],
     "links": {
       "website": "https://neardevhub.org/",
       "documentation": "https://github.com/NEAR-DevHub"
-    }
+    },
+    "measurement": "Direct calls to the archived DevHub portal contract cover communities, posts and permissions. Other DevHub workstreams have separate usage."
   },
   {
     "id": "publicai",
@@ -491,7 +550,20 @@
     "links": {
       "website": "https://publicai.io/",
       "buybacks": "https://token.publicai.io/buyback"
-    }
+    },
+    "measurement": "The staking app sends deposits through the PUBLIC token contract to the staking receiver. Staking and NFT transactions describe those features. Data marketplace activity needs separate attribution.",
+    "relatedDeployments": [
+      {
+        "account": "staking.publicailab.near",
+        "role": "PUBLIC staking receiver",
+        "source": "https://token.publicai.io/stake"
+      },
+      {
+        "account": "data-babies.nfts.tg",
+        "role": "Data Babies NFT collection",
+        "source": "https://publicai.io/blog/the-human-loop-is-live"
+      }
+    ]
   },
   {
     "id": "sender-ai",
@@ -508,7 +580,8 @@
     ],
     "links": {
       "website": "https://www.senderdao.io/"
-    }
+    },
+    "measurement": "Wallet activity can be sent to any NEAR contract. A Sender-specific transaction signal has yet to be verified."
   },
   {
     "id": "aurigami",
@@ -524,8 +597,18 @@
       }
     ],
     "links": {
-      "website": "https://www.aurigami.finance/"
-    }
+      "website": "https://www.aurigami.finance/",
+      "documentation": "https://docs.aurigami.finance/public/protocol/contract-addresses"
+    },
+    "measurement": "Aurigami lending runs on Aurora EVM. Its NEAR token representation does not measure lending activity.",
+    "relatedDeployments": [
+      {
+        "account": "0x817af6cfAF35BdC1A634d6cC94eE9e4c68369Aeb",
+        "role": "Aurora lending controller",
+        "source": "https://docs.aurigami.finance/public/protocol/contract-addresses",
+        "explorer": "https://explorer.aurora.dev/address/0x817af6cfAF35BdC1A634d6cC94eE9e4c68369Aeb"
+      }
+    ]
   },
   {
     "id": "neartrade-terminal",
@@ -542,7 +625,20 @@
     ],
     "links": {
       "website": "https://www.neartrade.lol/"
-    }
+    },
+    "measurement": "The terminal routes to shared venues. Its token transfers do not identify which signers used the terminal.",
+    "relatedDeployments": [
+      {
+        "account": "intents.near",
+        "role": "Shared NEAR Intents settlement",
+        "source": "https://www.neartrade.lol/help/tools/bridge"
+      },
+      {
+        "account": "v2.ref-finance.near",
+        "role": "Shared Rhea exchange",
+        "source": "https://www.neartrade.lol/guide"
+      }
+    ]
   },
   {
     "id": "trufin",
@@ -587,7 +683,10 @@
     "name": "SODAX",
     "category": "Cross-chain DeFi",
     "description": "Cross-chain trading and lending. NEAR token movement alone is insufficient to measure product use.",
-    "contracts": {},
+    "contracts": {
+      "router.sodax.near": "https://www.sodax.com/system/spoke",
+      "asset-manager.sodax.near": "https://www.sodax.com/system/asset-manager"
+    },
     "tokens": [
       {
         "accountId": "soda.sodax.near",
@@ -597,7 +696,8 @@
     ],
     "links": {
       "website": "https://www.sodax.com/"
-    }
+    },
+    "measurement": "NEAR router and spoke asset manager. Includes direct calls by operators and integrations. Settlement on the Sonic hub is outside this measurement."
   },
   {
     "id": "edge-video",
@@ -614,14 +714,17 @@
     ],
     "links": {
       "website": "https://www.edgevideo.ai/"
-    }
+    },
+    "measurement": "The FAST token is verified. A product contract measuring viewing or compute has yet to be attributed."
   },
   {
     "id": "neko",
     "name": "NEKO",
     "category": "Trading and education",
     "description": "NEAR trading terminal and learn-to-earn product. Shared exchange routes are not yet attributable to this frontend.",
-    "contracts": {},
+    "contracts": {
+      "nekoorders.near": "https://nekoonnear.com/terminal.html"
+    },
     "tokens": [
       {
         "accountId": "ftv2.nekotoken.near",
@@ -632,14 +735,17 @@
     "links": {
       "website": "https://nekoonnear.com/",
       "product": "https://nekoonnear.com/challenge"
-    }
+    },
+    "measurement": "Direct order-contract calls. This can include keeper transactions. Spot swaps sent directly to shared exchanges are outside this measurement."
   },
   {
     "id": "shitzu",
     "name": "Shitzu",
     "category": "Ecosystem tooling",
     "description": "The Shitzu team publishes the NEAR Ecosystem Map. Token transfers do not measure usage of that tool.",
-    "contracts": {},
+    "contracts": {
+      "meme-cooking.near": "https://github.com/Shitzu-Apes/meme-cooking-docs/blob/main/other/developers.md"
+    },
     "tokens": [
       {
         "accountId": "token.0xshitzu.near",
@@ -650,6 +756,162 @@
     "links": {
       "website": "https://app.shitzuapes.xyz/",
       "product": "https://github.com/Shitzu-Apes/near-ecosystem-explorer"
-    }
+    },
+    "measurement": "Direct calls to the Meme.Cooking launchpad, built by Shitzu. These counts cover launchpad use. The ecosystem map is a separate product."
+  },
+  {
+    "id": "paras",
+    "name": "Paras",
+    "category": "NFT marketplace",
+    "description": "NEAR NFT marketplace and collection contracts.",
+    "contracts": {
+      "marketplace.paras.near": "https://github.com/near/ecosystem/blob/main/entities.json",
+      "x.paras.near": "https://github.com/near/ecosystem/blob/main/entities.json"
+    },
+    "tokens": [
+      {
+        "accountId": "token.paras.near",
+        "symbol": "PARAS",
+        "evidence": "https://github.com/ParasHQ/paras-token-contract"
+      }
+    ],
+    "links": {
+      "github": "https://github.com/ParasHQ"
+    },
+    "measurement": "Direct marketplace and collection calls. This scope can include NFT minting and transfers."
+  },
+  {
+    "id": "shards",
+    "name": "Shards",
+    "category": "Launchpad",
+    "description": "Token launchpad with fee sharing and automated buybacks.",
+    "contracts": {
+      "factory.shardsmarket.near": "https://near.shards.market/"
+    },
+    "tokens": [
+      {
+        "accountId": "l000000.factory.shardsmarket.near",
+        "symbol": "SHARDS",
+        "evidence": "https://nearblocks.io/tokens/l000000.factory.shardsmarket.near"
+      }
+    ],
+    "links": {
+      "website": "https://near.shards.market/",
+      "X": {
+        "url": "https://x.com/shardsmarket",
+        "evidence": "https://near.shards.market/"
+      }
+    },
+    "measurement": "Factory activity measures direct calls to launch and manage markets. Trading on child contracts is outside this scope."
+  },
+  {
+    "id": "shore",
+    "name": "Shore",
+    "category": "Agent trading",
+    "description": "Trading accounts and launch tools for agents using NEAR Intents.",
+    "contracts": {},
+    "tokens": [
+      {
+        "accountId": "shore-4lzt.launch.shoremarkets.near",
+        "symbol": "SHORE",
+        "evidence": "https://shore.markets/token/shore-4lzt.launch.shoremarkets.near"
+      }
+    ],
+    "links": {
+      "website": "https://shore.markets/"
+    },
+    "measurement": "SHORE exists on NEAR. Shared Intents settlement does not yet provide a verified project-specific signer count.",
+    "relatedDeployments": [
+      {
+        "account": "launch.shoremarkets.near",
+        "role": "Launch namespace contract",
+        "source": "https://shore.markets/token/shore-4lzt.launch.shoremarkets.near"
+      }
+    ]
+  },
+  {
+    "id": "intellex",
+    "name": "Intellex",
+    "category": "AI infrastructure",
+    "description": "Infrastructure for verifying agent actions and settling rewards.",
+    "contracts": {},
+    "tokens": [
+      {
+        "accountId": "itlx.intellex_xyz.near",
+        "symbol": "ITLX",
+        "evidence": "https://nearblocks.io/tokens/itlx.intellex_xyz.near"
+      }
+    ],
+    "links": {
+      "website": "https://www.intellex.xyz/",
+      "documentation": "https://www.intellex.xyz/whitepaper.pdf"
+    },
+    "measurement": "ITLX exists on NEAR. Product activity needs a verified contract or event-level attribution."
+  },
+  {
+    "id": "allbridge",
+    "name": "Allbridge",
+    "category": "Bridge",
+    "description": "The retired Classic bridge and its NEAR representation of ABR.",
+    "benchmark": true,
+    "contracts": {
+      "bridge.a11bd.near": "https://docs.allbridge.io/allbridge-overview/bridge-contracts"
+    },
+    "tokens": [
+      {
+        "accountId": "abr.a11bd.near",
+        "symbol": "ABR",
+        "evidence": "https://docs.allbridge.io/allbridge-overview/networks-and-tokens"
+      }
+    ],
+    "links": {
+      "website": "https://allbridge.io/",
+      "documentation": "https://docs.allbridge.io/allbridge-overview/networks-and-tokens"
+    },
+    "measurement": "Allbridge documents this NEAR deployment as part of its deprecated Classic bridge. It remains available as historical evidence."
+  },
+  {
+    "id": "mintbase",
+    "name": "Mintbase",
+    "category": "NFT infrastructure",
+    "description": "NFT storefront factory and creator tooling.",
+    "contracts": {
+      "mintbase1.near": "https://medium.com/mintbase/mintbase-upgraded-544-nft-contracts-8e8bb2ecf40c"
+    },
+    "tokens": [],
+    "links": {
+      "github": "https://github.com/Mintbase"
+    },
+    "measurement": "Factory calls measure storefront setup. Activity on independently operated child stores is outside this scope."
+  },
+  {
+    "id": "roketo",
+    "name": "Roketo",
+    "category": "Payments",
+    "description": "Token payment streaming on NEAR.",
+    "contracts": {
+      "roketodapp.near": "https://github.com/near/ecosystem/blob/main/entities.json"
+    },
+    "tokens": [],
+    "links": {
+      "website": "https://www.roke.to/",
+      "github": "https://github.com/roke-to/roketo-contract"
+    },
+    "measurement": "Direct calls to the payment streaming contract."
+  },
+  {
+    "id": "hot-wallet",
+    "name": "HOT Wallet",
+    "category": "Wallet",
+    "description": "Wallet and mining app using NEAR.",
+    "contracts": {
+      "game.hot.tg": "https://t.me/s/hotonnear/140"
+    },
+    "tokens": [],
+    "links": {
+      "website": "https://www.hotdao.ai/",
+      "documentation": "https://docs.hotdao.ai/"
+    },
+    "measurement": "Direct calls to the mining application. Wallet-wide transactions and balances kept inside the app are outside this scope."
   }
 ]

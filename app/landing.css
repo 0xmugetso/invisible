@@ -528,3 +528,27 @@ html:has(.iv-landing) { scroll-behavior:smooth; }
   .iv-footer-nav { grid-area:auto; justify-content:center; flex-wrap:wrap; gap:2px 12px; }
   .iv-developer-links { justify-self:center; }
 }
+
+.iv-connect { min-height:0; padding-block:clamp(32px,4.5vw,64px); }
+.iv-connect .iv-editor-top {
+  display:grid;
+  grid-template-columns:minmax(0,1fr) auto;
+  padding:7px 10px;
+}
+.iv-connect .iv-steps { padding:12px clamp(11px,1.5vw,17px) 8px; }
+.iv-connect .iv-step + .iv-step { margin-top:10px; }
+.iv-connect .iv-step > div { margin-bottom:5px; }
+.iv-connect .iv-step pre {
+  min-height:0;
+  max-height:calc(4lh + 16px);
+  margin:0;
+  padding:7px 10px;
+  font-size:clamp(.79rem,1.2vw,.87rem);
+  scrollbar-width:thin;
+  scrollbar-color:#60505b transparent;
+}
+.iv-connect .iv-copy-status { margin-top:4px; }
+@media(max-width:780px) {
+  .iv-connect { gap:14px; }
+  .iv-section-contour-connect { height:clamp(48px,13vw,90px); margin-block-top:8px; }
+}

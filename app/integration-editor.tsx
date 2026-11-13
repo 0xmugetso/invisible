@@ -134,7 +134,7 @@ export function IntegrationEditor({only}:{only?:keyof typeof integrations}) {
                 role={active ? 'tabpanel' : undefined} aria-labelledby={active ? `${envId}-${envIndex}` : undefined}>
                 {entry.steps.map(([title,code],index)=><div className="iv-step" key={index}>
                   <div><h3>{index+1}. {title}</h3><button className="iv-outline" type="button" onClick={()=>void copy(code,index)} aria-label={`Copy step ${index+1}`}><Icon name={active && copiedStep===index ? 'check' : 'copy'}/>{active && copiedStep===index ? 'Copied' : 'Copy'}</button></div>
-                  <pre><SetupCode code={code}/></pre>
+                  <pre tabIndex={0} aria-label={`Step ${index+1} code`}><SetupCode code={code}/></pre>
                 </div>)}
               </div>;
             }))}

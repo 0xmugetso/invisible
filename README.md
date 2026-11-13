@@ -125,6 +125,12 @@ codex mcp add invisible --url https://invisible-gray.vercel.app/api/mcp
 Which NEAR projects brought the most signers back? Show me the evidence.
 ```
 
+**Example response in Codex**
+
+This example uses the snapshot through November 11, 2026 UTC and ranks eligible NEAR projects with verified tokens.
+
+![Codex using Invisible MCP to rank seven eligible NEAR projects by returning signers, with Rhea Finance first at 3,114](public/guide/codex-mcp-example.png)
+
 </details>
 
 <details>

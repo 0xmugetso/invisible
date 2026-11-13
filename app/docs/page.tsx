@@ -84,6 +84,9 @@ export default function Guide() {
           <IntegrationEditor only="MCP"/>
           <ul><li><code>search_projects</code> resolves a project name, token, or contract to its catalog ID.</li><li><code>get_project_evidence</code> returns mapped contracts, source links, and available project evidence.</li><li><code>get_rankings</code> reads activity, investment, or returning-signer rankings. Check which cohort and cutoff the result uses.</li></ul>
           <p>Ask “Which NEAR projects brought the most signers back? Show me the evidence.”</p>
+          <h3>Example Response in Codex</h3>
+          <p>This example uses the snapshot through November 11, 2026 UTC and ranks eligible NEAR projects with verified tokens.</p>
+          <a href="/guide/codex-mcp-example.png"><img src="/guide/codex-mcp-example.png" width="1646" height="1458" alt="Codex using Invisible MCP to rank seven eligible NEAR projects by returning signers, with Rhea Finance first at 3,114" loading="lazy"/></a>
         </section>
         <section id="a2a"><h2>Agent-to-Agent</h2>
           <p>Fetch the agent card, then send an A2A 0.3 JSON-RPC <code>message/send</code> request. The agent accepts returning-signer comparisons, project searches, and verified project IDs. It returns a direct response with research data.</p>

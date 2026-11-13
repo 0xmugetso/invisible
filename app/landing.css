@@ -204,7 +204,7 @@ html:has(.iv-landing) { scroll-behavior:smooth; }
   display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:clamp(16px,2.5vw,36px);
   list-style:none; padding:0; margin:clamp(28px,4.5vw,52px) 0 24px;
 }
-.iv-method-steps li { min-width:0; border-top:1px solid var(--iv-line); padding-top:14px; }
+.iv-method-steps li { min-width:0; }
 .iv-method-number { display:block; font:.8rem/1.3 var(--mono); color:var(--iv-pink); }
 .iv-method-example {
   display:flex; align-items:center; gap:7px; min-height:50px; margin:12px 0 14px;

@@ -63,8 +63,6 @@ Repeated contract use supports a thesis of persistent NEAR application demand. I
 
 ## Agent setup
 
-[![Two-step Invisible MCP setup with tabs for Claude Code, Cursor, Codex, and Antigravity](public/readme/agent-setup.webp)](https://invisible-gray.vercel.app/#connect)
-
 | Interface | Start here |
 | --- | --- |
 | **MCP** | Use Streamable HTTP at `https://invisible-gray.vercel.app/api/mcp`. See setup for [Claude Code, Cursor, Codex, and Antigravity](https://invisible-gray.vercel.app/docs/#mcp). |
@@ -72,32 +70,215 @@ Repeated contract use supports a thesis of persistent NEAR application demand. I
 | **A2A** | Read the [agent card](https://invisible-gray.vercel.app/.well-known/agent-card.json), then send a JSON-RPC `message/send` request to `/api/a2a`. See the [request example](https://invisible-gray.vercel.app/docs/#a2a). |
 | **Agent skill** | Install [SKILL.md](https://invisible-gray.vercel.app/skill/SKILL.md) for guidance on researching projects and citing evidence. See the [installation instructions](https://invisible-gray.vercel.app/docs/#skill). |
 
-<details open>
-<summary><strong>Connect with MCP</strong></summary>
+<details>
+<summary><strong>MCP · Claude Code</strong></summary>
+
+**1. Add the server**
 
 ```sh
-# Codex
-codex mcp add invisible --url https://invisible-gray.vercel.app/api/mcp
-
-# Claude Code
 claude mcp add --transport http invisible https://invisible-gray.vercel.app/api/mcp
 ```
 
-Try asking **“Which NEAR projects brought the most signers back? Show me the evidence.”**
+**2. Ask in chat**
 
-- `search_projects` finds projects by name, ID, or contract.
-- `get_project_evidence` reads mapped deployments, signer cohorts, and available tokenomics for a verified project ID.
-- `get_rankings` reads activity, investment, or returning-signer rankings and their cutoff.
+```text
+Which NEAR projects brought the most signers back? Show me the evidence.
+```
 
 </details>
 
 <details>
-<summary><strong>Try the REST API</strong></summary>
+<summary><strong>MCP · Cursor</strong></summary>
+
+**1. Add the server in .cursor/mcp.json**
+
+```json
+{
+  "mcpServers": {
+    "invisible": {
+      "url": "https://invisible-gray.vercel.app/api/mcp"
+    }
+  }
+}
+```
+
+**2. Ask in Agent chat**
+
+```text
+Which NEAR projects brought the most signers back? Show me the evidence.
+```
+
+</details>
+
+<details open>
+<summary><strong>MCP · Codex</strong></summary>
+
+**1. Add the server in your terminal**
+
+```sh
+codex mcp add invisible --url https://invisible-gray.vercel.app/api/mcp
+```
+
+**2. Ask in a new Codex session**
+
+```text
+Which NEAR projects brought the most signers back? Show me the evidence.
+```
+
+</details>
+
+<details>
+<summary><strong>MCP · Antigravity</strong></summary>
+
+**1. Add to MCP Servers → Manage → View Raw Config**
+
+```json
+{
+  "mcpServers": {
+    "invisible": {
+      "serverUrl": "https://invisible-gray.vercel.app/api/mcp"
+    }
+  }
+}
+```
+
+**2. Reload MCP servers and ask in chat**
+
+```text
+Which NEAR projects brought the most signers back? Show me the evidence.
+```
+
+</details>
+
+<details>
+<summary><strong>REST API · cURL</strong></summary>
+
+**1. Read the returning signer ranking**
 
 ```sh
 curl -fsS 'https://invisible-gray.vercel.app/api/v1/returning-signers?limit=10'
+```
+
+**2. Inspect a project**
+
+```sh
 curl -fsS 'https://invisible-gray.vercel.app/api/v1/projects/rhea'
-curl -fsS 'https://invisible-gray.vercel.app/api/v1/projects/rhea/market'
+```
+
+</details>
+
+<details>
+<summary><strong>REST API · JavaScript</strong></summary>
+
+**1. Fetch returning signers**
+
+```js
+const response = await fetch("https://invisible-gray.vercel.app/api/v1/returning-signers?limit=10");
+if (!response.ok) throw new Error(response.statusText);
+const ranking = await response.json();
+```
+
+**2. Read the project evidence**
+
+```js
+const evidence = await fetch("https://invisible-gray.vercel.app/api/v1/projects/rhea");
+if (!evidence.ok) throw new Error(evidence.statusText);
+console.log(await evidence.json());
+```
+
+</details>
+
+<details>
+<summary><strong>A2A · cURL</strong></summary>
+
+**1. Discover the agent**
+
+```sh
+curl -fsS 'https://invisible-gray.vercel.app/.well-known/agent-card.json'
+```
+
+**2. Send a research request**
+
+```sh
+curl -fsS 'https://invisible-gray.vercel.app/api/a2a' \
+  -H 'Content-Type: application/json' \
+  --data '{"jsonrpc":"2.0","id":1,"method":"message/send","params":{"message":{"kind":"message","role":"user","messageId":"invisible-example-1","parts":[{"kind":"text","text":"Which NEAR projects brought the most signers back? Show me the evidence."}]}}}'
+```
+
+</details>
+
+<details>
+<summary><strong>A2A · JavaScript</strong></summary>
+
+**1. Discover the agent**
+
+```js
+const discovery = await fetch("https://invisible-gray.vercel.app/.well-known/agent-card.json");
+if (!discovery.ok) throw new Error(discovery.statusText);
+const agent = await discovery.json();
+```
+
+**2. Send a research request**
+
+```js
+const response = await fetch(agent.url, {
+  method: "POST",
+  headers: {"Content-Type": "application/json"},
+  body: JSON.stringify({
+  "jsonrpc": "2.0",
+  "id": 1,
+  "method": "message/send",
+  "params": {
+    "message": {
+      "kind": "message",
+      "role": "user",
+      "messageId": "invisible-example-1",
+      "parts": [
+        {
+          "kind": "text",
+          "text": "Which NEAR projects brought the most signers back? Show me the evidence."
+        }
+      ]
+    }
+  }
+})
+});
+if (!response.ok) throw new Error(response.statusText);
+console.log(await response.json());
+```
+
+</details>
+
+<details>
+<summary><strong>Skill · Codex</strong></summary>
+
+**1. Install in your project**
+
+```sh
+mkdir -p .agents/skills/invisible && curl -fsS 'https://invisible-gray.vercel.app/skill/SKILL.md' -o .agents/skills/invisible/SKILL.md
+```
+
+**2. Use the skill in a new session**
+
+```text
+$invisible Which NEAR projects brought the most signers back? Show me the evidence.
+```
+
+</details>
+
+<details>
+<summary><strong>Skill · Claude Code</strong></summary>
+
+**1. Install in your project**
+
+```sh
+mkdir -p .claude/skills/invisible && curl -fsS 'https://invisible-gray.vercel.app/skill/SKILL.md' -o .claude/skills/invisible/SKILL.md
+```
+
+**2. Use the skill in chat**
+
+```text
+/invisible Which NEAR projects brought the most signers back? Show me the evidence.
 ```
 
 </details>

@@ -1,7 +1,6 @@
 'use client';
 
 import {useEffect,useId,useRef,useState} from 'react';
-import Link from 'next/link';
 import type {NearConnector,SignedMessage} from '@hot-labs/near-connect';
 import {BrandMotion,LoadingPanel} from './brand-motion';
 import Icon from './interface-icon';
@@ -141,7 +140,6 @@ export default function WalletAccess({children}:{children:React.ReactNode}) {
       </button>
       {pending && <div className="iv-session-track" role="status" aria-label={verifying ? 'Verifying signature' : 'Waiting for wallet'}><i/></div>}
       {error && <p role="alert">{error}</p>}
-      <Link href="/docs/">Read the Docs <Icon name="right"/></Link>
     </section>}
   </main></Workspace>;
 

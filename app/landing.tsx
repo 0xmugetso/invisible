@@ -358,7 +358,7 @@ export default function Landing() {
             draw.to(threads,{attr:{'stroke-dashoffset':0},duration:1.55,stagger:.04,ease:'sine.inOut'},0);
           }
           if (signal) draw.to(signal,{attr:{'stroke-dashoffset':-1},duration:1.61,ease:'sine.inOut'},.06);
-          draw.fromTo(markers,{opacity:.6,scale:.88},{opacity:1,scale:1,duration:0.37,stagger:.16,ease:'power2.out'},.09);
+          draw.fromTo(markers,{opacity:0,scale:.72,y:6},{opacity:1,scale:1,y:0,duration:.42,stagger:.24,ease:'power2.out'},wide ? .3 : .05);
           ScrollTrigger.create({
             animation:draw,trigger:stage,start:'top 93%',end:wide ? 'clamp(top 48%)' : 'clamp(bottom 70%)',scrub:1.05,
           });

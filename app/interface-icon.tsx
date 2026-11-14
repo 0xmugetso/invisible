@@ -1,5 +1,6 @@
 const paths = {
   dashboard:'M3 5h18v14H3z M3 9h18 M9 9v10 M13 15l2-2 2 1 2-3',
+  play:'M8 5l11 7-11 7z',
   plug:'M9 3v4m6-4v4 M7 7h10v4a5 5 0 0 1-10 0z M12 16v5',
   account:'M16 7a4 4 0 1 1-8 0 4 4 0 0 1 8 0 M4 21v-2a4 4 0 0 1 4-4h8a4 4 0 0 1 4 4v2',
   arrowBack:'M19 12H5m7-7-7 7 7 7',

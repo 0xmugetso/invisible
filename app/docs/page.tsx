@@ -3,6 +3,8 @@ import type {Metadata} from 'next';
 import Link from 'next/link';
 import Icon from '../interface-icon';
 import GuideProgress from './guide-progress';
+import DemoPlayer from './demo-player';
+import {demoWatchUrl} from './demo-video';
 import {IntegrationEditor} from '../integration-editor';
 import RankingWeights from '../ranking-weights';
 import '../landing.css';
@@ -11,6 +13,7 @@ import './guide.css';
 export const metadata:Metadata={title:'Invisible Guide',description:'Use Invisible to research NEAR projects, verify the evidence behind rankings, and connect your agent.'};
 
 const sections=[
+  ['video-demo','Video Demo','play'],
   ['dashboard','Dashboard','dashboard'],['evidence','Deployments','contracts'],['forecast','Forecast','simulation'],['investment-methodology','Methodology','ranking'],
   ['sources','Sources','globe'],['rest','REST API','api'],['mcp','MCP','connect'],['a2a','A2A','ecosystem'],['skill','Agent Skill','research'],
 ] as const;
@@ -37,6 +40,12 @@ export default function Guide() {
       <main id="main-content">
         <h1>Invisible Guide</h1>
         <p>Find NEAR projects with repeat activity, trace a ranking back to its contracts, and give your agent the same data.</p>
+        <section id="video-demo" className="iv-guide-demo" aria-labelledby="video-demo-title">
+          <h2 id="video-demo-title">Product Walkthrough</h2>
+          <p>Follow a NEAR project from the leaderboard to its on-chain evidence, then see how Codex uses Invisible’s MCP server to answer a research question.</p>
+          <DemoPlayer/>
+          <a className="iv-guide-video-link" href={demoWatchUrl}>Watch on YouTube <Icon name="launch"/></a>
+        </section>
         <section id="dashboard"><h2>Dashboard</h2>
           <p>Open the workspace, choose Meteor or another supported NEAR wallet, and sign a message to create your profile. The profile menu shows the NEAR account you used and lets you sign out.</p>
           <p>Use <strong>Investment</strong> for an activity and market comparison, <strong>Activity</strong> for usage across mapped contracts, or <strong>All Verified</strong> to see which projects lack enough evidence to qualify. Select a row to update the charts. The magnifier opens its evidence.</p>

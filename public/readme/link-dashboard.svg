@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="167" height="40" viewBox="0 0 167 40">
+  <rect x=".5" y=".5" width="166" height="39" rx="10" fill="#ff619f" stroke="#ff619f"/>
+  <text x="14" y="20" dominant-baseline="central" fill="#170d13" font-family="system-ui, sans-serif" font-size="14" font-weight="600">Open Dashboard</text>
+  <path d="M142 24l8-8m-7 0h7v7" fill="none" stroke="#170d13" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

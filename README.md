@@ -1,20 +1,20 @@
-<p align="center">
-  <a href="https://invisible-gray.vercel.app/">
-    <img src="public/brand/readme-hero.png" alt="Invisible — On-chain research for the NEAR ecosystem" width="100%">
-  </a>
-</p>
-
 # Invisible
 
-**Research NEAR projects from the contracts people actually use.** Invisible compares activity across two 28-day windows, shows which signing accounts came back, and links project scores to the on-chain and market evidence behind them. Analysts can inspect the dashboard, and agents can query the same research through MCP, REST, or A2A.
+**On-chain research for the NEAR ecosystem.** Compare signer activity across two 28-day windows and trace project rankings back to contract calls and market evidence. Agents can query the same research through MCP, REST, or A2A.
 
-[Open dashboard](https://invisible-gray.vercel.app/app/) · [Read the docs](https://invisible-gray.vercel.app/docs/) · [Connect an agent](https://invisible-gray.vercel.app/#connect) · [View roadmap](https://invisible-gray.vercel.app/#roadmap)
+<p align="center">
+  <a href="https://invisible-gray.vercel.app/app/"><img src="public/readme/link-dashboard.svg" alt="Open Dashboard" height="40"></a>
+  <a href="https://invisible-gray.vercel.app/docs/"><img src="public/readme/link-docs.svg" alt="Read the Docs" height="40"></a>
+  <a href="https://invisible-gray.vercel.app/#connect"><img src="public/readme/link-connect.svg" alt="Connect an Agent" height="40"></a>
+</p>
+
+## Product Walkthrough
+
+See how to compare NEAR projects, inspect the evidence behind a ranking, and ask Codex the same research question through MCP.
+
+[![Watch the Invisible product walkthrough on YouTube](public/readme/video-cover.webp)](https://www.youtube.com/watch?v=fpoosawn0JQ)
 
 [Features](#features) · [Methodology](#methodology) · [Agent setup](#agent-setup) · [Roadmap](#roadmap) · [Local setup](#local-setup) · [Deployment](#deployment)
-
----
-
-<a href="https://invisible-gray.vercel.app/app/"><img src="public/readme/overview.webp" width="100%" alt="Invisible overview with NEAR project metrics, the leaderboard, and signer activity charts"></a>
 
 ## Features
 
@@ -29,6 +29,8 @@
 | [NEAR wallet access](https://invisible-gray.vercel.app/docs/#dashboard) | Connect Meteor or another supported NEAR wallet through HOT Connect and sign a message to open your profile. Copy your address, open it in NearBlocks, or disconnect from the header. |
 
 ### Inside the dashboard
+
+<a href="https://invisible-gray.vercel.app/app/"><img src="public/readme/overview.webp" width="100%" alt="Invisible overview with the project leaderboard and signer activity charts"></a>
 
 | Project Evidence | Signer Forecast |
 | --- | --- |

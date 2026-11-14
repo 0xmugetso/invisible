@@ -66,9 +66,9 @@
 }
 .iv-guide-play-label {
   position:absolute; inset:auto auto clamp(12px,5%,24px) clamp(12px,5%,24px);
-  display:inline-flex; align-items:center; gap:9px; min-height:44px; padding:0 18px;
+  display:inline-flex; align-items:center; gap:7px; min-height:36px; padding:0 12px;
   color:#170d13; background:var(--iv-pink); border-radius:10px;
-  font:inherit; font-size:.875rem; font-weight:700; line-height:1; white-space:nowrap;
+  font:inherit; font-size:1rem; font-weight:700; line-height:1; white-space:nowrap;
   transition:background-color 180ms ease;
 }
 .iv-guide-play-label .iv-icon { fill:currentColor; stroke:none; }

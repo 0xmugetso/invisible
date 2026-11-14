@@ -1,5 +1,5 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="194" height="44" viewBox="0 0 194 44">
-  <rect x=".5" y=".5" width="193" height="43" rx="11" fill="#ff619f"/>
-  <path d="m22 16 9 6-9 6z" fill="#170d13"/>
-  <text x="43" y="22" dominant-baseline="central" fill="#170d13" font-family="system-ui, sans-serif" font-size="14" font-weight="600">Watch on YouTube</text>
+<svg xmlns="http://www.w3.org/2000/svg" width="96" height="36" viewBox="0 0 96 36">
+  <rect width="96" height="36" rx="10" fill="#ff619f"/>
+  <path d="m14 12 9 6-9 6z" fill="#170d13"/>
+  <text x="32" y="18" dominant-baseline="central" fill="#170d13" font-family="system-ui, sans-serif" font-size="16" font-weight="600">Watch</text>
 </svg>

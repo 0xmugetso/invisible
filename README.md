@@ -15,7 +15,7 @@ See how to compare NEAR projects, inspect the evidence behind a ranking, and ask
 [![Watch the Invisible product walkthrough on YouTube](public/readme/video-cover.webp)](https://www.youtube.com/watch?v=fpoosawn0JQ)
 
 <p align="center">
-  <a href="https://www.youtube.com/watch?v=fpoosawn0JQ"><img src="public/readme/link-watch.svg" alt="Watch on YouTube" height="44"></a>
+  <a href="https://www.youtube.com/watch?v=fpoosawn0JQ"><img src="public/readme/link-watch.svg" alt="Watch the demo on YouTube" height="36"></a>
 </p>
 
 [Features](#features) · [Methodology](#methodology) · [Agent setup](#agent-setup) · [Roadmap](#roadmap) · [Local setup](#local-setup) · [Deployment](#deployment)

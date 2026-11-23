@@ -1,3 +1,4 @@
+import {socialResearch} from './social-research.mjs';
 import {signerForecast} from '../lib/signer-forecast.mjs';
 import {activityThresholds, isMemeProject, rankActivity, unmetActivityThresholds} from './activity-eligibility.mjs';
 import registry from '../data/activity-registry.json' with {type:'json'};
@@ -207,7 +208,7 @@ export function researchProjectCore(id, snapshot) {
       upcomingUnlocks:tokenomics.upcomingUnlocks ?? null, burns:tokenomics.burns ?? null, buybacks:tokenomics.buybacks ?? null,
     },
     roadmap:tokenomics.roadmap ?? null,
-    socialActivity:null,
+    socialActivity:socialResearch(id),
     narrativeMomentum:null,
   };
 }

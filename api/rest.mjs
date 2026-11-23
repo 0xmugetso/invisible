@@ -3,6 +3,8 @@ import {returningSigners} from '../services/research-read.mjs';
 
 const resources = {
   projects:'ecosystem',
+  social:'social',
+  'social-project':'social-project',
   project:'project-core',
   market:'project-market',
   rankings:'leaderboard',

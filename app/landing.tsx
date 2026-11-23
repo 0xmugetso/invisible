@@ -99,7 +99,7 @@ const developerLinks = [
 const milestones = [
   {title:'Verify NEAR Activity',icon:'contracts',done:true,details:'Map projects to contracts, compare returning signers, and link each finding to source transactions.'},
   {title:'Publish the Research Workspace',icon:'overview',done:true,details:'Explore activity and investment rankings, inspect vesting evidence, and compare signer forecasts against observed cohorts.'},
-  {title:'Track Social and Product Activity',icon:'observed',done:false,details:'Measure activity from official channels and releases alongside on-chain usage, with separate source and coverage labels.'},
+  {title:'Track Social and Product Activity',icon:'observed',done:false,details:'Inspect publishing scores and dated public posts. Authenticated X coverage, unattended refresh, and broader social analysis are next.'},
   {title:'Follow Projects and Unlocks',icon:'clock',done:false,details:'Save a watchlist and surface changes in retention, upcoming unlocks, and new contract deployments.'},
   {title:'Explore an Invisible Token',icon:'growth',done:false,details:'Publish proposed utility, distribution, and launch criteria before announcing any dates or terms.'},
 ] as const;
@@ -135,7 +135,7 @@ function Roadmap() {
               transform={`translate(${lane*4} 0)`} opacity={lane===0 ? 1 : .32} pathLength="1" vectorEffect="non-scaling-stroke" data-roadmap-thread/>)}
           </svg>}
           <div className="iv-roadmap-marker"><Icon name={icon}/></div>
-          <div className="iv-roadmap-copy"><h3 data-flow><Words text={title}/></h3><span className="iv-roadmap-status" data-flow>{done ? 'Complete' : 'Coming Soon'}</span><p data-flow><Words text={details}/></p></div>
+          <div className="iv-roadmap-copy"><h3 data-flow><Words text={title}/></h3><span className="iv-roadmap-status" data-flow>{done ? 'Complete' : index===2 ? 'In Progress' : 'Coming Soon'}</span><p data-flow><Words text={details}/></p></div>
         </li>)}
       </ol>
     </div>

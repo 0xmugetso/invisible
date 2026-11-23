@@ -1,0 +1,2047 @@
+{
+  "schemaVersion": 1,
+  "updatedAt": "2026-11-23T11:01:20.906833Z",
+  "collector": {
+    "name": "Agent Reach",
+    "version": "1.6.1",
+    "source": "https://github.com/Panniantong/Agent-Reach"
+  },
+  "projects": [
+    {
+      "id": "aurigami",
+      "name": "Aurigami",
+      "tokenVerified": true,
+      "observedAt": "2026-11-23T11:01:14.975177Z",
+      "discovery": {
+        "status": "collected",
+        "url": "https://www.aurigami.finance/",
+        "error": null,
+        "checkedAt": "2026-11-23T11:01:14.975177Z"
+      },
+      "sources": [
+        {
+          "platform": "X",
+          "url": "https://twitter.com/aurigami_PLY",
+          "attributionSource": "https://www.aurigami.finance/",
+          "checkedAt": "2026-11-23T10:56:17.136626Z",
+          "status": "unavailable",
+          "error": "NEED_LOGIN",
+          "posts": [],
+          "sampleComplete": false
+        },
+        {
+          "platform": "Telegram",
+          "url": "https://t.me/aurigami_PLY",
+          "attributionSource": "https://www.aurigami.finance/",
+          "checkedAt": "2026-11-23T11:01:14.975177Z",
+          "status": "collected",
+          "error": null,
+          "posts": [
+            {
+              "url": "https://t.me/aurigami_PLY/144",
+              "publishedAt": "2025-09-10T14:14:33+00:00",
+              "text": "The owner of this channel has been inactive for the last 11 months. If they remain inactive for the next 29 days, they may lose their account and admin rights in this channel. The contents of the channel will remain accessible for all users.",
+              "metrics": {}
+            },
+            {
+              "url": "https://t.me/aurigami_PLY/143",
+              "publishedAt": "2023-06-06T05:22:11+00:00",
+              "text": "Channel photo updated",
+              "metrics": {}
+            },
+            {
+              "url": "https://t.me/aurigami_PLY/142",
+              "publishedAt": "2023-01-02T13:50:58+00:00",
+              "text": "It's a  #HappyNewNEAR  anon!  We'll be giving away 50 raffle tickets to win a share of 10,000 $NEAR!  All you have to do is:   💎   Like and RT    🎁   Follow  @aurigami_PLY  &  @NEAR_Blockchain      🔔  Comment your NY message + NEAR address in the Tweet!  Now, let's also take a look at our Q4 journey...   🧵      🔗    https://twitter.com/aurigami_PLY/status/1609908945648508928",
+              "metrics": {}
+            },
+            {
+              "url": "https://t.me/aurigami_PLY/141",
+              "publishedAt": "2022-12-06T13:33:09+00:00",
+              "text": "Great news, farmooors   🧑🏻‍🌾    stNEAR is now a borrowable asset on Aurigami!  That means you can now  #fold  to boost your yield, or earn more from lending   🚀    No better time to start stacking your NEAR bag -  https://app.aurigami.finance   Tweet -  https://twitter.com/aurigami_PLY/status/1600120936828915712",
+              "metrics": {}
+            },
+            {
+              "url": "https://t.me/aurigami_PLY/140",
+              "publishedAt": "2022-12-05T14:33:32+00:00",
+              "text": "Why hello there Paperhands!!   ☀️    The season of giving is upon us soon and what better to align with this festive spirit than a giveaway?   Aurora Community will be hosting an AMA with our beloved EY Tan representing Aurigami, alongside our good friend Marc from Pyth Network.  Up to $200 worth of PLY rewards are up for grabs for 5 people! Details   👇🏻      📅   Date: December 8, 2022 10:00 PM   🔗   Venue:  https://twitter.com/i/spaces/1mrGmkLZnoNxy    https://twitter.com/auroracommunit3/status/1599769763651416065",
+              "metrics": {}
+            },
+            {
+              "url": "https://t.me/aurigami_PLY/139",
+              "publishedAt": "2022-10-31T15:21:12+00:00",
+              "text": "https://twitter.com/aurigami_PLY/status/1587102299775676416",
+              "metrics": {}
+            },
+            {
+              "url": "https://t.me/aurigami_PLY/138",
+              "publishedAt": "2022-10-26T15:58:10+00:00",
+              "text": "As you all are already aware, USN will be winding down and as a result of this, the USN Protection Programme has been launched to ensure that USN will be redeemable 1:1 for USDT. The Programme will run for a year until    24 October 2023   , you can read more about it here -  https://near.org/blog/near-launches-usn-protection-programme-aurora/   In response to this, Aurigami has    halted deposits for USN   , making it    Withdrawal only   . PLY incentives for the USN pool will also end on    27 October 2022, 2pm UTC   .  We've also prepared a short guide to show you how you can redeem your USN for USDT as an Aurora/Aurigami user, check out the Tweet below!   https://twitter.com/aurigami_PLY/status/1585297898534621184",
+              "metrics": {}
+            },
+            {
+              "url": "https://t.me/aurigami_PLY/136",
+              "publishedAt": "2022-10-24T14:10:02+00:00",
+              "text": "Bear markets suck, but there are opportunities abound for those who know where to look...   🔎    Join us and  @VietnamNear  as we take a deep dive into you can tackle the bear   ⚔️    🐻      🔗   https://twitter.com/i/spaces/1MnGnpAQomNxO   P.S Check out this Tweet here for a chance to win some   💵  !   https://twitter.com/VietnamNear/status/1584509663063969792",
+              "metrics": {}
+            },
+            {
+              "url": "https://t.me/aurigami_PLY/135",
+              "publishedAt": "2022-10-19T14:13:43+00:00",
+              "text": "You can now borrow ETH and wBTC at 50% lower cost!   We’ve updated the interest rate curve for both ETH and wBTC on Aurigami, which means you only need HALF the cost to borrow these assets now   🚀    This effectively gives Aurigami the LOWEST base borrow rates for ETH and wBTC in Aurora, and that's without accounting for all the PLY rewards you'll be earning on top too   🔥    Check out the Tweet below to see how you can capitalize on this to maximize your profit and farming strategies   🚀     https://twitter.com/aurigami_PLY/status/1582736432673607680",
+              "metrics": {}
+            },
+            {
+              "url": "https://t.me/aurigami_PLY/134",
+              "publishedAt": "2022-10-18T11:50:59+00:00",
+              "text": "Less than 3 hours until our AMA with Proximity and Trisolaris  @Auri  , courtesy of Arctic!   🥳    Don't miss this chance to pick up some sweet, juicy alphas from some of the biggest brains in Aurora   😉      📅   October 18, 2022 10:00 PM   📍    https://twitter.com/i/spaces/1MYGNgRkDpOJw?s=20",
+              "metrics": {}
+            },
+            {
+              "url": "https://t.me/aurigami_PLY/133",
+              "publishedAt": "2022-10-17T13:10:30+00:00",
+              "text": "We're hopping into an AMA with our good fwens Arctic, ProximityFi and Trisolaris during the Arctic launch party  @Auri    🥳      📅   Date: October 18, 2022 10:00 PM   📍   Link:  https://twitter.com/i/spaces/1MYGNgRkDpOJw/peek   Make sure you don't miss this chance to win some sweet sweet USD Cash   🤑   -  https://twitter.com/Arctic_trade/status/1581487680088469506",
+              "metrics": {}
+            },
+            {
+              "url": "https://t.me/aurigami_PLY/132",
+              "publishedAt": "2022-10-14T14:41:49+00:00",
+              "text": "Get ready to make a splash  #Paperhands    🥽    The   @Arctic_trade   PLY/USDC Pool is now LIVE   👙    Limit order, insane capital efficiency,  #NFTs , Airdrops...This party has it ALL   🚀    Trust us, you DON'T want to miss this - https://medium.com/@Arctic_trade/arctic-launch-party-ba9607a833e0    https://twitter.com/aurigami_PLY/status/1580931643920957441",
+              "metrics": {}
+            },
+            {
+              "url": "https://t.me/aurigami_PLY/131",
+              "publishedAt": "2022-10-13T13:38:43+00:00",
+              "text": "We'll be hopping into a call with Naomiii, Evienear (Trisolaris) and Rimberjack (Proximity) to discuss about all things DeFi!  For all those anime and Spirited Away fans out there, you'd be glad to know that the theme is \"Degenerated away.\"    ✨    Oh and Joe Hisashi might or might not pop by to play a round of One Summer's Day, but either way this is going to be   🔥    🔥    🔥    Save the date here people   👉🏻    https://twitter.com/i/spaces/1YqKDoMXbzwxV   Tweet -  https://twitter.com/aurigami_PLY/status/1580552180016160769",
+              "metrics": {}
+            },
+            {
+              "url": "https://t.me/aurigami_PLY/130",
+              "publishedAt": "2022-10-12T13:35:39+00:00",
+              "text": "https://twitter.com/aurigami_PLY/status/1580190266039840768",
+              "metrics": {}
+            },
+            {
+              "url": "https://t.me/aurigami_PLY/129",
+              "publishedAt": "2022-10-07T02:07:13+00:00",
+              "text": "We're now in the Last Round of the  #Aurigami  Game!  This is your last chance to earn some Early Unlock $PULP - as well as win a share of the Reward Pool   🚀      🔗   Link -  https://app.aurigami.finance/play    https://twitter.com/aurigami_PLY/status/1578206595887951872",
+              "metrics": {}
+            },
+            {
+              "url": "https://t.me/aurigami_PLY/128",
+              "publishedAt": "2022-10-06T13:44:12+00:00",
+              "text": "One hour more to go until our Twitter Space with NEARWEEK with Alex, Axelar and Trisolaris! Hop in and join our discussion about the cross-chain future. Be it multichain or crosschain, no matter which team you're on, it's clear that the future of crypto is one filled with many different ecosystems, with seamless interoperability being the key to unlock their full potential.  It's something that'll affect us all in the cryptoverse, so definitely check it out!  Link -  https://twitter.com/i/spaces/1gqxvyLYaPnJB?s=20",
+              "metrics": {}
+            },
+            {
+              "url": "https://t.me/aurigami_PLY/127",
+              "publishedAt": "2022-10-05T12:37:42+00:00",
+              "text": "https://twitter.com/NEARWEEK/status/1577606827503673345",
+              "metrics": {}
+            },
+            {
+              "url": "https://t.me/aurigami_PLY/126",
+              "publishedAt": "2022-09-29T13:24:06+00:00",
+              "text": "$auUSDT <> $auUSDC Stable Pool on Trisolarishas increased in TVL by 4x in just less than 24 hours   🔥    We'll also let you in on a little secret - $TRI and $PLY rewards are now LIVE!  Here's your chance to earn yield^7   🤩    Link -  https://t.co/Npo0fwycDa    https://twitter.com/aurigami_PLY/status/1575476237580894208",
+              "metrics": {}
+            },
+            {
+              "url": "https://t.me/aurigami_PLY/125",
+              "publishedAt": "2022-09-28T13:33:38+00:00",
+              "text": "https://twitter.com/aurigami_PLY/status/1575116421712920576",
+              "metrics": {}
+            },
+            {
+              "url": "https://t.me/aurigami_PLY/124",
+              "publishedAt": "2022-09-28T02:07:10+00:00",
+              "text": "https://twitter.com/trisolarislabs/status/1574802170264035328",
+              "metrics": {}
+            },
+            {
+              "url": "https://t.me/aurigami_PLY/123",
+              "publishedAt": "2022-09-22T15:02:00+00:00",
+              "text": "AND WE'RE LIVE   🚀     https://twitter.com/i/spaces/1lDGLnZYndZxm?s=20",
+              "metrics": {}
+            },
+            {
+              "url": "https://t.me/aurigami_PLY/122",
+              "publishedAt": "2022-09-19T16:24:35+00:00",
+              "text": "📢   #AMA  AURIGAMI X DECENTRAL BANK  Join us as we discuss the future of stablecoins, $USN and MORE    ⏰   Sept 22nd, 15:00 UTC   🎁   30,000 $PLY for 3 Winners  🏆     📍    https://twitter.com/i/spaces/1lDGLnZYndZxm   To join:   ✅   Follow  @Aurigami_PLY  &  @DcntrlBank    ✅   RT, like & tag 3 friends   ✅   Ask a question below   https://mobile.twitter.com/aurigami_PLY/status/1571899094322511872",
+              "metrics": {}
+            },
+            {
+              "url": "https://t.me/aurigami_PLY/121",
+              "publishedAt": "2022-09-15T13:57:26+00:00",
+              "text": "Quiz is about to start soon!  https://discord.gg/2UpKwjPF",
+              "metrics": {}
+            },
+            {
+              "url": "https://t.me/aurigami_PLY/120",
+              "publishedAt": "2022-09-15T13:28:48+00:00",
+              "text": "Another ~30mins before the stage is yours $USN buffs   💪🏻      📍  Link -  https://discord.gg/2UpKwjPF",
+              "metrics": {}
+            },
+            {
+              "url": "https://t.me/aurigami_PLY/119",
+              "publishedAt": "2022-09-15T09:37:03+00:00",
+              "text": "Less than 5 hours until our $USN quiz, are you ready anon?    🤫  Hint - Follow  @DcntrlBank  and join their Discord ( https://discord.com/invite/decentralbank ) NOW",
+              "metrics": {}
+            },
+            {
+              "url": "https://t.me/aurigami_PLY/115",
+              "publishedAt": "2022-09-14T11:33:25+00:00",
+              "text": "Lots of cool stuff spread (and hidden   😉  ) around  #NEARCON    😍    Did anyone get your hands on these?   #NEAR   #AURORA    https://twitter.com/aurigami_PLY/status/1570011601566339073",
+              "metrics": {}
+            },
+            {
+              "url": "https://t.me/aurigami_PLY/113",
+              "publishedAt": "2022-09-14T03:22:10+00:00",
+              "text": "https://twitter.com/aurigami_PLY/status/1569888544696705024",
+              "metrics": {}
+            },
+            {
+              "url": "https://t.me/aurigami_PLY/112",
+              "publishedAt": "2022-09-14T02:30:46+00:00",
+              "text": "Meeting  @aurigamy_ply  at  #NEARCON !  69,000 $PULP and 420 $PLY for 3 lucky winners!    1️⃣  RT + Like   2️⃣  Follow  @aurigami_PLY   @GoneMultichain    3️⃣  tag 3 friends   #foldtowin  where my plyers and foldoors at?   https://twitter.com/GoneMultichain/status/1569699208789393409",
+              "metrics": {}
+            },
+            {
+              "url": "https://t.me/aurigami_PLY/111",
+              "publishedAt": "2022-09-13T13:50:54+00:00",
+              "text": "https://twitter.com/HakResearch/status/1568481257742561282",
+              "metrics": {}
+            },
+            {
+              "url": "https://t.me/aurigami_PLY/109",
+              "publishedAt": "2022-09-13T13:23:21+00:00",
+              "text": "Puzzle lovers at  #NEARCON , put your wits to the test by seeking out our co-founder EY Tan!  Solve the  #Aurigami  challenge like and you'll get to win:   🟢   A limited-edition NEARCON x Aurigami  #NFT    🟢   This awesome high-quality backpack",
+              "metrics": {}
+            }
+          ],
+          "sampleComplete": true
+        },
+        {
+          "platform": "Medium",
+          "url": "https://medium.com/aurigami",
+          "attributionSource": "https://www.aurigami.finance/",
+          "checkedAt": "2026-11-23T11:01:14.975177Z",
+          "status": "collected",
+          "error": null,
+          "posts": [
+            {
+              "url": "https://medium.com/aurigami/aurigami-revamped-faster-sleeker-sexier-724cbcba3c7e?source=rss----cb6da55274a9---4",
+              "publishedAt": "2023-02-14T13:54:16+00:00",
+              "text": "Aurigami Revamped — Faster, Sleeker, Sexier",
+              "metrics": {}
+            },
+            {
+              "url": "https://medium.com/aurigami/nearx-launch-lend-borrow-fold-154aa5dffef2?source=rss----cb6da55274a9---4",
+              "publishedAt": "2023-02-02T13:48:54+00:00",
+              "text": "NearX Launch — Lend, Borrow & Fold",
+              "metrics": {}
+            },
+            {
+              "url": "https://medium.com/aurigami/aurigami-q3-in-review-4b12ad124a9a?source=rss----cb6da55274a9---4",
+              "publishedAt": "2022-10-04T13:55:39+00:00",
+              "text": "Aurigami Q3 in Review",
+              "metrics": {}
+            },
+            {
+              "url": "https://medium.com/aurigami/aurigami-risk-management-dashboard-9acc9d1217d3?source=rss----cb6da55274a9---4",
+              "publishedAt": "2022-09-07T17:33:52+00:00",
+              "text": "Aurigami Risk Management Dashboard",
+              "metrics": {}
+            },
+            {
+              "url": "https://medium.com/aurigami/the-long-and-short-of-aurigami-d98583c39846?source=rss----cb6da55274a9---4",
+              "publishedAt": "2022-08-29T15:28:56+00:00",
+              "text": "The Long and Short of Aurigami",
+              "metrics": {}
+            },
+            {
+              "url": "https://medium.com/aurigami/aurigami-game-opening-ceremony-27bae733aa76?source=rss----cb6da55274a9---4",
+              "publishedAt": "2022-08-04T13:50:13+00:00",
+              "text": "Aurigami Game Opening Ceremony",
+              "metrics": {}
+            },
+            {
+              "url": "https://medium.com/aurigami/aurigami-q2-in-review-bc73e877fb77?source=rss----cb6da55274a9---4",
+              "publishedAt": "2022-07-04T12:49:03+00:00",
+              "text": "Aurigami Q2 in Review",
+              "metrics": {}
+            },
+            {
+              "url": "https://medium.com/aurigami/aurigami-referral-program-f1576a4c146a?source=rss----cb6da55274a9---4",
+              "publishedAt": "2022-05-18T13:41:36+00:00",
+              "text": "Aurigami Referral Program",
+              "metrics": {}
+            },
+            {
+              "url": "https://medium.com/aurigami/liquidity-mining-tutorial-e74aab583174?source=rss----cb6da55274a9---4",
+              "publishedAt": "2022-05-06T13:18:20+00:00",
+              "text": "Liquidity Mining Tutorial",
+              "metrics": {}
+            },
+            {
+              "url": "https://medium.com/aurigami/ply-token-launch-36942ad67033?source=rss----cb6da55274a9---4",
+              "publishedAt": "2022-05-06T06:02:24+00:00",
+              "text": "PLY Token Launch",
+              "metrics": {}
+            }
+          ],
+          "sampleComplete": false
+        }
+      ]
+    },
+    {
+      "id": "delta-trade",
+      "name": "DeltaTrade",
+      "tokenVerified": false,
+      "observedAt": "2026-11-23T10:56:17.136626Z",
+      "discovery": {
+        "status": "collected",
+        "url": "https://www.deltatrade.ai/",
+        "error": null,
+        "checkedAt": "2026-11-23T10:56:17.136626Z"
+      },
+      "sources": [
+        {
+          "platform": "X",
+          "url": "https://twitter.com/DeltaBotTeam",
+          "attributionSource": "https://www.deltatrade.ai/",
+          "checkedAt": "2026-11-23T10:56:17.136626Z",
+          "status": "unavailable",
+          "error": "NEED_LOGIN",
+          "posts": [],
+          "sampleComplete": false
+        },
+        {
+          "platform": "Telegram",
+          "url": "https://t.me/deltabotchat",
+          "attributionSource": "https://www.deltatrade.ai/",
+          "checkedAt": "2026-11-23T10:56:17.136626Z",
+          "status": "unavailable",
+          "error": "PUBLIC_HISTORY_UNAVAILABLE",
+          "posts": [],
+          "sampleComplete": false
+        }
+      ]
+    },
+    {
+      "id": "edge-video",
+      "name": "Edge Video AI",
+      "tokenVerified": true,
+      "observedAt": "2026-11-23T10:56:17.136626Z",
+      "discovery": {
+        "status": "collected",
+        "url": "https://www.edgevideo.ai/",
+        "error": null,
+        "checkedAt": "2026-11-23T10:56:17.136626Z"
+      },
+      "sources": [
+        {
+          "platform": "X",
+          "url": "https://x.com/edgevideoai",
+          "attributionSource": "https://www.edgevideo.ai/",
+          "checkedAt": "2026-11-23T10:56:17.136626Z",
+          "status": "unavailable",
+          "error": "NEED_LOGIN",
+          "posts": [],
+          "sampleComplete": false
+        },
+        {
+          "platform": "YouTube",
+          "url": "https://www.youtube.com/@edgevideoai",
+          "attributionSource": "https://www.edgevideo.ai/",
+          "checkedAt": "2026-11-23T10:56:17.136626Z",
+          "status": "unavailable",
+          "error": "HISTORY_ADAPTER_PENDING",
+          "posts": [],
+          "sampleComplete": false
+        }
+      ]
+    },
+    {
+      "id": "enleap",
+      "name": "Enleap",
+      "tokenVerified": true,
+      "observedAt": "2026-11-23T10:56:17.136626Z",
+      "discovery": {
+        "status": "not_available",
+        "url": "https://nearblocks.io/address/enleap.near"
+      },
+      "sources": []
+    },
+    {
+      "id": "fastnear",
+      "name": "FastNear",
+      "tokenVerified": false,
+      "observedAt": "2026-11-23T10:56:17.136626Z",
+      "discovery": {
+        "status": "collected",
+        "url": "https://fastnear.com/",
+        "error": null,
+        "checkedAt": "2026-11-23T10:56:17.136626Z"
+      },
+      "sources": [
+        {
+          "platform": "Telegram",
+          "url": "https://t.me/fast_near",
+          "attributionSource": "https://fastnear.com/",
+          "checkedAt": "2026-11-23T10:56:17.136626Z",
+          "status": "unavailable",
+          "error": "PUBLIC_HISTORY_UNAVAILABLE",
+          "posts": [],
+          "sampleComplete": false
+        },
+        {
+          "platform": "X",
+          "url": "https://x.com/fast_near",
+          "attributionSource": "https://fastnear.com/",
+          "checkedAt": "2026-11-23T10:56:17.136626Z",
+          "status": "unavailable",
+          "error": "NEED_LOGIN",
+          "posts": [],
+          "sampleComplete": false
+        }
+      ]
+    },
+    {
+      "id": "hapi",
+      "name": "HAPI Protocol",
+      "tokenVerified": true,
+      "observedAt": "2026-11-23T10:56:17.136626Z",
+      "discovery": {
+        "status": "collected",
+        "url": "https://hapi.one/",
+        "error": null,
+        "checkedAt": "2026-11-23T10:56:17.136626Z"
+      },
+      "sources": []
+    },
+    {
+      "id": "hot-wallet",
+      "name": "HOT Wallet",
+      "tokenVerified": false,
+      "observedAt": "2026-11-23T10:56:17.136626Z",
+      "discovery": {
+        "status": "collected",
+        "url": "https://www.hotdao.ai/",
+        "error": null,
+        "checkedAt": "2026-11-23T10:56:17.136626Z"
+      },
+      "sources": [
+        {
+          "platform": "Telegram",
+          "url": "https://t.me/hot_wallet",
+          "attributionSource": "https://www.hotdao.ai/",
+          "checkedAt": "2026-11-23T10:56:17.136626Z",
+          "status": "unavailable",
+          "error": "PUBLIC_HISTORY_UNAVAILABLE",
+          "posts": [],
+          "sampleComplete": false
+        },
+        {
+          "platform": "X",
+          "url": "https://x.com/hotdao_",
+          "attributionSource": "https://www.hotdao.ai/",
+          "checkedAt": "2026-11-23T10:56:17.136626Z",
+          "status": "unavailable",
+          "error": "NEED_LOGIN",
+          "posts": [],
+          "sampleComplete": false
+        },
+        {
+          "platform": "GitHub",
+          "url": "https://github.com/hot-dao/kit",
+          "attributionSource": "https://www.hotdao.ai/",
+          "checkedAt": "2026-11-23T10:56:17.136626Z",
+          "status": "collected",
+          "error": null,
+          "posts": [
+            {
+              "url": "https://github.com/hot-dao/kit/releases/tag/v1.4.23",
+              "publishedAt": "2026-01-28T17:13:48+00:00",
+              "text": "v1.4.23",
+              "metrics": {}
+            },
+            {
+              "url": "https://github.com/hot-dao/kit/releases/tag/v1.4.21",
+              "publishedAt": "2026-01-28T00:52:13+00:00",
+              "text": "v1.4.21",
+              "metrics": {}
+            },
+            {
+              "url": "https://github.com/hot-dao/kit/releases/tag/v1.4.20",
+              "publishedAt": "2026-01-28T00:45:57+00:00",
+              "text": "v1.4.20",
+              "metrics": {}
+            },
+            {
+              "url": "https://github.com/hot-dao/kit/releases/tag/v1.4.19",
+              "publishedAt": "2026-01-27T13:05:30+00:00",
+              "text": "v1.4.19",
+              "metrics": {}
+            },
+            {
+              "url": "https://github.com/hot-dao/kit/releases/tag/v1.4.18",
+              "publishedAt": "2026-01-26T23:06:27+00:00",
+              "text": "v1.4.18",
+              "metrics": {}
+            },
+            {
+              "url": "https://github.com/hot-dao/kit/releases/tag/v1.4.17",
+              "publishedAt": "2026-01-26T13:27:34+00:00",
+              "text": "v1.4.17",
+              "metrics": {}
+            },
+            {
+              "url": "https://github.com/hot-dao/kit/releases/tag/v1.4.16",
+              "publishedAt": "2026-01-26T00:57:17+00:00",
+              "text": "v1.4.16",
+              "metrics": {}
+            },
+            {
+              "url": "https://github.com/hot-dao/kit/releases/tag/v1.4.13",
+              "publishedAt": "2026-01-25T18:20:41+00:00",
+              "text": "v1.4.13",
+              "metrics": {}
+            },
+            {
+              "url": "https://github.com/hot-dao/kit/releases/tag/v1.4.12",
+              "publishedAt": "2026-01-25T16:35:57+00:00",
+              "text": "v1.4.12",
+              "metrics": {}
+            },
+            {
+              "url": "https://github.com/hot-dao/kit/releases/tag/v1.4.10",
+              "publishedAt": "2026-01-22T14:30:31+00:00",
+              "text": "v1.4.10",
+              "metrics": {}
+            }
+          ],
+          "sampleComplete": false,
+          "profileStatus": "collected"
+        },
+        {
+          "platform": "YouTube",
+          "url": "https://www.youtube.com/@hot-labs",
+          "attributionSource": "https://www.hotdao.ai/",
+          "checkedAt": "2026-11-23T10:56:17.136626Z",
+          "status": "unavailable",
+          "error": "HISTORY_ADAPTER_PENDING",
+          "posts": [],
+          "sampleComplete": false
+        },
+        {
+          "platform": "GitHub",
+          "url": "https://github.com/hot-dao/hot-connector",
+          "attributionSource": "https://www.hotdao.ai/",
+          "checkedAt": "2026-11-23T10:56:17.136626Z",
+          "status": "collected",
+          "error": null,
+          "posts": [
+            {
+              "url": "https://github.com/hot-dao/kit/releases/tag/v1.4.23",
+              "publishedAt": "2026-01-28T17:13:48+00:00",
+              "text": "v1.4.23",
+              "metrics": {}
+            },
+            {
+              "url": "https://github.com/hot-dao/kit/releases/tag/v1.4.21",
+              "publishedAt": "2026-01-28T00:52:13+00:00",
+              "text": "v1.4.21",
+              "metrics": {}
+            },
+            {
+              "url": "https://github.com/hot-dao/kit/releases/tag/v1.4.20",
+              "publishedAt": "2026-01-28T00:45:57+00:00",
+              "text": "v1.4.20",
+              "metrics": {}
+            },
+            {
+              "url": "https://github.com/hot-dao/kit/releases/tag/v1.4.19",
+              "publishedAt": "2026-01-27T13:05:30+00:00",
+              "text": "v1.4.19",
+              "metrics": {}
+            },
+            {
+              "url": "https://github.com/hot-dao/kit/releases/tag/v1.4.18",
+              "publishedAt": "2026-01-26T23:06:27+00:00",
+              "text": "v1.4.18",
+              "metrics": {}
+            },
+            {
+              "url": "https://github.com/hot-dao/kit/releases/tag/v1.4.17",
+              "publishedAt": "2026-01-26T13:27:34+00:00",
+              "text": "v1.4.17",
+              "metrics": {}
+            },
+            {
+              "url": "https://github.com/hot-dao/kit/releases/tag/v1.4.16",
+              "publishedAt": "2026-01-26T00:57:17+00:00",
+              "text": "v1.4.16",
+              "metrics": {}
+            },
+            {
+              "url": "https://github.com/hot-dao/kit/releases/tag/v1.4.13",
+              "publishedAt": "2026-01-25T18:20:41+00:00",
+              "text": "v1.4.13",
+              "metrics": {}
+            },
+            {
+              "url": "https://github.com/hot-dao/kit/releases/tag/v1.4.12",
+              "publishedAt": "2026-01-25T16:35:57+00:00",
+              "text": "v1.4.12",
+              "metrics": {}
+            },
+            {
+              "url": "https://github.com/hot-dao/kit/releases/tag/v1.4.10",
+              "publishedAt": "2026-01-22T14:30:31+00:00",
+              "text": "v1.4.10",
+              "metrics": {}
+            }
+          ],
+          "sampleComplete": false,
+          "profileStatus": "collected"
+        },
+        {
+          "platform": "GitHub",
+          "url": "https://github.com/hot-dao/omni-wallet-solidity/blob/main/audits/Hacken.pdf",
+          "attributionSource": "https://www.hotdao.ai/",
+          "checkedAt": "2026-11-23T10:56:17.136626Z",
+          "status": "collected",
+          "error": null,
+          "posts": [],
+          "sampleComplete": false,
+          "profileStatus": "collected"
+        }
+      ]
+    },
+    {
+      "id": "intear",
+      "name": "Intear",
+      "tokenVerified": true,
+      "observedAt": "2026-11-23T10:56:17.136626Z",
+      "discovery": {
+        "status": "collected",
+        "url": "https://docs.intear.tech/",
+        "error": null,
+        "checkedAt": "2026-11-23T10:56:17.136626Z"
+      },
+      "sources": [
+        {
+          "platform": "Telegram",
+          "url": "https://t.me/intearchat",
+          "attributionSource": "https://docs.intear.tech/",
+          "checkedAt": "2026-11-23T10:56:17.136626Z",
+          "status": "unavailable",
+          "error": "PUBLIC_HISTORY_UNAVAILABLE",
+          "posts": [],
+          "sampleComplete": false
+        },
+        {
+          "platform": "X",
+          "url": "https://x.com/intea_rs",
+          "attributionSource": "https://docs.intear.tech/",
+          "checkedAt": "2026-11-23T10:56:17.136626Z",
+          "status": "unavailable",
+          "error": "NEED_LOGIN",
+          "posts": [],
+          "sampleComplete": false
+        }
+      ]
+    },
+    {
+      "id": "intellex",
+      "name": "Intellex",
+      "tokenVerified": true,
+      "observedAt": "2026-11-23T10:56:17.136626Z",
+      "discovery": {
+        "status": "collected",
+        "url": "https://www.intellex.xyz/",
+        "error": null,
+        "checkedAt": "2026-11-23T10:56:17.136626Z"
+      },
+      "sources": [
+        {
+          "platform": "Medium",
+          "url": "https://medium.com/@intellex_ai",
+          "attributionSource": "https://www.intellex.xyz/",
+          "checkedAt": "2026-11-23T10:56:17.136626Z",
+          "status": "collected",
+          "error": null,
+          "posts": [
+            {
+              "url": "https://medium.com/@intellex_ai/erics-community-update-a8e1a3303cd2?source=rss-dec2cfdbbcf5------2",
+              "publishedAt": "2024-10-02T15:44:26+00:00",
+              "text": "Eric’s Community Update",
+              "metrics": {}
+            },
+            {
+              "url": "https://medium.com/@intellex_ai/how-the-intelligence-economy-will-shape-the-next-decade-66103761fab8?source=rss-dec2cfdbbcf5------2",
+              "publishedAt": "2024-10-01T15:37:26+00:00",
+              "text": "How the Intelligence Economy Will Shape the Next Decade",
+              "metrics": {}
+            },
+            {
+              "url": "https://medium.com/@intellex_ai/why-ai-interoperability-is-the-future-of-business-collaboration-714823ff2d12?source=rss-dec2cfdbbcf5------2",
+              "publishedAt": "2024-09-12T09:22:39+00:00",
+              "text": "Why AI Interoperability is the Future of Business Collaboration",
+              "metrics": {}
+            },
+            {
+              "url": "https://medium.com/@intellex_ai/brainstems-developer-update-august-2024-7c35b2f7c38e?source=rss-dec2cfdbbcf5------2",
+              "publishedAt": "2024-09-05T14:32:51+00:00",
+              "text": "Brainstems Developer Update — August 2024",
+              "metrics": {}
+            },
+            {
+              "url": "https://medium.com/@intellex_ai/from-data-to-value-tokenizing-assets-in-ai-ecosystems-4a6a96226a49?source=rss-dec2cfdbbcf5------2",
+              "publishedAt": "2024-08-26T15:39:27+00:00",
+              "text": "From Data to Value: Tokenizing Assets in AI Ecosystems",
+              "metrics": {}
+            },
+            {
+              "url": "https://medium.com/@intellex_ai/the-foundation-of-ai-collaboration-identity-resolution-and-knowledge-graph-management-38d1c041403e?source=rss-dec2cfdbbcf5------2",
+              "publishedAt": "2024-08-19T11:06:08+00:00",
+              "text": "The Foundation of AI Collaboration: Identity Resolution and Knowledge Graph Management",
+              "metrics": {}
+            },
+            {
+              "url": "https://medium.com/@intellex_ai/july-developer-updates-1666ba9fc1e3?source=rss-dec2cfdbbcf5------2",
+              "publishedAt": "2024-08-08T15:10:41+00:00",
+              "text": "July Developer Updates",
+              "metrics": {}
+            },
+            {
+              "url": "https://medium.com/@intellex_ai/intelligence-vs-data-why-investors-should-pay-attention-80b4b09eedbc?source=rss-dec2cfdbbcf5------2",
+              "publishedAt": "2024-08-06T14:49:00+00:00",
+              "text": "Intelligence vs. Data: Why Investors Should Pay Attention",
+              "metrics": {}
+            },
+            {
+              "url": "https://medium.com/intellex-ai/introducing-the-intelligence-economy-transforming-ai-into-tradable-assets-7765a1639999?source=rss-dec2cfdbbcf5------2",
+              "publishedAt": "2024-07-29T13:57:08+00:00",
+              "text": "Introducing the Intelligence Economy: Transforming AI into Tradable Assets",
+              "metrics": {}
+            },
+            {
+              "url": "https://medium.com/intellex-ai/understanding-the-intelligence-flywheel-effect-38a0468fe898?source=rss-dec2cfdbbcf5------2",
+              "publishedAt": "2024-07-22T15:34:02+00:00",
+              "text": "Understanding the Intelligence Flywheel Effect",
+              "metrics": {}
+            }
+          ],
+          "sampleComplete": false
+        },
+        {
+          "platform": "X",
+          "url": "https://x.com/intellex_xyz",
+          "attributionSource": "https://www.intellex.xyz/",
+          "checkedAt": "2026-11-23T10:56:17.136626Z",
+          "status": "unavailable",
+          "error": "NEED_LOGIN",
+          "posts": [],
+          "sampleComplete": false
+        },
+        {
+          "platform": "Telegram",
+          "url": "https://t.me/intellex_xyz",
+          "attributionSource": "https://www.intellex.xyz/",
+          "checkedAt": "2026-11-23T10:56:17.136626Z",
+          "status": "unavailable",
+          "error": "PUBLIC_HISTORY_UNAVAILABLE",
+          "posts": [],
+          "sampleComplete": false
+        }
+      ]
+    },
+    {
+      "id": "jumbo",
+      "name": "Jumbo Exchange",
+      "tokenVerified": true,
+      "observedAt": "2026-11-23T10:56:17.136626Z",
+      "discovery": {
+        "status": "collected",
+        "url": "https://jumbo.exchange/",
+        "error": null,
+        "checkedAt": "2026-11-23T10:56:17.136626Z"
+      },
+      "sources": []
+    },
+    {
+      "id": "keypom",
+      "name": "Keypom",
+      "tokenVerified": false,
+      "observedAt": "2026-11-23T10:56:17.136626Z",
+      "discovery": {
+        "status": "collected",
+        "url": "https://keypom.xyz/",
+        "error": null,
+        "checkedAt": "2026-11-23T10:56:17.136626Z"
+      },
+      "sources": [
+        {
+          "platform": "GitHub",
+          "url": "https://github.com/keypom/keypom",
+          "attributionSource": "https://github.com/keypom/keypom",
+          "checkedAt": "2026-11-23T10:56:17.136626Z",
+          "status": "collected",
+          "error": null,
+          "posts": [
+            {
+              "url": "https://github.com/keypom/keypom/releases/tag/v2.keypom.near",
+              "publishedAt": "2023-03-17T13:12:57+00:00",
+              "text": "2.0.2 (v2.keypom.near)",
+              "metrics": {}
+            },
+            {
+              "url": "https://github.com/keypom/keypom/releases/tag/v1-4.keypom.near",
+              "publishedAt": "2023-02-08T16:31:48+00:00",
+              "text": "1.4.0 (v1-4.keypom.near)",
+              "metrics": {}
+            },
+            {
+              "url": "https://github.com/keypom/keypom/releases/tag/v1-3.keypom.near",
+              "publishedAt": "2023-02-06T15:18:10+00:00",
+              "text": "1.3.1 (v1-3.keypom.near)",
+              "metrics": {}
+            },
+            {
+              "url": "https://github.com/keypom/keypom/releases/tag/v1.keypom.near",
+              "publishedAt": "2023-01-05T15:27:01+00:00",
+              "text": "1.0.1 (v1.keypom.near)",
+              "metrics": {}
+            }
+          ],
+          "sampleComplete": false,
+          "profileStatus": "collected"
+        }
+      ]
+    },
+    {
+      "id": "linear",
+      "name": "LiNEAR",
+      "tokenVerified": true,
+      "observedAt": "2026-11-23T10:56:17.136626Z",
+      "discovery": {
+        "status": "not_available",
+        "url": null
+      },
+      "sources": [
+        {
+          "platform": "GitHub",
+          "url": "https://github.com/linear-protocol/LiNEAR",
+          "attributionSource": "https://github.com/linear-protocol/LiNEAR",
+          "checkedAt": "2026-11-23T10:56:17.136626Z",
+          "status": "collected",
+          "error": null,
+          "posts": [
+            {
+              "url": "https://github.com/linear-protocol/LiNEAR/releases/tag/v1.6.3",
+              "publishedAt": "2026-06-08T08:33:39+00:00",
+              "text": "LiNEAR v1.6.3",
+              "metrics": {}
+            },
+            {
+              "url": "https://github.com/linear-protocol/LiNEAR/releases/tag/v1.6.2",
+              "publishedAt": "2025-09-24T08:06:42+00:00",
+              "text": "LiNEAR v1.6.2",
+              "metrics": {}
+            },
+            {
+              "url": "https://github.com/linear-protocol/LiNEAR/releases/tag/v1.6.1",
+              "publishedAt": "2025-05-06T06:27:41+00:00",
+              "text": "LiNEAR v1.6.1",
+              "metrics": {}
+            },
+            {
+              "url": "https://github.com/linear-protocol/LiNEAR/releases/tag/v1.6.0",
+              "publishedAt": "2024-02-21T06:59:37+00:00",
+              "text": "LiNEAR v1.6.0",
+              "metrics": {}
+            },
+            {
+              "url": "https://github.com/linear-protocol/LiNEAR/releases/tag/v1.5.1",
+              "publishedAt": "2024-02-06T12:09:34+00:00",
+              "text": "LiNEAR v1.5.1",
+              "metrics": {}
+            },
+            {
+              "url": "https://github.com/linear-protocol/LiNEAR/releases/tag/v1.5.0",
+              "publishedAt": "2023-09-27T14:07:44+00:00",
+              "text": "LiNEAR v1.5.0",
+              "metrics": {}
+            },
+            {
+              "url": "https://github.com/linear-protocol/LiNEAR/releases/tag/v1.4.4",
+              "publishedAt": "2023-07-05T08:22:57+00:00",
+              "text": "LiNEAR v1.4.4",
+              "metrics": {}
+            },
+            {
+              "url": "https://github.com/linear-protocol/LiNEAR/releases/tag/v1.4.3",
+              "publishedAt": "2023-06-27T10:33:42+00:00",
+              "text": "LiNEAR v1.4.3",
+              "metrics": {}
+            },
+            {
+              "url": "https://github.com/linear-protocol/LiNEAR/releases/tag/v1.4.2",
+              "publishedAt": "2023-06-14T06:06:40+00:00",
+              "text": "LiNEAR v1.4.2",
+              "metrics": {}
+            },
+            {
+              "url": "https://github.com/linear-protocol/LiNEAR/releases/tag/v1.4.1",
+              "publishedAt": "2023-06-12T08:05:51+00:00",
+              "text": "LiNEAR v1.4.1",
+              "metrics": {}
+            }
+          ],
+          "sampleComplete": false,
+          "profileStatus": "collected"
+        }
+      ]
+    },
+    {
+      "id": "metapool",
+      "name": "Meta Pool",
+      "tokenVerified": true,
+      "observedAt": "2026-11-23T10:56:17.136626Z",
+      "discovery": {
+        "status": "collected",
+        "url": "https://www.metapool.app/",
+        "error": null,
+        "checkedAt": "2026-11-23T10:56:17.136626Z"
+      },
+      "sources": [
+        {
+          "platform": "X",
+          "url": "https://x.com/meta_pool",
+          "attributionSource": "https://www.metapool.app/",
+          "checkedAt": "2026-11-23T10:52:43.242789Z",
+          "status": "unavailable",
+          "error": "NEED_LOGIN",
+          "posts": [],
+          "sampleComplete": false
+        },
+        {
+          "platform": "Discord",
+          "url": "https://discord.gg/9DzPZCzzxp",
+          "attributionSource": "https://www.metapool.app/",
+          "checkedAt": "2026-11-23T10:56:17.136626Z",
+          "status": "unavailable",
+          "error": "HISTORY_ADAPTER_PENDING",
+          "posts": [],
+          "sampleComplete": false
+        },
+        {
+          "platform": "Telegram",
+          "url": "https://t.me/MetaPoolOfficialGroup",
+          "attributionSource": "https://www.metapool.app/",
+          "checkedAt": "2026-11-23T10:56:17.136626Z",
+          "status": "unavailable",
+          "error": "PUBLIC_HISTORY_UNAVAILABLE",
+          "posts": [],
+          "sampleComplete": false
+        },
+        {
+          "platform": "Discord",
+          "url": "https://discord.com/invite/9DzPZCzzxp",
+          "attributionSource": "https://www.metapool.app/",
+          "checkedAt": "2026-11-23T10:56:17.136626Z",
+          "status": "unavailable",
+          "error": "HISTORY_ADAPTER_PENDING",
+          "posts": [],
+          "sampleComplete": false
+        }
+      ]
+    },
+    {
+      "id": "meteor-wallet",
+      "name": "Meteor Wallet",
+      "tokenVerified": false,
+      "observedAt": "2026-11-23T10:56:17.136626Z",
+      "discovery": {
+        "status": "collected",
+        "url": "https://meteorwallet.app/",
+        "error": null,
+        "checkedAt": "2026-11-23T10:56:17.136626Z"
+      },
+      "sources": []
+    },
+    {
+      "id": "mintbase",
+      "name": "Mintbase",
+      "tokenVerified": false,
+      "observedAt": "2026-11-23T10:56:17.136626Z",
+      "discovery": {
+        "status": "not_available",
+        "url": null
+      },
+      "sources": []
+    },
+    {
+      "id": "near-devhub",
+      "name": "NEAR DevHub",
+      "tokenVerified": false,
+      "observedAt": "2026-11-23T11:01:20.906833Z",
+      "discovery": {
+        "status": "collected",
+        "url": "https://neardevhub.org/",
+        "error": null,
+        "checkedAt": "2026-11-23T11:01:20.906833Z"
+      },
+      "sources": [
+        {
+          "platform": "X",
+          "url": "https://x.com/NEARDevHub",
+          "attributionSource": "https://neardevhub.org/",
+          "checkedAt": "2026-11-23T10:56:17.136626Z",
+          "status": "unavailable",
+          "error": "NEED_LOGIN",
+          "posts": [],
+          "sampleComplete": false
+        },
+        {
+          "platform": "Telegram",
+          "url": "https://t.me/NEARDevHub",
+          "attributionSource": "https://neardevhub.org/",
+          "checkedAt": "2026-11-23T11:01:20.906833Z",
+          "status": "collected",
+          "error": null,
+          "posts": [
+            {
+              "url": "https://t.me/NEARDevHub/800",
+              "publishedAt": "2026-10-31T16:29:44+00:00",
+              "text": "Quickly learn about the hackathon tracks:  https://youtu.be/bND1ioWBf3g   Plus we have all 13 starter prompts, one file per track:  https://github.com/nearai/near-hackathon-prompt-examples   Rules, dates and submissions:  https://nearhackathon.com   Submit between Nov 1–14. Claude Code and Codex are on the judging panel, so write your README like a human AND a robot will read it. Because one will.",
+              "metrics": {}
+            },
+            {
+              "url": "https://t.me/NEARDevHub/799",
+              "publishedAt": "2026-10-21T17:40:46+00:00",
+              "text": "A closer look at NEAR Agent Market  NEAR DevHub walks through hiring and tracking an agent, listing your own, and posting a job.     📺     Watch the walkthrough",
+              "metrics": {}
+            },
+            {
+              "url": "https://t.me/NEARDevHub/798",
+              "publishedAt": "2026-10-20T18:41:29+00:00",
+              "text": "Ever hired an AI agent before?  NEAR DevHub walks through the process on NEAR AI Agent Market, from comparing agents to hiring one and handling payments.     📺     See how it works",
+              "metrics": {}
+            },
+            {
+              "url": "https://t.me/NEARDevHub/797",
+              "publishedAt": "2026-10-19T13:22:38+00:00",
+              "text": "Missed the Agent Market announcement? Here’s where to start    ☺️      What Is Agent Market? The Marketplace Where AI Agents Get Hired by the Job   NEAR AI’s marketplace lets you put an existing AI agent up for hire or get paid to build a new one from a job spec.  8 paid jobs are opening up, each with its own build spec:    ➡️     Field Service Route Planner     ➡️     Pay-Per-Use Media Generator     ➡️     Catering & Group Dining Agent     ➡️     Video Dubbing Agent     ➡️     Local Services Quote Agent     ➡️     Video Clipping Agent     ➡️     Call-for-Me Booking Agent     ➡️     Brand Name Checker   Bid for a job. If selected, build the agent, pass testing, and get paid in USDC    💴     And it doesn’t end there. The agent stays yours. List it on the marketplace, set your price, and earn every time someone hires it.  Either way, your agent’s career  starts here     🖥      JUST BID IT",
+              "metrics": {}
+            },
+            {
+              "url": "https://t.me/NEARDevHub/796",
+              "publishedAt": "2026-09-25T14:10:51+00:00",
+              "text": "Hi everyone,    ⚠️    Deprecation announcement    ⚠️    The Graph will start winding down their integration with NEAR blockchain from 16th Oct onwards if you are using their service in any way, you should consider migration to an alternative: • Goldsky indexer: they have  a guide for the migration from The Graph . •  Neardata API",
+              "metrics": {}
+            },
+            {
+              "url": "https://t.me/NEARDevHub/795",
+              "publishedAt": "2026-08-12T19:10:18+00:00",
+              "text": "NEP-641 has been just approved.  \"Offchain Authorizations for Smart Contracts\"  This standardizes the flow for signing and verifying offchain messages for smart contracts that power Passkey, EVM, multisig, and other wallet contracts.  The first version of this standard was live and tested on Trezu, and now it is a standard for the whole NEAR ecosystem.   Summary   A view-function convention, w_resolve_auth,  that lets any NEAR contract attest to offchain authorizations — dApp  logins, offchain action approvals — without requiring a NEAR access key  on the account. It defines:  1. the resolution interface:  w_resolve_auth(path, authorization) -> { payload, pending }  2. recursive, caller-side resolution through pending sub-authorizations, so multisigs, extensions, and delegated wallets compose with any wallet type; 3. a standardized signable envelope, OffchainMessage, binding chain_id, signer_id, resolution path, signing timestamp, and the authorized payload; 4. a standardized full-access-key authorization (built on NEP-413), so regular NEAR accounts resolve through the same procedure.   Full standard is    here   .   If you want to see it in action, check out the sign-in flow for F",
+              "metrics": {}
+            },
+            {
+              "url": "https://t.me/NEARDevHub/794",
+              "publishedAt": "2026-07-30T18:20:25+00:00",
+              "text": "Stake NEAR. Deploy IronClaw .  Now your NEAR stake does two jobs at once: → It sets your monthly credit budget. → It determines how many agents you can run in parallel.  Start with 50 NEAR get IronClaw Agent live in ~30 seconds.     ➡️   Try now:  Ironclaw.com",
+              "metrics": {}
+            },
+            {
+              "url": "https://t.me/NEARDevHub/793",
+              "publishedAt": "2026-07-22T17:01:43+00:00",
+              "text": "Last week in NEAR:  ✦  nearcore 2.13 went live on mainnet , bringing post-quantum signing, dynamic resharding, compact onchain key storage, and improvements to epoch sync and meta-transactions;  ✦  Arto Bendiken released Edky 0.1 , a CLI tool for converting Ed25519 public keys between different encodings;  ✦  OutLayer went post-quantum on NEAR mainnet ;  ✦  The Agent Economy: Who Owns the Rails AI Runs On  is worth a read for its take on who will control the agent economy’s infrastructure and how NEAR fits into it     🟦     Channel  |  Chat  |  LinkTree",
+              "metrics": {}
+            },
+            {
+              "url": "https://t.me/NEARDevHub/792",
+              "publishedAt": "2026-07-21T09:09:34+00:00",
+              "text": "Join all the NEAR groups in one click.      ➡️            https://t.me/addlist/mileYaQichgyYTU9     NEAR Legion, NEAR Dev, IronClaw, Agent Market, DevHub and more.  Meet. Build. Grow with the movement.",
+              "metrics": {}
+            },
+            {
+              "url": "https://t.me/NEARDevHub/791",
+              "publishedAt": "2026-07-18T09:04:09+00:00",
+              "text": "Agent Market : Early Access, Cohort #1 Agent Market is opening early access ahead of general availability, and NearBuilders has been asked to bring the first cohort.  The build is early. Cohort members will run real flows against live infrastructure, report what breaks, and see that feedback shape what ships next. You get working knowledge of the stack before the rest of the ecosystem does.  Places are limited. Sign-ups close July 26.   Link",
+              "metrics": {}
+            },
+            {
+              "url": "https://t.me/NEARDevHub/790",
+              "publishedAt": "2026-07-15T12:01:29+00:00",
+              "text": "Last week in NEAR:  ✦  NEAR Foundation joined  the x402 Foundation, bringing NEAR's infrastructure for confidential execution, private inference, and agent coordination to the growing ecosystem around the open x402 payments standard;  ✦  Anton published  a deep dive into the Wasmtime migration in nearcore 2.12, explaining why NEAR replaced its custom VM and the engineering trade-offs behind the transition;  ✦  Confidential EURe  went live on  near.com , enabling users to hold, swap, and transfer euro-backed stablecoins privately across 30+ chains from a single account;  ✦  Illia Polosukhin explained  why AI sovereignty is gaining mainstream attention, arguing that open AI infrastructure with confidential inference and verifiable compute is the path forward     🟦     Channel  |  Chat  |  LinkTree",
+              "metrics": {}
+            },
+            {
+              "url": "https://t.me/NEARDevHub/789",
+              "publishedAt": "2026-07-13T14:03:32+00:00",
+              "text": "nearcore 2.13.0 has been released  Protocol v86 voting starts on July 20.  Once the upgrade activates, NEAR will no longer require protocol upgrades to introduce new shard layouts, as dynamic resharding can automatically split shards when they reach size thresholds.    Full release notes      🖥        🟦     Channel  |  Chat  |  LinkTree",
+              "metrics": {}
+            },
+            {
+              "url": "https://t.me/NEARDevHub/788",
+              "publishedAt": "2026-07-12T09:04:52+00:00",
+              "text": "NEP-642 & NEP-645 Walkthroughs   The recording is up     📺     Watch it to learn why NEAR is increasing the account creation cost and how post-quantum transaction signatures strengthen the protocol for the future.     🟦     Channel  |  Chat  |  LinkTree",
+              "metrics": {}
+            },
+            {
+              "url": "https://t.me/NEARDevHub/786",
+              "publishedAt": "2026-07-08T20:02:53+00:00",
+              "text": "The State of NEAR: Q2 2026      📊        The latest quarterly report is out, covering where NEAR stands today and what's coming next.  Highlights:    ➡️    Protocol fee capture surpassed 30%    ➡️     near.com  continues growing as a key revenue engine    ➡️    Confidential Intents are becoming the default experience    ➡️    Dynamic resharding & post-quantum cryptography are live on testnet    ➡️    The report explores what's next for NEAR AI and the agent economy    Read the full report      🖥        🟦     Channel  |  Chat  |  LinkTree",
+              "metrics": {}
+            },
+            {
+              "url": "https://t.me/NEARDevHub/785",
+              "publishedAt": "2026-07-08T08:03:54+00:00",
+              "text": "Last week in NEAR:  ✦  Confidential Intents became generally available , letting any developer integrate confidential cross-chain execution through the NEAR Intents 1Click Swap API with a single parameter, with Vadim highlighting how  OutLayer already makes these confidential rails  accessible to AI agents through a simple HTTPS API;  ✦  HSP-027 passed  governance voting, removing the legacy developer gas rebate, with  Illia Polosukhin explaining  that the incentive no longer worked as intended and added unnecessary complexity to the protocol;  ✦  Vadim broke down  why NEAR is well positioned for the post-quantum era, explaining how its rotatable account keys make upgrading to quantum-safe signatures much simpler than on many other blockchains;  ✦  near_dart  is a good example of how ideas grow in the NEAR ecosystem, with the community helping refine the SDK through open feedback and discussion     🟦     Channel  |  Chat  |  LinkTree",
+              "metrics": {}
+            },
+            {
+              "url": "https://t.me/NEARDevHub/784",
+              "publishedAt": "2026-07-07T15:01:00+00:00",
+              "text": "⬛️   The Big Reveal is LIVE   Join Illia Polosukhin and Alex Shevchenko as they unveil what's next for NEAR Intents.     🔈     Tune in now and catch the announcement in real time      🟦     Channel  |  Chat  |  LinkTree",
+              "metrics": {}
+            },
+            {
+              "url": "https://t.me/NEARDevHub/783",
+              "publishedAt": "2026-07-07T11:01:46+00:00",
+              "text": "The Big Reveal is NEAR   👀       ⬛️   What's inside the black box for your business?  Find out in few hours at 11 AM EST with Illia and Alex!   Streaming on  X  &  Youtube .",
+              "metrics": {}
+            },
+            {
+              "url": "https://t.me/NEARDevHub/782",
+              "publishedAt": "2026-07-02T11:32:14+00:00",
+              "text": "Last week in NEAR:  ✦  Ivan spotted  a wave of 190+ malicious PRs submitted to crypto related repositories, with repo maintainers urged to review incoming changes more carefully for now;  ✦  near.com added  a MiCA-aligned euro on-ramp, letting EU users move funds onchain via SEPA Instant and access DeFi across 30+ chains from self-custodial wallets;  ✦  OutLayer added  a self-hosted bare-metal TDX fleet alongside Phala Cloud, with the same attestation flow now reproducible across different Intel TDX environments without changing the worker code;  ✦  nearcore 2.13  is now live on testnet, bringing NEAR closer to post-quantum safe signing and dynamic resharding for automatic horizontal scaling     🟦     Channel  |  Chat  |  LinkTree",
+              "metrics": {}
+            },
+            {
+              "url": "https://t.me/NEARDevHub/781",
+              "publishedAt": "2026-07-01T13:00:46+00:00",
+              "text": "🚨      The NEAR Developer Gas Rebate for contract accounts might soon be gone    House of Stake  is currently voting on proposal HSP-027 to remove it.  If passed, don't factor this gas bonus into your dApp's budget anymore   To prepare for this, make sure to check your contracts' economics, read the discussion and cast your vote if you have voting tokens:    ➡️     Discussion     ➡️     Vote   And if you want to participate in future voting, make sure to prepare in advance, you can learn how the HoS proposal and voting process works  here     🖥        🟦     Channel  |  Chat  |  LinkTree",
+              "metrics": {}
+            },
+            {
+              "url": "https://t.me/NEARDevHub/778",
+              "publishedAt": "2026-06-24T14:00:35+00:00",
+              "text": "News from the nearcore team on the 2.13 testnet release:   EXPERIMENTAL_receipt_to_tx  is now live. It takes a receipt ID and resolves it back to the original tx hash and sender account. Works from genesis to now.  Note that the complete specs are still being added to the docs    ✍️        🟦     Channel  |  Chat  |  LinkTree",
+              "metrics": {}
+            },
+            {
+              "url": "https://t.me/NEARDevHub/777",
+              "publishedAt": "2026-06-23T18:20:19+00:00",
+              "text": "The next step to Nightshade 3.0: SPICE      🫑        The Near One team is working on decoupling consensus from execution. Consensus will run in parallel to produce simpler, faster blocks every 200ms, while execution handles the compute separately.  What this unlocks:    ➡️   Block times cut from 600ms to 200ms    ➡️   Faster  near.com  and NEAR Intents    ➡️   Smart execution scheduling    ➡️   Future atomic execution  Decoupling brings simpler blocks for cheaper verification, and sets the exact foundation needed for atomic cross-shard execution in Nightshade 3.0    ✅       Read the full breakdown      🖥        🟦     Channel  |  Chat  |  LinkTree",
+              "metrics": {}
+            },
+            {
+              "url": "https://t.me/NEARDevHub/776",
+              "publishedAt": "2026-06-19T14:03:07+00:00",
+              "text": "🚨     COMMUNITY UPDATE:   @ncriptado  shared a Flutter/Dart stack for building NEAR apps in the  NEAR Tools Community Group     🗯     The stack is split into three main packages:    ➡️    near_dart : signing, txs, and Account API.    ➡️    near_jsonrpc_client : typed RPC synced from nearcore’s OpenAPI spec.    ➡️    near_wallet_connect : MyNearWallet connection and local signing.  Works on iOS, Android, Web, and Desktop    ✅     You can check it on  pub.dev , and the GitHub repo is open for feedback    ✍️       ➡️    pub.dev     ➡️    GitHub   Want to catch more updates like this directly? Grab the  NEAR dev chats     ⚙️        🟦     Channel  |  Chat  |  LinkTree",
+              "metrics": {}
+            },
+            {
+              "url": "https://t.me/NEARDevHub/775",
+              "publishedAt": "2026-06-16T16:19:42+00:00",
+              "text": "🌟      Now track what NEAR is actually building!    NEAR Intents. NEAR AI. NEAR One (Protocol). All in one place.   Live on the roadmap:  ✦ Confidentiality Features (private swaps & payments) ✦ IronClaw Reborn + Automatic PII Anonymization ✦ Dynamic Resharding & more protocol upgrades     ➡️     See what’s shipping next:    https://roadmap.near.org/underway",
+              "metrics": {}
+            },
+            {
+              "url": "https://t.me/NEARDevHub/774",
+              "publishedAt": "2026-06-15T16:40:18+00:00",
+              "text": "Last week in NEAR:  ✦  Trezu CLI 0.2 is live , giving AI agents a cleaner way to work with funds securely and confidentially;  ✦  The IronClaw Hackathon  kicked off June’s events, bringing the secure agents conversation to builders across Asia, Europe, and North America.  Livestreams  are available on YouTube;  ✦  “From Islands to Networks: The Breakthrough of Chain Signatures”  is worth opening for the under-the-hood look at NEAR’s cross-chain architecture;  ✦ The Fable 5 and Mythos 5 access restriction showed exactly  why NEAR AI  is building user-owned AI infrastructure     🟦     Channel  |  Chat  |  LinkTree",
+              "metrics": {}
+            },
+            {
+              "url": "https://t.me/NEARDevHub/773",
+              "publishedAt": "2026-06-13T10:04:30+00:00",
+              "text": "NEAR Infrastructure Committee is continuing to collect ecosystem feedback on infrastructure gaps, blockers, and opportunities.  If something keeps coming up,  submit it here     ✍️        🟦     Channel  |  Chat  |  LinkTree",
+              "metrics": {}
+            },
+            {
+              "url": "https://t.me/NEARDevHub/772",
+              "publishedAt": "2026-06-09T09:34:50+00:00",
+              "text": "Last week in NEAR:  ✦  Vlad showed  that NEAR accounts can be controlled with MetaMask or any WalletConnect-compatible wallet, using Deterministic Accounts, Wallet Contract, NEAR Connect executor, and NEP-641. The first version is live on  trezu.org , with the production roadmap still in progress;  ✦ NEAR Intents crossed $20B in all-time volume.  The thread breaks down  how it got there and what this milestone reveals about NEAR’s cross-chain execution layer;  ✦  IronClaw Companion , a community-built desktop GUI for the NEAR IronClaw agent. The project is open source and looking for feedback;  ✦  Vadim broke down  NEAR’s dynamic resharding, from stateless validation to automatic shard splitting and what it means for scaling the network     🟦     Channel  |  Chat  |  LinkTree",
+              "metrics": {}
+            },
+            {
+              "url": "https://t.me/NEARDevHub/771",
+              "publishedAt": "2026-06-05T12:01:20+00:00",
+              "text": "“Who holds the Full Access Key?” is a small question until the contract account becomes important.   New post  on how to upgrade NEAR contracts without putting that access in one person’s hands    🖥        🟦     Channel  |  Chat  |  LinkTree",
+              "metrics": {}
+            },
+            {
+              "url": "https://t.me/NEARDevHub/770",
+              "publishedAt": "2026-06-04T15:32:49+00:00",
+              "text": "nearcore 2.12.0 has been released  Protocol v84 voting starts on June 10.  Once the upgrade activates, NEAR contracts should no longer be stuck around Rust 1.86, with early Rust 1.93 comparisons showing ~10-15% smaller Wasm output.    Full release notes      🖥        🟦     Channel  |  Chat  |  LinkTree",
+              "metrics": {}
+            },
+            {
+              "url": "https://t.me/NEARDevHub/769",
+              "publishedAt": "2026-06-01T09:00:57+00:00",
+              "text": "Last week in NEAR:  ✦  Universal Send  is live on  near.com , letting users pay with what they have while the recipient receives the asset they want, across chains and without exposing wallet activity;  ✦  Alex Shevchenko reflected  on 3 months of Confidential Intents and why TVL matters for privacy in private swaps;  ✦ Illia Polosukhin published \" Rethinking the Self-Custody/Safety Spectrum \", exploring DeFi exploits, user safety, governance failures, and why self-custody needs to evolve beyond a binary choice;  ✦ \" The Privacy Renaissance Runs on NEAR \" and \" NEAR Dev NEWS #87 \" are worth opening to catch up on the NEAR updates, releases, and ecosystem highlights you might have missed in May     🟦     Channel  |  Chat  |  LinkTree",
+              "metrics": {}
+            },
+            {
+              "url": "https://t.me/NEARDevHub/768",
+              "publishedAt": "2026-05-28T13:01:42+00:00",
+              "text": "NEAR NEP-639 Walkthrough: Automatic Shard Splitting   The recording is up     📺     Watch it to understand how automatic shard splitting is designed to work on NEAR and the details worth paying attention to     🟦     Channel  |  Chat  |  LinkTree",
+              "metrics": {}
+            }
+          ],
+          "sampleComplete": true
+        }
+      ]
+    },
+    {
+      "id": "nearmobile",
+      "name": "NEAR Mobile",
+      "tokenVerified": true,
+      "observedAt": "2026-11-23T10:56:17.136626Z",
+      "discovery": {
+        "status": "collected",
+        "url": "https://www.nearmobile.app/",
+        "error": null,
+        "checkedAt": "2026-11-23T10:56:17.136626Z"
+      },
+      "sources": [
+        {
+          "platform": "X",
+          "url": "https://x.com/NEARMobile_app",
+          "attributionSource": "https://www.nearmobile.app/",
+          "checkedAt": "2026-11-23T10:56:17.136626Z",
+          "status": "unavailable",
+          "error": "NEED_LOGIN",
+          "posts": [],
+          "sampleComplete": false
+        }
+      ]
+    },
+    {
+      "id": "near-social",
+      "name": "NEAR Social",
+      "tokenVerified": false,
+      "observedAt": "2026-11-23T10:56:17.136626Z",
+      "discovery": {
+        "status": "collected",
+        "url": "https://near.social/",
+        "error": null,
+        "checkedAt": "2026-11-23T10:56:17.136626Z"
+      },
+      "sources": [
+        {
+          "platform": "GitHub",
+          "url": "https://github.com/NearSocial/social-db",
+          "attributionSource": "https://github.com/NearSocial/social-db",
+          "checkedAt": "2026-11-23T10:56:17.136626Z",
+          "status": "collected",
+          "error": null,
+          "posts": [
+            {
+              "url": "https://github.com/NearSocial/social-db/releases/tag/0.12.0",
+              "publishedAt": "2024-01-29T19:56:19+00:00",
+              "text": "0.12.0",
+              "metrics": {}
+            }
+          ],
+          "sampleComplete": false,
+          "profileStatus": "collected"
+        }
+      ]
+    },
+    {
+      "id": "near-blocks",
+      "name": "NearBlocks",
+      "tokenVerified": false,
+      "observedAt": "2026-11-23T10:56:17.136626Z",
+      "discovery": {
+        "status": "not_available",
+        "url": "https://nearblocks.io/"
+      },
+      "sources": []
+    },
+    {
+      "id": "nearpad-family",
+      "name": "NearPad",
+      "tokenVerified": true,
+      "observedAt": "2026-11-23T10:56:17.136626Z",
+      "discovery": {
+        "status": "collected",
+        "url": "https://nearpad.family/",
+        "error": null,
+        "checkedAt": "2026-11-23T10:56:17.136626Z"
+      },
+      "sources": [
+        {
+          "platform": "X",
+          "url": "https://x.com/nearpad_family",
+          "attributionSource": "https://nearpad.family/",
+          "checkedAt": "2026-11-23T10:56:17.136626Z",
+          "status": "unavailable",
+          "error": "NEED_LOGIN",
+          "posts": [],
+          "sampleComplete": false
+        },
+        {
+          "platform": "Telegram",
+          "url": "https://t.me/nearpadfamily",
+          "attributionSource": "https://nearpad.family/",
+          "checkedAt": "2026-11-23T10:56:17.136626Z",
+          "status": "unavailable",
+          "error": "PUBLIC_HISTORY_UNAVAILABLE",
+          "posts": [],
+          "sampleComplete": false
+        }
+      ]
+    },
+    {
+      "id": "nightly",
+      "name": "Nightly",
+      "tokenVerified": false,
+      "observedAt": "2026-11-23T11:01:18.524188Z",
+      "discovery": {
+        "status": "collected",
+        "url": "https://nightly.app/",
+        "error": null,
+        "checkedAt": "2026-11-23T11:01:18.524188Z"
+      },
+      "sources": [
+        {
+          "platform": "X",
+          "url": "https://x.com/Nightly_app",
+          "attributionSource": "https://nightly.app/",
+          "checkedAt": "2026-11-23T10:56:17.136626Z",
+          "status": "unavailable",
+          "error": "NEED_LOGIN",
+          "posts": [],
+          "sampleComplete": false
+        },
+        {
+          "platform": "Telegram",
+          "url": "https://t.me/nightly_app",
+          "attributionSource": "https://nightly.app/",
+          "checkedAt": "2026-11-23T11:01:18.524188Z",
+          "status": "collected",
+          "error": null,
+          "posts": [
+            {
+              "url": "https://t.me/nightly_app/147",
+              "publishedAt": "2026-07-24T10:54:16+00:00",
+              "text": "If you took part in our World Cup Campaign with Limelight, check out if you won the prize   🏆    💵     https://x.com/nightly_app/status/2080591742370271515?s=46",
+              "metrics": {}
+            },
+            {
+              "url": "https://t.me/nightly_app/146",
+              "publishedAt": "2026-07-19T11:40:02+00:00",
+              "text": "The final is here   🏆    🌍    https://x.com/nightly_app/status/2078806346611220792?s=46",
+              "metrics": {}
+            },
+            {
+              "url": "https://t.me/nightly_app/145",
+              "publishedAt": "2026-07-15T15:00:13+00:00",
+              "text": "Time for some english tea with a hint of a rivalry   👀   Are they coming home? Place your bets before it's too late   👇     https://x.com/nightly_app/status/2077406127503929423?s=46",
+              "metrics": {}
+            },
+            {
+              "url": "https://t.me/nightly_app/144",
+              "publishedAt": "2026-07-14T15:03:34+00:00",
+              "text": "Who's ready for tonight? Don't miss the chance to win   💵     https://x.com/nightly_app/status/2077045525669359735?s=46",
+              "metrics": {}
+            },
+            {
+              "url": "https://t.me/nightly_app/143",
+              "publishedAt": "2026-07-09T19:26:47+00:00",
+              "text": "Last chance to place your bets for today's match!  https://x.com/nightly_app/status/2075240388613333021?s=46",
+              "metrics": {}
+            },
+            {
+              "url": "https://t.me/nightly_app/142",
+              "publishedAt": "2026-07-06T12:54:16+00:00",
+              "text": "New week - new games to bet on! Round of 16 is heating up and today’s match is only gonna add to it   🔥   Portugal vs Spain, who you got?  https://x.com/Nightly_app/status/2074112524295807138",
+              "metrics": {}
+            },
+            {
+              "url": "https://t.me/nightly_app/141",
+              "publishedAt": "2026-07-03T17:48:52+00:00",
+              "text": "Last chance to place your bets for the Round of 32   👀    ⚽️    https://x.com/Nightly_app/status/2073100969177448564",
+              "metrics": {}
+            },
+            {
+              "url": "https://t.me/nightly_app/140",
+              "publishedAt": "2026-06-30T13:55:55+00:00",
+              "text": "If you don't know what this whole Limelight Worl Cup prediction thing is all about, check out today's post and make your call   🙌    https://x.com/Nightly_app/status/2071951695202914667",
+              "metrics": {}
+            },
+            {
+              "url": "https://t.me/nightly_app/139",
+              "publishedAt": "2026-06-26T17:38:01+00:00",
+              "text": "To all the Worl Cup fans, this one's for you   👀    ⚽️     https://x.com/Nightly_app/status/2070560538254352600",
+              "metrics": {}
+            },
+            {
+              "url": "https://t.me/nightly_app/137",
+              "publishedAt": "2026-04-01T13:32:15+00:00",
+              "text": "Check out our new feature   👀   https://x.com/Nightly_app/status/2039326924242030661",
+              "metrics": {}
+            },
+            {
+              "url": "https://t.me/nightly_app/136",
+              "publishedAt": "2026-03-20T17:00:48+00:00",
+              "text": "Check ot all the cross-chain swaps options on Canton   😎   https://x.com/Nightly_app/status/2035023562210148419",
+              "metrics": {}
+            },
+            {
+              "url": "https://t.me/nightly_app/135",
+              "publishedAt": "2026-03-16T15:27:37+00:00",
+              "text": "What a day to be Canton user! Lower fees just entered the chat   🔥     https://x.com/nightly_app/status/2033565032542290087?s=46",
+              "metrics": {}
+            },
+            {
+              "url": "https://t.me/nightly_app/134",
+              "publishedAt": "2026-03-13T15:19:59+00:00",
+              "text": "If you liked Coinflip, you might enjoy this one   👀    https://x.com/Nightly_app/status/2032473628365721918",
+              "metrics": {}
+            },
+            {
+              "url": "https://t.me/nightly_app/132",
+              "publishedAt": "2026-02-26T15:03:35+00:00",
+              "text": "Code, code, code, code, code, code, code.  https://x.com/Nightly_app/status/2027030857479786955",
+              "metrics": {}
+            },
+            {
+              "url": "https://t.me/nightly_app/131",
+              "publishedAt": "2026-02-26T14:56:04+00:00",
+              "text": "Our friends at Neony Exchange are cooking since day 1   👀   https://x.com/twitter/status/2027033685208268832",
+              "metrics": {}
+            },
+            {
+              "url": "https://t.me/nightly_app/130",
+              "publishedAt": "2026-02-24T11:39:12+00:00",
+              "text": "As of the 1st of March, Coin Flip will be turned off and deposits are being closed now. Rest in peace Coin Flip   💀",
+              "metrics": {}
+            },
+            {
+              "url": "https://t.me/nightly_app/129",
+              "publishedAt": "2026-02-18T17:18:21+00:00",
+              "text": "Some more Canton content for everyone who got the code   😉   https://x.com/Nightly_app/status/2024171067804205215",
+              "metrics": {}
+            },
+            {
+              "url": "https://t.me/nightly_app/128",
+              "publishedAt": "2026-02-17T16:53:11+00:00",
+              "text": "Wanna buy some $MOVE? Why not use Banxa?   🔥   https://x.com/Nightly_app/status/2023801757634265436",
+              "metrics": {}
+            },
+            {
+              "url": "https://t.me/nightly_app/127",
+              "publishedAt": "2026-02-12T15:48:24+00:00",
+              "text": "Go crazy with your swaps on Nightly Canton Swap   🥵    https://x.com/Nightly_app/status/2021969569649463311",
+              "metrics": {}
+            },
+            {
+              "url": "https://t.me/nightly_app/126",
+              "publishedAt": "2026-02-12T09:47:56+00:00",
+              "text": "Multi-chain and multi-device wallet? That's Nightly   ✨    https://x.com/Nightly_app/status/2021882810844205274",
+              "metrics": {}
+            },
+            {
+              "url": "https://t.me/nightly_app/125",
+              "publishedAt": "2026-02-11T11:16:54+00:00",
+              "text": "Coinflip is up and running! Try it out and let us know what you think   👀   https://x.com/Nightly_app/status/2021541156283396345",
+              "metrics": {}
+            },
+            {
+              "url": "https://t.me/nightly_app/124",
+              "publishedAt": "2026-02-10T13:51:50+00:00",
+              "text": "Check out how easy it is to swap across Canton with Nightly!    https://x.com/Nightly_app/status/2021219183661298087",
+              "metrics": {}
+            },
+            {
+              "url": "https://t.me/nightly_app/123",
+              "publishedAt": "2026-02-10T09:33:59+00:00",
+              "text": "New tokens on Canton just dropped   🙌   https://x.com/Nightly_app/status/2021154672338239519",
+              "metrics": {}
+            },
+            {
+              "url": "https://t.me/nightly_app/122",
+              "publishedAt": "2026-02-09T14:34:50+00:00",
+              "text": "Waiting for a code to get into Canon? Use our fast track   👇    https://x.com/Nightly_app/status/2020856250934739253",
+              "metrics": {}
+            },
+            {
+              "url": "https://t.me/nightly_app/121",
+              "publishedAt": "2025-08-06T13:01:03+00:00",
+              "text": "Check out the new staking flow on IOTA in Nightly  👇    https://x.com/Nightly_app/status/1953077800883122215",
+              "metrics": {}
+            },
+            {
+              "url": "https://t.me/nightly_app/120",
+              "publishedAt": "2025-08-05T13:04:14+00:00",
+              "text": "Cross-chain swaps on Sui now in Nightly  💜   Check it out  👇    https://x.com/Nightly_app/status/1952716611699270062",
+              "metrics": {}
+            },
+            {
+              "url": "https://t.me/nightly_app/119",
+              "publishedAt": "2025-08-04T13:10:58+00:00",
+              "text": "Check out the 5% boost you can get with Nightly  👀    https://x.com/Nightly_app/status/1952355956223828097",
+              "metrics": {}
+            },
+            {
+              "url": "https://t.me/nightly_app/118",
+              "publishedAt": "2025-01-10T14:10:46+00:00",
+              "text": "We are live with the first episode of Late Night(ly) Show!   💜    https://x.com/i/spaces/1RDGlyaqZrkJL",
+              "metrics": {}
+            },
+            {
+              "url": "https://t.me/nightly_app/117",
+              "publishedAt": "2024-12-02T15:06:26+00:00",
+              "text": "The first tasks in our Xmas campaign are live!   🎉   Don't miss your chance to win a Suilend capsule! Check our recent post for all the details   👇    https://x.com/Nightly_app/status/1863599803222901101",
+              "metrics": {}
+            },
+            {
+              "url": "https://t.me/nightly_app/116",
+              "publishedAt": "2024-12-02T13:09:41+00:00",
+              "text": "Our Xmas campaign starts today! Check out the timeline and stay tuned for the announcement of the first partner task today!  https://x.com/Nightly_app/status/1863570565010800927",
+              "metrics": {}
+            }
+          ],
+          "sampleComplete": true
+        }
+      ]
+    },
+    {
+      "id": "octopus",
+      "name": "Octopus Network",
+      "tokenVerified": true,
+      "observedAt": "2026-11-23T10:56:17.136626Z",
+      "discovery": {
+        "status": "not_available",
+        "url": null
+      },
+      "sources": [
+        {
+          "platform": "GitHub",
+          "url": "https://github.com/octopus-network/octopus-dao",
+          "attributionSource": "https://github.com/octopus-network/octopus-dao",
+          "checkedAt": "2026-11-23T10:56:17.136626Z",
+          "status": "collected",
+          "error": null,
+          "posts": [],
+          "sampleComplete": false,
+          "profileStatus": "collected"
+        }
+      ]
+    },
+    {
+      "id": "potlock",
+      "name": "POTLOCK",
+      "tokenVerified": false,
+      "observedAt": "2026-11-23T10:56:17.136626Z",
+      "discovery": {
+        "status": "collected",
+        "url": "https://www.potlock.io/chains/near",
+        "error": null,
+        "checkedAt": "2026-11-23T10:56:17.136626Z"
+      },
+      "sources": [
+        {
+          "platform": "X",
+          "url": "https://x.com/potlock_",
+          "attributionSource": "https://www.potlock.io/chains/near",
+          "checkedAt": "2026-11-23T10:52:43.242789Z",
+          "status": "unavailable",
+          "error": "BUSY",
+          "posts": [],
+          "sampleComplete": false
+        }
+      ]
+    },
+    {
+      "id": "paras",
+      "name": "Paras",
+      "tokenVerified": true,
+      "observedAt": "2026-11-23T10:56:17.136626Z",
+      "discovery": {
+        "status": "not_available",
+        "url": null
+      },
+      "sources": []
+    },
+    {
+      "id": "pikespeak",
+      "name": "Pikespeak",
+      "tokenVerified": false,
+      "observedAt": "2026-11-23T10:56:17.136626Z",
+      "discovery": {
+        "status": "collected",
+        "url": "https://pikespeak.ai/",
+        "error": null,
+        "checkedAt": "2026-11-23T10:56:17.136626Z"
+      },
+      "sources": []
+    },
+    {
+      "id": "publicai",
+      "name": "PublicAI",
+      "tokenVerified": true,
+      "observedAt": "2026-11-23T10:56:17.136626Z",
+      "discovery": {
+        "status": "collected",
+        "url": "https://publicai.io/",
+        "error": null,
+        "checkedAt": "2026-11-23T10:56:17.136626Z"
+      },
+      "sources": [
+        {
+          "platform": "X",
+          "url": "https://x.com/PublicAI_",
+          "attributionSource": "https://publicai.io/",
+          "checkedAt": "2026-11-23T10:56:17.136626Z",
+          "status": "unavailable",
+          "error": "NEED_LOGIN",
+          "posts": [],
+          "sampleComplete": false
+        },
+        {
+          "platform": "Telegram",
+          "url": "https://t.me/public_ai01",
+          "attributionSource": "https://publicai.io/",
+          "checkedAt": "2026-11-23T10:56:17.136626Z",
+          "status": "unavailable",
+          "error": "PUBLIC_HISTORY_UNAVAILABLE",
+          "posts": [],
+          "sampleComplete": false
+        },
+        {
+          "platform": "Discord",
+          "url": "https://discord.gg/publicai",
+          "attributionSource": "https://publicai.io/",
+          "checkedAt": "2026-11-23T10:56:17.136626Z",
+          "status": "unavailable",
+          "error": "HISTORY_ADAPTER_PENDING",
+          "posts": [],
+          "sampleComplete": false
+        }
+      ]
+    },
+    {
+      "id": "pumpopoly",
+      "name": "Pumpopoly",
+      "tokenVerified": true,
+      "observedAt": "2026-11-23T10:56:17.136626Z",
+      "discovery": {
+        "status": "collected",
+        "url": "https://near.pumpopoly.com/",
+        "error": null,
+        "checkedAt": "2026-11-23T10:56:17.136626Z"
+      },
+      "sources": [
+        {
+          "platform": "Discord",
+          "url": "https://discord.gg/bqXJcAgxHX",
+          "attributionSource": "https://near.pumpopoly.com/",
+          "checkedAt": "2026-11-23T10:56:17.136626Z",
+          "status": "unavailable",
+          "error": "HISTORY_ADAPTER_PENDING",
+          "posts": [],
+          "sampleComplete": false
+        }
+      ]
+    },
+    {
+      "id": "rhea",
+      "name": "Rhea Finance",
+      "tokenVerified": true,
+      "observedAt": "2026-11-23T10:56:17.136626Z",
+      "discovery": {
+        "status": "collected",
+        "url": "https://www.rhea.finance/",
+        "error": null,
+        "checkedAt": "2026-11-23T10:56:17.136626Z"
+      },
+      "sources": [
+        {
+          "platform": "GitHub",
+          "url": "https://github.com/ref-finance/guide/blob/main/docs/rhea-finance-white-paper.md",
+          "attributionSource": "https://github.com/ref-finance/guide/blob/main/docs/rhea-finance-white-paper.md",
+          "checkedAt": "2026-11-23T10:56:17.136626Z",
+          "status": "collected",
+          "error": null,
+          "posts": [],
+          "sampleComplete": false,
+          "profileStatus": "collected"
+        },
+        {
+          "platform": "X",
+          "url": "https://twitter.com/rhea_finance",
+          "attributionSource": "https://www.rhea.finance/",
+          "checkedAt": "2026-11-23T10:52:43.242789Z",
+          "status": "unavailable",
+          "error": "NEED_LOGIN",
+          "posts": [],
+          "sampleComplete": false
+        },
+        {
+          "platform": "Discord",
+          "url": "https://discord.gg/rheafinance",
+          "attributionSource": "https://www.rhea.finance/",
+          "checkedAt": "2026-11-23T10:56:17.136626Z",
+          "status": "unavailable",
+          "error": "HISTORY_ADAPTER_PENDING",
+          "posts": [],
+          "sampleComplete": false
+        },
+        {
+          "platform": "Telegram",
+          "url": "https://t.me/rhea_finance",
+          "attributionSource": "https://www.rhea.finance/",
+          "checkedAt": "2026-11-23T10:56:17.136626Z",
+          "status": "unavailable",
+          "error": "PUBLIC_HISTORY_UNAVAILABLE",
+          "posts": [],
+          "sampleComplete": false
+        },
+        {
+          "platform": "Medium",
+          "url": "https://rhea-finance.medium.com/",
+          "attributionSource": "https://www.rhea.finance/",
+          "checkedAt": "2026-11-23T10:56:17.136626Z",
+          "status": "collected",
+          "error": null,
+          "posts": [
+            {
+              "url": "https://rhea-finance.medium.com/rhea-cross-chain-lending-beta-is-now-live-on-solflare-unlocking-usdc-usdt-zec-yield-for-the-b8ba62867749?source=rss-201acd2659cc------2",
+              "publishedAt": "2025-11-20T15:05:31+00:00",
+              "text": "RHEA Cross-Chain Lending Beta Is Now Live on Solflare — Unlocking USDC, USDT & ZEC Yield for the…",
+              "metrics": {}
+            },
+            {
+              "url": "https://rhea-finance.medium.com/rhea-x-allora-network-bringing-decentralized-intelligence-to-defi-39750021ce75?source=rss-201acd2659cc------2",
+              "publishedAt": "2025-11-05T13:42:13+00:00",
+              "text": "RHEA x Allora Network — Bringing Decentralized Intelligence to DeFi",
+              "metrics": {}
+            },
+            {
+              "url": "https://rhea-finance.medium.com/rhea-q4-deliverables-token-update-eff52c797561?source=rss-201acd2659cc------2",
+              "publishedAt": "2025-10-08T16:03:38+00:00",
+              "text": "RHEA Q4 Deliverables & Token Update",
+              "metrics": {}
+            },
+            {
+              "url": "https://rhea-finance.medium.com/xrhea-non-stop-utility-for-a-borderless-defi-future-133808ec113a?source=rss-201acd2659cc------2",
+              "publishedAt": "2025-09-12T14:43:59+00:00",
+              "text": "xRHEA: Non-Stop Utility for a Borderless DeFi Future",
+              "metrics": {}
+            },
+            {
+              "url": "https://rhea-finance.medium.com/community-guide-orhea-redemption-made-simple-bd5d7552b658?source=rss-201acd2659cc------2",
+              "publishedAt": "2025-09-05T16:13:29+00:00",
+              "text": "Community Guide: oRHEA Redemption Made Simple",
+              "metrics": {}
+            },
+            {
+              "url": "https://rhea-finance.medium.com/unlocking-the-next-revolution-of-defi-rhea-x-near-intent-edf3e15c533b?source=rss-201acd2659cc------2",
+              "publishedAt": "2025-09-04T14:24:13+00:00",
+              "text": "Unlocking the next Revolution of DeFi: RHEA x NEAR Intent",
+              "metrics": {}
+            },
+            {
+              "url": "https://rhea-finance.medium.com/season-2-airdrop-points-system-xrhea-and-orhea-incentives-3f3cf3409428?source=rss-201acd2659cc------2",
+              "publishedAt": "2025-08-18T12:24:46+00:00",
+              "text": "Season 2 Airdrop: Points System, xRHEA and oRHEA incentives",
+              "metrics": {}
+            },
+            {
+              "url": "https://rhea-finance.medium.com/introducing-rhea-liquid-staking-token-7bfcfa7ab65e?source=rss-201acd2659cc------2",
+              "publishedAt": "2025-08-14T09:32:15+00:00",
+              "text": "Introducing RHEA Liquid Staking Token",
+              "metrics": {}
+            },
+            {
+              "url": "https://rhea-finance.medium.com/rhea-the-liquidity-layer-for-a-borderless-defi-future-ae766ff4d0b5?source=rss-201acd2659cc------2",
+              "publishedAt": "2025-08-05T13:59:41+00:00",
+              "text": "RHEA: The Liquidity Layer for a Borderless DeFi Future",
+              "metrics": {}
+            },
+            {
+              "url": "https://rhea-finance.medium.com/1st-august-rhea-trading-contest-1a86df6c39fb?source=rss-201acd2659cc------2",
+              "publishedAt": "2025-08-01T10:37:10+00:00",
+              "text": "1st August — RHEA Trading Contest",
+              "metrics": {}
+            }
+          ],
+          "sampleComplete": false
+        }
+      ]
+    },
+    {
+      "id": "roketo",
+      "name": "Roketo",
+      "tokenVerified": false,
+      "observedAt": "2026-11-23T10:56:17.136626Z",
+      "discovery": {
+        "status": "collected",
+        "url": "https://www.roke.to/",
+        "error": null,
+        "checkedAt": "2026-11-23T10:56:17.136626Z"
+      },
+      "sources": [
+        {
+          "platform": "GitHub",
+          "url": "https://github.com/roke-to/roketo-contract",
+          "attributionSource": "https://github.com/roke-to/roketo-contract",
+          "checkedAt": "2026-11-23T10:56:17.136626Z",
+          "status": "collected",
+          "error": null,
+          "posts": [],
+          "sampleComplete": false,
+          "profileStatus": "collected"
+        }
+      ]
+    },
+    {
+      "id": "sodax",
+      "name": "SODAX",
+      "tokenVerified": true,
+      "observedAt": "2026-11-23T10:56:17.136626Z",
+      "discovery": {
+        "status": "collected",
+        "url": "https://www.sodax.com/",
+        "error": null,
+        "checkedAt": "2026-11-23T10:56:17.136626Z"
+      },
+      "sources": [
+        {
+          "platform": "GitHub",
+          "url": "https://github.com/gosodax/sodax-sdks",
+          "attributionSource": "https://www.sodax.com/",
+          "checkedAt": "2026-11-23T10:56:17.136626Z",
+          "status": "collected",
+          "error": null,
+          "posts": [
+            {
+              "url": "https://github.com/gosodax/sodax-sdks/releases/tag/%40sdks%402.3.0-rc.4",
+              "publishedAt": "2026-11-20T09:54:35+00:00",
+              "text": "@sdks@2.3.0-rc.4",
+              "metrics": {}
+            },
+            {
+              "url": "https://github.com/gosodax/sodax-sdks/releases/tag/%40sdks%402.3.0-rc.3",
+              "publishedAt": "2026-11-18T13:50:16+00:00",
+              "text": "@sdks@2.3.0-rc.3",
+              "metrics": {}
+            },
+            {
+              "url": "https://github.com/gosodax/sodax-sdks/releases/tag/%40sdks%402.3.0-rc.2",
+              "publishedAt": "2026-10-27T09:37:02+00:00",
+              "text": "@sdks@2.3.0-rc.2",
+              "metrics": {}
+            },
+            {
+              "url": "https://github.com/gosodax/sodax-sdks/releases/tag/%40sdks%402.3.0-rc.1",
+              "publishedAt": "2026-10-23T18:52:41+00:00",
+              "text": "@sdks@2.3.0-rc.1",
+              "metrics": {}
+            },
+            {
+              "url": "https://github.com/gosodax/sodax-sdks/releases/tag/%40sdks%402.2.0",
+              "publishedAt": "2026-10-12T11:23:59+00:00",
+              "text": "@sdks@2.2.0",
+              "metrics": {}
+            },
+            {
+              "url": "https://github.com/gosodax/sodax-sdks/releases/tag/%40sdks%402.2.0-rc.8",
+              "publishedAt": "2026-09-26T06:32:51+00:00",
+              "text": "@sdks@2.2.0-rc.8",
+              "metrics": {}
+            },
+            {
+              "url": "https://github.com/gosodax/sodax-sdks/releases/tag/%40sdks%402.2.0-rc.7",
+              "publishedAt": "2026-09-23T12:32:12+00:00",
+              "text": "@sdks@2.2.0-rc.7",
+              "metrics": {}
+            },
+            {
+              "url": "https://github.com/gosodax/sodax-sdks/releases/tag/%40sdks%402.2.0-rc.6",
+              "publishedAt": "2026-09-18T06:05:54+00:00",
+              "text": "@sdks@2.2.0-rc.6",
+              "metrics": {}
+            },
+            {
+              "url": "https://github.com/gosodax/sodax-sdks/releases/tag/%40sdks%402.2.0-rc.5",
+              "publishedAt": "2026-09-10T15:05:58+00:00",
+              "text": "@sdks@2.2.0-rc.5",
+              "metrics": {}
+            },
+            {
+              "url": "https://github.com/gosodax/sodax-sdks/releases/tag/%40sdks%402.2.0-rc.4",
+              "publishedAt": "2026-09-08T20:28:51+00:00",
+              "text": "@sdks@2.2.0-rc.4",
+              "metrics": {}
+            }
+          ],
+          "sampleComplete": false,
+          "profileStatus": "collected"
+        },
+        {
+          "platform": "X",
+          "url": "https://x.com/gosodax",
+          "attributionSource": "https://www.sodax.com/",
+          "checkedAt": "2026-11-23T10:56:17.136626Z",
+          "status": "unavailable",
+          "error": "NEED_LOGIN",
+          "posts": [],
+          "sampleComplete": false
+        },
+        {
+          "platform": "YouTube",
+          "url": "https://www.youtube.com/@gosodax",
+          "attributionSource": "https://www.sodax.com/",
+          "checkedAt": "2026-11-23T10:56:17.136626Z",
+          "status": "unavailable",
+          "error": "HISTORY_ADAPTER_PENDING",
+          "posts": [],
+          "sampleComplete": false
+        }
+      ]
+    },
+    {
+      "id": "sender-ai",
+      "name": "Sender AI",
+      "tokenVerified": true,
+      "observedAt": "2026-11-23T10:56:17.136626Z",
+      "discovery": {
+        "status": "collected",
+        "url": "https://www.senderdao.io/",
+        "error": null,
+        "checkedAt": "2026-11-23T10:56:17.136626Z"
+      },
+      "sources": []
+    },
+    {
+      "id": "stader",
+      "name": "Stader NearX",
+      "tokenVerified": true,
+      "observedAt": "2026-11-23T10:56:17.136626Z",
+      "discovery": {
+        "status": "not_available",
+        "url": null
+      },
+      "sources": [
+        {
+          "platform": "GitHub",
+          "url": "https://github.com/stader-labs/nearx",
+          "attributionSource": "https://github.com/stader-labs/nearx",
+          "checkedAt": "2026-11-23T10:56:17.136626Z",
+          "status": "collected",
+          "error": null,
+          "posts": [
+            {
+              "url": "https://github.com/stader-labs/nearx/releases/tag/v1.1.0",
+              "publishedAt": "2023-01-10T08:22:51+00:00",
+              "text": "v1.1.0",
+              "metrics": {}
+            },
+            {
+              "url": "https://github.com/stader-labs/nearx/releases/tag/v1.0.0",
+              "publishedAt": "2022-11-24T07:08:40+00:00",
+              "text": "v1.0.0",
+              "metrics": {}
+            },
+            {
+              "url": "https://github.com/stader-labs/nearx/releases/tag/old-nearx",
+              "publishedAt": "2022-08-22T05:53:36+00:00",
+              "text": "old-nearx",
+              "metrics": {}
+            }
+          ],
+          "sampleComplete": false,
+          "profileStatus": "collected"
+        }
+      ]
+    },
+    {
+      "id": "templar-protocol",
+      "name": "Templar Protocol",
+      "tokenVerified": false,
+      "observedAt": "2026-11-23T10:56:17.136626Z",
+      "discovery": {
+        "status": "collected",
+        "url": "https://www.templarfi.org/",
+        "error": null,
+        "checkedAt": "2026-11-23T10:56:17.136626Z"
+      },
+      "sources": [
+        {
+          "platform": "X",
+          "url": "https://x.com/TemplarProtocol",
+          "attributionSource": "https://www.templarfi.org/",
+          "checkedAt": "2026-11-23T10:56:17.136626Z",
+          "status": "unavailable",
+          "error": "NEED_LOGIN",
+          "posts": [],
+          "sampleComplete": false
+        },
+        {
+          "platform": "Telegram",
+          "url": "https://t.me/templarprotocol",
+          "attributionSource": "https://www.templarfi.org/",
+          "checkedAt": "2026-11-23T10:56:17.136626Z",
+          "status": "unavailable",
+          "error": "PUBLIC_HISTORY_UNAVAILABLE",
+          "posts": [],
+          "sampleComplete": false
+        },
+        {
+          "platform": "Discord",
+          "url": "https://discord.gg/KAvMtYpbep",
+          "attributionSource": "https://www.templarfi.org/",
+          "checkedAt": "2026-11-23T10:56:17.136626Z",
+          "status": "unavailable",
+          "error": "HISTORY_ADAPTER_PENDING",
+          "posts": [],
+          "sampleComplete": false
+        }
+      ]
+    },
+    {
+      "id": "trufin",
+      "name": "TruFin",
+      "tokenVerified": true,
+      "observedAt": "2026-11-23T10:56:17.136626Z",
+      "discovery": {
+        "status": "collected",
+        "url": "https://www.trufin.io/",
+        "error": null,
+        "checkedAt": "2026-11-23T10:56:17.136626Z"
+      },
+      "sources": [
+        {
+          "platform": "GitHub",
+          "url": "https://github.com/trufin-io/examples",
+          "attributionSource": "https://www.trufin.io/",
+          "checkedAt": "2026-11-23T10:56:17.136626Z",
+          "status": "collected",
+          "error": null,
+          "posts": [],
+          "sampleComplete": false,
+          "profileStatus": "collected"
+        },
+        {
+          "platform": "X",
+          "url": "https://x.com/TruYields",
+          "attributionSource": "https://www.trufin.io/",
+          "checkedAt": "2026-11-23T10:56:17.136626Z",
+          "status": "unavailable",
+          "error": "NEED_LOGIN",
+          "posts": [],
+          "sampleComplete": false
+        }
+      ]
+    }
+  ]
+}

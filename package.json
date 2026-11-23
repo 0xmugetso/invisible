@@ -8,7 +8,10 @@
     "build": "node scripts/report.mjs && next build --webpack",
     "test": "node --test",
     "refresh": "node scripts/refresh.mjs",
-    "report": "node scripts/report.mjs"
+    "report": "node scripts/report.mjs",
+    "social:collect": "python3 scripts/collect-social.py",
+    "social:sync": "node scripts/sync-social.mjs",
+    "social:report": "node scripts/report-social.mjs"
   },
   "dependencies": {
     "@google-cloud/bigquery": "^9.6.1",

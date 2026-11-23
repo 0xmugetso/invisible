@@ -15,7 +15,7 @@ export const metadata:Metadata={title:'Invisible Guide',description:'Use Invisib
 const sections=[
   ['video-demo','Video Demo','play'],
   ['dashboard','Dashboard','dashboard'],['evidence','Deployments','contracts'],['forecast','Forecast','simulation'],['investment-methodology','Methodology','ranking'],
-  ['sources','Sources','globe'],['rest','REST API','api'],['mcp','MCP','connect'],['a2a','A2A','ecosystem'],['skill','Agent Skill','research'],
+  ['social-activity','Social Activity','users'],['sources','Sources','globe'],['rest','REST API','api'],['mcp','MCP','connect'],['a2a','A2A','ecosystem'],['skill','Agent Skill','research'],
 ] as const;
 const endpoints=[
   ['/api/v1/projects?q=rhea','Search catalog entries by name, ID, or contract. Use page for pagination.'],
@@ -74,6 +74,13 @@ export default function Guide() {
           <p>Activity scores combine relative percentiles across eligible peers. The investment ranking adds market inputs and requires comparable pool and valuation data.</p>
           <RankingWeights/>
           <p><a href="/thesis-observed.md" download>Download the archived pilot report</a>. The archive uses the pilot methodology and its own dated snapshot.</p>
+        </section>
+        <section id="social-activity"><h2>Social Activity Research</h2>
+          <p>Invisible’s social collector visits attributed project websites, discovers their official channels, and requests up to 30 recent posts per platform. Agent Reach supplies website reading and authenticated X timeline access. Public Telegram previews, Medium feeds, and GitHub release feeds supply additional dated evidence where available.</p>
+          <p>The publishing score has three components. Recency contributes up to 40 points and declines to zero after 30 days without a post. Cadence contributes up to 30 points at eight posts in the last 30 days. Continuity contributes 7.5 points for each active trailing week, up to four weeks.</p>
+          <p>A score requires at least five dated posts and either 30 retrieved posts or a timeline extending back at least 30 days. A smaller sample is marked partial. A missing login, unavailable feed, or unsupported platform receives no score. Collection timestamps and source permalinks remain visible in project evidence.</p>
+          <p>The score measures publishing activity. Audience authenticity, sentiment, roadmap delivery, narrative momentum, and causal links to on-chain growth need further validation. Social scores currently carry no weight in the activity or investment ranking. Engagement statistics are reported only when the collector returns them.</p>
+          <p><a href="/api/v1/social">Read Social Coverage</a> · <a href="/api/v1/projects/rhea/social">Read Rhea’s Social Evidence</a></p>
         </section>
         <section id="sources"><h2>Data Sources</h2>
           <ul>

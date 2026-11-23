@@ -3,6 +3,7 @@
 import {useEffect,useLayoutEffect,useRef,useState} from 'react';
 import Link from 'next/link';
 import Icon from './interface-icon';
+import SocialEvidence,{type SocialEvidenceData} from './social-evidence';
 import EvidenceDialog from './evidence-dialog';
 import {getResearch,type ResearchProject,type ResearchBoard} from './use-research-board';
 
@@ -33,6 +34,7 @@ type Dossier = Pick<ResearchProject,'name'|'activityScore'|'scoreComponents'|'un
   links?:Record<string,string|{url:string;evidence:string}>;
   tokenomics:Record<string,Sourced|null>;
   roadmap:Sourced|null;
+  socialActivity?:SocialEvidenceData|null;
 };
 export const activityScoreLabels:Record<string,string> = {
   adjusted_return:'Return Rate', repeat_signers:'Returning Signers', adjusted_growth:'Signer Growth', spread:'Activity Spread',
@@ -130,6 +132,7 @@ function ProjectEvidence({projectId,data,market:pools,quotes,weights}:{data:Doss
       })}</div>
     </section>}
     {!tokens.length && data.description && <p>{data.description}</p>}
+    {data.socialActivity && <SocialEvidence data={data.socialActivity}/>}
     {tokens.length>0 && <Tokenomics data={data}/>}
     {tokens.map(({accountId,symbol,evidence})=>{
       const market=quotes?.[accountId];

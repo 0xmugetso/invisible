@@ -46,6 +46,23 @@ See how to compare NEAR projects, inspect the evidence behind a ranking, and ask
 | [![NEAR Contract Explorer with a mainnet block chart and contract activity](public/readme/deployments.webp)](https://invisible-gray.vercel.app/app/deployments/) | [![NEAR Ecosystem Activity with network gas and changes in signer participation](public/readme/ecosystem.webp)](https://invisible-gray.vercel.app/app/ecosystem/) |
 | Find the contracts behind a project and follow example calls to NearBlocks. | See where signer activity moved across projects and how much tracked activity is concentrated among the largest projects. |
 
+## Social Activity Research
+
+Project evidence now includes an early social publishing analysis. The collector requests up to 30 posts from attributed channels, stores source URLs and retrieval times, and computes per-platform recency, cadence, and continuity scores. Coverage and access failures remain visible. Social scores currently carry no weight in the investment or activity rankings.
+
+[Social methodology](https://invisible-gray.vercel.app/docs/#social-activity) · [Coverage API](https://invisible-gray.vercel.app/api/v1/social)
+
+```sh
+# Install Agent Reach from its official GitHub release.
+# Follow https://github.com/Panniantong/Agent-Reach/blob/main/docs/install.md
+npm run social:collect -- --project rhea
+npm run social:report
+# Requires DATABASE_URL. Upserts bounded evidence into PostgreSQL.
+npm run social:sync
+```
+
+Run the collector on a persistent worker with Agent Reach installed. Authenticated X collection uses its dedicated browser session. New social links must be reviewed in data/social-sources.json before they become scored sources. The --discover flag produces candidate evidence for that review. Discord and YouTube history adapters remain under development. The current phase supports repeatable collection and scoring. Unattended social refresh is pending worker deployment.
+
 ## Methodology
 
 Invisible counts distinct NEAR signing accounts that directly attempted a function call to a mapped product contract. A returning signer appears in both adjacent 28-day UTC windows. The same account is counted once per project per window, even if it used several of that project’s contracts. Relayers, automation, and multiple accounts affect the interpretation of signer counts.
@@ -297,13 +314,13 @@ mkdir -p .claude/skills/invisible && curl -fsS 'https://invisible-gray.vercel.ap
 
 ## Roadmap
 
-[![Invisible roadmap showing two shipped milestones and three upcoming areas of work](public/readme/roadmap.webp)](https://invisible-gray.vercel.app/#roadmap)
+[![Invisible development roadmap](public/readme/roadmap.webp)](https://invisible-gray.vercel.app/#roadmap)
 
 | Status | Milestone | What it covers |
 | --- | --- | --- |
 | Shipped | Verify NEAR Activity | Map projects to contracts, compare signer activity across two 28-day windows, and link the underlying evidence. |
 | Shipped | Publish the Research Workspace | Ship the dashboard, project evidence, and agent access through MCP, REST, A2A, and the skill. |
-| Coming soon | Track Social and Product Activity | Gather dated evidence from official channels and release notes. Show where it came from and compare it with on-chain activity before using it in rankings. |
+| In progress | Track Social and Product Activity | Public-channel collection, per-platform publishing scores, and dated source posts are available in project evidence. Authenticated X coverage and unattended refresh are pending. |
 | Coming soon | Follow Projects and Unlocks | Follow projects in a watchlist and surface changes in signer retention, upcoming unlocks, and new deployments. |
 | Exploration | Explore an Invisible Token | Define potential utility, distribution, and launch criteria. |
 

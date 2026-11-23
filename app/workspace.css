@@ -713,3 +713,19 @@ html:has(.iv-workspace) { scroll-behavior:smooth; }
   .iv-workspace-footer nav { justify-content:center; column-gap:12px; }
   .iv-workspace-footer nav a { min-height:40px; }
 }
+
+.iv-social-source { margin-block:16px; padding-block:14px; border-top:1px solid var(--iv-line); }
+.iv-social-source-head { display:flex; align-items:center; justify-content:space-between; gap:12px; }
+.iv-social-source-head a { display:inline-flex; align-items:center; gap:5px; }
+.iv-social-source-head strong { font-size:.85rem; white-space:nowrap; }
+.iv-social-facts { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:12px; margin-block:12px; }
+.iv-social-facts dt { font-size:.75rem; color:var(--iv-muted); }
+.iv-social-facts dd { margin:4px 0 0; font-variant-numeric:tabular-nums; }
+.iv-social-source meter { width:100%; height:7px; margin-top:12px; accent-color:var(--iv-pink); }
+.iv-social-source meter::-webkit-meter-bar { background:var(--iv-line); border:0; }
+.iv-social-source meter::-webkit-meter-optimum-value { background:var(--iv-pink); }
+.iv-social-source details { margin-top:12px; }
+.iv-social-source ol { padding-left:18px; }
+.iv-social-source li { padding-block:10px; overflow-wrap:anywhere; }
+.iv-social-source li p { margin-top:4px; }
+.iv-social-weights { font-size:.8rem; }

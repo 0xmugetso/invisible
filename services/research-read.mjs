@@ -1,3 +1,4 @@
+import {readStoredSocial} from './social-research.mjs';
 import {openDatabase} from './store.mjs';
 import {warehouseReadMethodologies} from './activity-eligibility.mjs';
 import {investmentLeaderboard} from './investment-ranking.mjs';
@@ -10,8 +11,11 @@ export async function readPublishedResearch(view, id) {
       'SELECT results FROM invisible.ranking_run WHERE methodology=ANY($1::text[]) ORDER BY cutoff DESC LIMIT 1',
       [warehouseReadMethodologies]);
     const snapshot = latest?.results ?? null;
-    if (view === 'project') return researchProject(id, snapshot);
-    if (view === 'project-core') return researchProjectCore(id,snapshot);
+    if (view==='project' || view==='project-core') {
+      const core=view==='project' ? await researchProject(id,snapshot) : researchProjectCore(id,snapshot);
+      return core ? {...core,socialActivity:await readStoredSocial(db,id)} : null;
+    }
+    if (view==='social-project') return readStoredSocial(db,id);
     if (view === 'forecast') return researchForecast(snapshot);
     const leaderboard = researchLeaderboard(snapshot);
     return view === 'investment' ? investmentLeaderboard(leaderboard) : leaderboard;

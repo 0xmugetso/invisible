@@ -1,0 +1,391 @@
+{
+  "aurigami": [
+    {
+      "platform": "X",
+      "url": "https://twitter.com/aurigami_PLY",
+      "attributionSource": "https://www.aurigami.finance/",
+      "reviewedAt": "2026-11-23T10:56:17.136626Z"
+    },
+    {
+      "platform": "Telegram",
+      "url": "https://t.me/aurigami_PLY",
+      "attributionSource": "https://www.aurigami.finance/",
+      "reviewedAt": "2026-11-23T10:56:17.136626Z"
+    },
+    {
+      "platform": "Medium",
+      "url": "https://medium.com/aurigami",
+      "attributionSource": "https://www.aurigami.finance/",
+      "reviewedAt": "2026-11-23T10:56:17.136626Z"
+    }
+  ],
+  "delta-trade": [
+    {
+      "platform": "X",
+      "url": "https://twitter.com/DeltaBotTeam",
+      "attributionSource": "https://www.deltatrade.ai/",
+      "reviewedAt": "2026-11-23T10:56:17.136626Z"
+    },
+    {
+      "platform": "Telegram",
+      "url": "https://t.me/deltabotchat",
+      "attributionSource": "https://www.deltatrade.ai/",
+      "reviewedAt": "2026-11-23T10:56:17.136626Z"
+    }
+  ],
+  "edge-video": [
+    {
+      "platform": "X",
+      "url": "https://x.com/edgevideoai",
+      "attributionSource": "https://www.edgevideo.ai/",
+      "reviewedAt": "2026-11-23T10:56:17.136626Z"
+    },
+    {
+      "platform": "YouTube",
+      "url": "https://www.youtube.com/@edgevideoai",
+      "attributionSource": "https://www.edgevideo.ai/",
+      "reviewedAt": "2026-11-23T10:56:17.136626Z"
+    }
+  ],
+  "enleap": [],
+  "fastnear": [
+    {
+      "platform": "Telegram",
+      "url": "https://t.me/fast_near",
+      "attributionSource": "https://fastnear.com/",
+      "reviewedAt": "2026-11-23T10:56:17.136626Z"
+    },
+    {
+      "platform": "X",
+      "url": "https://x.com/fast_near",
+      "attributionSource": "https://fastnear.com/",
+      "reviewedAt": "2026-11-23T10:56:17.136626Z"
+    }
+  ],
+  "hapi": [],
+  "hot-wallet": [
+    {
+      "platform": "Telegram",
+      "url": "https://t.me/hot_wallet",
+      "attributionSource": "https://www.hotdao.ai/",
+      "reviewedAt": "2026-11-23T10:56:17.136626Z"
+    },
+    {
+      "platform": "X",
+      "url": "https://x.com/hotdao_",
+      "attributionSource": "https://www.hotdao.ai/",
+      "reviewedAt": "2026-11-23T10:56:17.136626Z"
+    },
+    {
+      "platform": "GitHub",
+      "url": "https://github.com/hot-dao/kit",
+      "attributionSource": "https://www.hotdao.ai/",
+      "reviewedAt": "2026-11-23T10:56:17.136626Z"
+    },
+    {
+      "platform": "YouTube",
+      "url": "https://www.youtube.com/@hot-labs",
+      "attributionSource": "https://www.hotdao.ai/",
+      "reviewedAt": "2026-11-23T10:56:17.136626Z"
+    },
+    {
+      "platform": "GitHub",
+      "url": "https://github.com/hot-dao/hot-connector",
+      "attributionSource": "https://www.hotdao.ai/",
+      "reviewedAt": "2026-11-23T10:56:17.136626Z"
+    },
+    {
+      "platform": "GitHub",
+      "url": "https://github.com/hot-dao/omni-wallet-solidity/blob/main/audits/Hacken.pdf",
+      "attributionSource": "https://www.hotdao.ai/",
+      "reviewedAt": "2026-11-23T10:56:17.136626Z"
+    }
+  ],
+  "intear": [
+    {
+      "platform": "Telegram",
+      "url": "https://t.me/intearchat",
+      "attributionSource": "https://docs.intear.tech/",
+      "reviewedAt": "2026-11-23T10:56:17.136626Z"
+    },
+    {
+      "platform": "X",
+      "url": "https://x.com/intea_rs",
+      "attributionSource": "https://docs.intear.tech/",
+      "reviewedAt": "2026-11-23T10:56:17.136626Z"
+    }
+  ],
+  "intellex": [
+    {
+      "platform": "Medium",
+      "url": "https://medium.com/@intellex_ai",
+      "attributionSource": "https://www.intellex.xyz/",
+      "reviewedAt": "2026-11-23T10:56:17.136626Z"
+    },
+    {
+      "platform": "X",
+      "url": "https://x.com/intellex_xyz",
+      "attributionSource": "https://www.intellex.xyz/",
+      "reviewedAt": "2026-11-23T10:56:17.136626Z"
+    },
+    {
+      "platform": "Telegram",
+      "url": "https://t.me/intellex_xyz",
+      "attributionSource": "https://www.intellex.xyz/",
+      "reviewedAt": "2026-11-23T10:56:17.136626Z"
+    }
+  ],
+  "jumbo": [],
+  "keypom": [
+    {
+      "platform": "GitHub",
+      "url": "https://github.com/keypom/keypom",
+      "attributionSource": "https://github.com/keypom/keypom",
+      "reviewedAt": "2026-11-23T10:56:17.136626Z"
+    }
+  ],
+  "linear": [
+    {
+      "platform": "GitHub",
+      "url": "https://github.com/linear-protocol/LiNEAR",
+      "attributionSource": "https://github.com/linear-protocol/LiNEAR",
+      "reviewedAt": "2026-11-23T10:56:17.136626Z"
+    }
+  ],
+  "metapool": [
+    {
+      "platform": "X",
+      "url": "https://x.com/meta_pool",
+      "attributionSource": "https://www.metapool.app/",
+      "reviewedAt": "2026-11-23T10:56:17.136626Z"
+    },
+    {
+      "platform": "Discord",
+      "url": "https://discord.gg/9DzPZCzzxp",
+      "attributionSource": "https://www.metapool.app/",
+      "reviewedAt": "2026-11-23T10:56:17.136626Z"
+    },
+    {
+      "platform": "Telegram",
+      "url": "https://t.me/MetaPoolOfficialGroup",
+      "attributionSource": "https://www.metapool.app/",
+      "reviewedAt": "2026-11-23T10:56:17.136626Z"
+    },
+    {
+      "platform": "Discord",
+      "url": "https://discord.com/invite/9DzPZCzzxp",
+      "attributionSource": "https://www.metapool.app/",
+      "reviewedAt": "2026-11-23T10:56:17.136626Z"
+    }
+  ],
+  "meteor-wallet": [],
+  "mintbase": [],
+  "near-devhub": [
+    {
+      "platform": "X",
+      "url": "https://x.com/NEARDevHub",
+      "attributionSource": "https://neardevhub.org/",
+      "reviewedAt": "2026-11-23T10:56:17.136626Z"
+    },
+    {
+      "platform": "Telegram",
+      "url": "https://t.me/NEARDevHub",
+      "attributionSource": "https://neardevhub.org/",
+      "reviewedAt": "2026-11-23T10:56:17.136626Z"
+    }
+  ],
+  "nearmobile": [
+    {
+      "platform": "X",
+      "url": "https://x.com/NEARMobile_app",
+      "attributionSource": "https://www.nearmobile.app/",
+      "reviewedAt": "2026-11-23T10:56:17.136626Z"
+    }
+  ],
+  "near-social": [
+    {
+      "platform": "GitHub",
+      "url": "https://github.com/NearSocial/social-db",
+      "attributionSource": "https://github.com/NearSocial/social-db",
+      "reviewedAt": "2026-11-23T10:56:17.136626Z"
+    }
+  ],
+  "near-blocks": [],
+  "nearpad-family": [
+    {
+      "platform": "X",
+      "url": "https://x.com/nearpad_family",
+      "attributionSource": "https://nearpad.family/",
+      "reviewedAt": "2026-11-23T10:56:17.136626Z"
+    },
+    {
+      "platform": "Telegram",
+      "url": "https://t.me/nearpadfamily",
+      "attributionSource": "https://nearpad.family/",
+      "reviewedAt": "2026-11-23T10:56:17.136626Z"
+    }
+  ],
+  "nightly": [
+    {
+      "platform": "X",
+      "url": "https://x.com/Nightly_app",
+      "attributionSource": "https://nightly.app/",
+      "reviewedAt": "2026-11-23T10:56:17.136626Z"
+    },
+    {
+      "platform": "Telegram",
+      "url": "https://t.me/nightly_app",
+      "attributionSource": "https://nightly.app/",
+      "reviewedAt": "2026-11-23T10:56:17.136626Z"
+    }
+  ],
+  "octopus": [
+    {
+      "platform": "GitHub",
+      "url": "https://github.com/octopus-network/octopus-dao",
+      "attributionSource": "https://github.com/octopus-network/octopus-dao",
+      "reviewedAt": "2026-11-23T10:56:17.136626Z"
+    }
+  ],
+  "potlock": [
+    {
+      "platform": "X",
+      "url": "https://x.com/potlock_",
+      "attributionSource": "https://www.potlock.io/chains/near",
+      "reviewedAt": "2026-11-23T10:56:17.136626Z"
+    }
+  ],
+  "paras": [],
+  "pikespeak": [],
+  "publicai": [
+    {
+      "platform": "X",
+      "url": "https://x.com/PublicAI_",
+      "attributionSource": "https://publicai.io/",
+      "reviewedAt": "2026-11-23T10:56:17.136626Z"
+    },
+    {
+      "platform": "Telegram",
+      "url": "https://t.me/public_ai01",
+      "attributionSource": "https://publicai.io/",
+      "reviewedAt": "2026-11-23T10:56:17.136626Z"
+    },
+    {
+      "platform": "Discord",
+      "url": "https://discord.gg/publicai",
+      "attributionSource": "https://publicai.io/",
+      "reviewedAt": "2026-11-23T10:56:17.136626Z"
+    }
+  ],
+  "pumpopoly": [
+    {
+      "platform": "Discord",
+      "url": "https://discord.gg/bqXJcAgxHX",
+      "attributionSource": "https://near.pumpopoly.com/",
+      "reviewedAt": "2026-11-23T10:56:17.136626Z"
+    }
+  ],
+  "rhea": [
+    {
+      "platform": "GitHub",
+      "url": "https://github.com/ref-finance/guide/blob/main/docs/rhea-finance-white-paper.md",
+      "attributionSource": "https://github.com/ref-finance/guide/blob/main/docs/rhea-finance-white-paper.md",
+      "reviewedAt": "2026-11-23T10:56:17.136626Z"
+    },
+    {
+      "platform": "X",
+      "url": "https://twitter.com/rhea_finance",
+      "attributionSource": "https://www.rhea.finance/",
+      "reviewedAt": "2026-11-23T10:56:17.136626Z"
+    },
+    {
+      "platform": "Discord",
+      "url": "https://discord.gg/rheafinance",
+      "attributionSource": "https://www.rhea.finance/",
+      "reviewedAt": "2026-11-23T10:56:17.136626Z"
+    },
+    {
+      "platform": "Telegram",
+      "url": "https://t.me/rhea_finance",
+      "attributionSource": "https://www.rhea.finance/",
+      "reviewedAt": "2026-11-23T10:56:17.136626Z"
+    },
+    {
+      "platform": "Medium",
+      "url": "https://rhea-finance.medium.com/",
+      "attributionSource": "https://www.rhea.finance/",
+      "reviewedAt": "2026-11-23T10:56:17.136626Z"
+    }
+  ],
+  "roketo": [
+    {
+      "platform": "GitHub",
+      "url": "https://github.com/roke-to/roketo-contract",
+      "attributionSource": "https://github.com/roke-to/roketo-contract",
+      "reviewedAt": "2026-11-23T10:56:17.136626Z"
+    }
+  ],
+  "sodax": [
+    {
+      "platform": "GitHub",
+      "url": "https://github.com/gosodax/sodax-sdks",
+      "attributionSource": "https://www.sodax.com/",
+      "reviewedAt": "2026-11-23T10:56:17.136626Z"
+    },
+    {
+      "platform": "X",
+      "url": "https://x.com/gosodax",
+      "attributionSource": "https://www.sodax.com/",
+      "reviewedAt": "2026-11-23T10:56:17.136626Z"
+    },
+    {
+      "platform": "YouTube",
+      "url": "https://www.youtube.com/@gosodax",
+      "attributionSource": "https://www.sodax.com/",
+      "reviewedAt": "2026-11-23T10:56:17.136626Z"
+    }
+  ],
+  "sender-ai": [],
+  "stader": [
+    {
+      "platform": "GitHub",
+      "url": "https://github.com/stader-labs/nearx",
+      "attributionSource": "https://github.com/stader-labs/nearx",
+      "reviewedAt": "2026-11-23T10:56:17.136626Z"
+    }
+  ],
+  "templar-protocol": [
+    {
+      "platform": "X",
+      "url": "https://x.com/TemplarProtocol",
+      "attributionSource": "https://www.templarfi.org/",
+      "reviewedAt": "2026-11-23T10:56:17.136626Z"
+    },
+    {
+      "platform": "Telegram",
+      "url": "https://t.me/templarprotocol",
+      "attributionSource": "https://www.templarfi.org/",
+      "reviewedAt": "2026-11-23T10:56:17.136626Z"
+    },
+    {
+      "platform": "Discord",
+      "url": "https://discord.gg/KAvMtYpbep",
+      "attributionSource": "https://www.templarfi.org/",
+      "reviewedAt": "2026-11-23T10:56:17.136626Z"
+    }
+  ],
+  "trufin": [
+    {
+      "platform": "GitHub",
+      "url": "https://github.com/trufin-io/examples",
+      "attributionSource": "https://www.trufin.io/",
+      "reviewedAt": "2026-11-23T10:56:17.136626Z"
+    },
+    {
+      "platform": "X",
+      "url": "https://x.com/TruYields",
+      "attributionSource": "https://www.trufin.io/",
+      "reviewedAt": "2026-11-23T10:56:17.136626Z"
+    }
+  ]
+}

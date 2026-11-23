@@ -27,6 +27,14 @@
       "destination": "/api/activity?dataset=coverage"
     },
     {
+      "source": "/api/v1/social",
+      "destination": "/api/rest?resource=social"
+    },
+    {
+      "source": "/api/v1/projects/:id/social",
+      "destination": "/api/rest?resource=social-project&id=:id"
+    },
+    {
       "source": "/api/v1/projects/:id/market",
       "destination": "/api/rest?resource=market&id=:id"
     },
@@ -63,7 +71,6 @@
     {
       "path": "/api/refresh-activity?slot=00",
       "schedule": "0 0 * * *"
-
     }
   ],
   "redirects": [

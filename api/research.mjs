@@ -1,12 +1,25 @@
 import {discoverTokenCandidates, researchEcosystem, researchNarratives, researchProjectMarket} from '../services/project-research.mjs';
+import {socialResearch,socialResearchIndex} from '../services/social-research.mjs';
 import {readPublishedResearch} from '../services/research-read.mjs';
 
 export default async function handler(request, response) {
   if (request.method !== 'GET') return response.status(405).end();
   const {view = 'leaderboard', id, cursor, page = '1', q = ''} = request.query;
-  if (!['leaderboard','investment','project','project-core','project-market','candidates','narratives','ecosystem','forecast'].includes(view)) return response.status(400).json({error:'Invalid view'});
-  if (['project','project-core','project-market'].includes(view) && (typeof id !== 'string' || !/^[a-z0-9-]{1,64}$/.test(id))) {
+  if (!['leaderboard','investment','project','project-core','project-market','candidates','narratives','ecosystem','forecast','social','social-project'].includes(view)) return response.status(400).json({error:'Invalid view'});
+  if (['project','project-core','project-market','social-project'].includes(view) && (typeof id !== 'string' || !/^[a-z0-9-]{1,64}$/.test(id))) {
     return response.status(400).json({error:'A valid project ID is required'});
+  }
+  if (view==='social' || view==='social-project') {
+    let result;
+    try {
+      result=view==='social' ? socialResearchIndex() : process.env.DATABASE_URL
+        ? await readPublishedResearch('social-project',id) : socialResearch(id);
+    } catch {
+      return response.status(503).json({error:'Social evidence is temporarily unavailable'});
+    }
+    if (!result) return response.status(404).json({error:'Social evidence not collected for this project'});
+    response.setHeader('Cache-Control','public, max-age=30, s-maxage=300');
+    return response.status(200).json(result);
   }
   if (cursor !== undefined && (view !== 'candidates' || typeof cursor !== 'string' || !/^[A-Za-z0-9_+/=-]{1,512}$/.test(cursor))) {
     return response.status(400).json({error:'Invalid cursor'});

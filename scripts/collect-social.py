@@ -87,8 +87,7 @@ def source(platform,url,evidence):
             'status':'unavailable','error':None,'posts':[],'sampleComplete':False}
 
 def save():
-    payload={'schemaVersion':1,'updatedAt':NOW,'collector':{'name':'Agent Reach','version':collector_version,
-        'source':'https://github.com/Panniantong/Agent-Reach'},
+    payload={'schemaVersion':1,'updatedAt':NOW,
         'projects':sorted(records.values(),key=lambda p:p['name'])}
     output.parent.mkdir(parents=True,exist_ok=True)
     temp=output.with_suffix('.tmp')

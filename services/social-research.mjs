@@ -8,7 +8,6 @@ export function socialResearch(id, now=new Date()) {
   return {
     ...analyzeProjectSocial(project,observedAt),
     stale:now.getTime()-Date.parse(observedAt)>72*3600000,
-    collectedBy:evidence.collector,
     rankingEffect:'research_only',
   };
 }

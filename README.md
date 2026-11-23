@@ -53,15 +53,14 @@ Project evidence now includes an early social publishing analysis. The collector
 [Social methodology](https://invisible-gray.vercel.app/docs/#social-activity) · [Coverage API](https://invisible-gray.vercel.app/api/v1/social)
 
 ```sh
-# Install Agent Reach from its official GitHub release.
-# Follow https://github.com/Panniantong/Agent-Reach/blob/main/docs/install.md
+# Collection runs on the configured research worker.
 npm run social:collect -- --project rhea
 npm run social:report
 # Requires DATABASE_URL. Upserts bounded evidence into PostgreSQL.
 npm run social:sync
 ```
 
-Run the collector on a persistent worker with Agent Reach installed. Authenticated X collection uses its dedicated browser session. New social links must be reviewed in data/social-sources.json before they become scored sources. The --discover flag produces candidate evidence for that review. Discord and YouTube history adapters remain under development. The current phase supports repeatable collection and scoring. Unattended social refresh is pending worker deployment.
+Run collection on a persistent research worker with its platform access configured. Authenticated X collection uses its dedicated browser session. New social links must be reviewed in data/social-sources.json before they become scored sources. The --discover flag produces candidate evidence for that review. Discord and YouTube history adapters remain under development. The current phase supports repeatable collection and scoring. Unattended social refresh is pending worker deployment.
 
 ## Methodology
 

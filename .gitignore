@@ -38,3 +38,6 @@
 
 /.vercel/
 .vercel
+
+# Python collector bytecode
+__pycache__/

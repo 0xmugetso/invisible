@@ -9,6 +9,7 @@ import os
 from pathlib import Path
 import re
 import subprocess
+import shutil
 import sys
 import urllib.request
 import urllib.parse
@@ -19,11 +20,19 @@ NOW = dt.datetime.now(dt.timezone.utc).isoformat().replace('+00:00','Z')
 parser = argparse.ArgumentParser()
 parser.add_argument('--discover', action='store_true', help='Discover candidate links for a separate attribution review')
 parser.add_argument('--project', help='Collect one mapped project ID')
-parser.add_argument('--agent-reach', default=os.environ.get('AGENT_REACH_BIN','agent-reach'))
+parser.add_argument('--agent-reach', default=os.environ.get('AGENT_REACH_BIN',str(ROOT/'.local/agent-reach-venv/bin/agent-reach') if (ROOT/'.local/agent-reach-venv/bin/agent-reach').exists() else 'agent-reach'))
 parser.add_argument('--skip-x', action='store_true', help='Collect public channels while a login is pending')
 parser.add_argument('--rediscover', action='store_true', help='Refresh official-page links using saved attribution')
 parser.add_argument('--output', default=str(ROOT/'data/social-evidence.json'))
 args = parser.parse_args()
+if not shutil.which(args.agent_reach):
+    parser.error('Install Agent Reach from its official GitHub release or provide --agent-reach PATH')
+try:
+    version_result=subprocess.run([args.agent_reach,'version'],capture_output=True,text=True,timeout=10,check=True)
+    collector_version=json.loads(version_result.stdout)['result']['version']
+except (subprocess.SubprocessError,KeyError,json.JSONDecodeError):
+    parser.error('Agent Reach must support the versioned JSON command interface')
+
 registry = json.loads((ROOT/'data/activity-registry.json').read_text())
 catalog = json.loads((ROOT/'data/ecosystem-catalog.json').read_text())
 memes = {p.get('registryId',p['id']) for p in catalog['projects'] if 'memecoin' in p['categories']}
@@ -74,7 +83,7 @@ def source(platform,url,evidence):
             'status':'unavailable','error':None,'posts':[],'sampleComplete':False}
 
 def save():
-    payload={'schemaVersion':1,'updatedAt':NOW,'collector':{'name':'Agent Reach','version':'1.6.1',
+    payload={'schemaVersion':1,'updatedAt':NOW,'collector':{'name':'Agent Reach','version':collector_version,
         'source':'https://github.com/Panniantong/Agent-Reach'},
         'projects':sorted(records.values(),key=lambda p:p['name'])}
     output.parent.mkdir(parents=True,exist_ok=True)

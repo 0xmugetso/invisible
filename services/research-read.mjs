@@ -15,7 +15,7 @@ export async function readPublishedResearch(view, id) {
       const core=view==='project' ? await researchProject(id,snapshot) : researchProjectCore(id,snapshot);
       return core ? {...core,socialActivity:await readStoredSocial(db,id)} : null;
     }
-    if (view==='social-project') return readStoredSocial(db,id);
+    if (view==='social-project') return await readStoredSocial(db,id);
     if (view === 'forecast') return researchForecast(snapshot);
     const leaderboard = researchLeaderboard(snapshot);
     return view === 'investment' ? investmentLeaderboard(leaderboard) : leaderboard;

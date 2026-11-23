@@ -70,7 +70,7 @@ function directCall(tx, contract, time) {
 }
 
 export async function ingestProjectSample(db, {requestFeed=request, pause=wait, now=Date.now, budgetMs=250000, intervalMs=3200} = {}) {
-  // Two workers share a paced request queue: fewer than 20 starts per minute,
+  // Bounded workers share a paced request queue: fewer than 20 starts per minute,
   // including retries. Refresh every due contract, never just the first twelve.
   const deadline=now()+budgetMs;
   const {rows:contracts} = await db.query(`SELECT c.account_id FROM invisible.project_contract c
@@ -117,7 +117,7 @@ export async function ingestProjectSample(db, {requestFeed=request, pause=wait, 
       } catch(error) {failure=error;failedContracts++;}
     }
   }
-  await Promise.all([worker(),worker()]);
+  await Promise.all(Array.from({length:6},()=>worker()));
   if(results.size) await storeCalls(db,[...results.values()],[],'nearblocks');
   if(sampled.length) await db.query(`INSERT INTO invisible.contract_sample
     SELECT account,now() FROM unnest($1::text[]) AS account

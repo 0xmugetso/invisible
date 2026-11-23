@@ -38,3 +38,30 @@ test('engagement reports measured values only and never changes publishing score
   assert.deepEqual(result.engagement.likes,{median:50,measuredPosts:2});
   assert.equal(result.score,100);
 });
+
+test('project social reads complete before their database pool closes',async()=>{
+  const pg=(await import('pg')).default;
+  const {readPublishedResearch}=await import('../services/research-read.mjs');
+  const OriginalPool=pg.Pool;
+  const previousUrl=process.env.DATABASE_URL;
+  let closed=false;
+  pg.Pool=class {
+    async query(sql) {
+      if (sql.includes('ranking_run')) return {rows:[]};
+      await new Promise(resolve=>setImmediate(resolve));
+      assert.equal(closed,false,'the evidence query must finish before shutdown');
+      return {rows:[{evidence:{id:'rhea',sources:[]},observed_at:now,last_attempt_at:now,last_attempt:{status:'partial'}}]};
+    }
+    async end() { closed=true; }
+  };
+  process.env.DATABASE_URL='postgresql://unused.invalid/test';
+  try {
+    const result=await readPublishedResearch('social-project','rhea');
+    assert.equal(result.id,'rhea');
+    assert.equal(closed,true);
+  } finally {
+    pg.Pool=OriginalPool;
+    if (previousUrl===undefined) delete process.env.DATABASE_URL;
+    else process.env.DATABASE_URL=previousUrl;
+  }
+});

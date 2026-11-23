@@ -4,9 +4,13 @@ export type SocialEvidenceData = {
   observedAt:string;stale:boolean;status:string;summary:string;rankingEffect:string;
   sources:{
     platform:string;url:string;checkedAt:string;status:string;sampleCount:number;recentPosts:number;activeWeeks:number;
+    authoredPosts:number;recentAuthoredPosts:number;repostCount:number;
+    engagement:Record<string,{median:number|null;measuredPosts:number}>;
+    engagementRate:{medianPercent:number|null;measuredPosts:number};
+    contentMix:Record<string,number>;
     score:number|null;coverage:string;error:string|null;summary:string;
     contributions:{recency:number;cadence:number;continuity:number}|null;
-    posts:{url:string;publishedAt:string;text:string}[];
+    posts:{url:string;publishedAt:string;text:string;kind?:string}[];
     observations:string[];
     signals:{url:string;label:string;excerpt:string;publishedAt:string}[];
   }[];
@@ -30,8 +34,18 @@ export default function SocialEvidence({data}:{data:SocialEvidenceData}) {
       <small>Source checked {source.checkedAt.slice(0,10)} UTC</small>
       {source.sampleCount>0 && <dl className="iv-social-facts">
         <div><dt>Dated Posts</dt><dd>{source.sampleCount} / 30</dd></div>
-        <div><dt>Last 30 Days</dt><dd>{source.recentPosts} posts</dd></div>
+        <div><dt>Authored in 30 Days</dt><dd>{source.recentAuthoredPosts} posts</dd></div>
         <div><dt>Active Weeks</dt><dd>{source.activeWeeks} / 4</dd></div>
+      </dl>}
+      {source.repostCount>0 && <p>{source.repostCount} reposts are visible in the evidence and excluded from the score.</p>}
+      {source.engagement && Object.values(source.engagement).some(metric=>metric.measuredPosts>0) && <dl className="iv-social-facts">
+        {(['likes','replies','reposts','views'] as const).map(metric=>source.engagement[metric] && source.engagement[metric].median!==null && <div key={metric}>
+          <dt>Median {metric[0].toUpperCase()+metric.slice(1)}</dt><dd>{source.engagement[metric].median?.toLocaleString('en-US')}</dd>
+        </div>)}
+        {source.engagementRate && source.engagementRate.medianPercent!==null && <div><dt>Median Engagement / View</dt><dd>{source.engagementRate.medianPercent}%</dd></div>}
+      </dl>}
+      {source.contentMix && Object.values(source.contentMix).some(count=>count>0) && <dl className="iv-social-facts">
+        {Object.entries(source.contentMix).filter(([,count])=>count>0).map(([label,count])=><div key={label}><dt>{({product:'Release Mentions',education:'Guides & Learning',governance:'Governance Mentions',community:'Community Mentions',promotion:'Promotion Mentions'} as Record<string,string>)[label]}</dt><dd>{count} posts</dd></div>)}
       </dl>}
       {source.contributions && <p className="iv-social-weights">Recency {source.contributions.recency}/40 · Cadence {source.contributions.cadence}/30 · Continuity {source.contributions.continuity}/30</p>}
       {source.observations?.map(note=><p key={note}>{note}</p>)}
@@ -41,7 +55,7 @@ export default function SocialEvidence({data}:{data:SocialEvidenceData}) {
       {source.posts.length>0 && <details>
         <summary>Inspect Source Posts</summary>
         <ol>{source.posts.slice(0,30).map(post=><li key={post.url}>
-          <a href={post.url} target="_blank" rel="noreferrer"><time dateTime={post.publishedAt}>{post.publishedAt.slice(0,10)}</time> <Icon name="launch"/></a>
+          <a href={post.url} target="_blank" rel="noreferrer">{post.kind==='repost' && 'Repost · '}<time dateTime={post.publishedAt}>{post.publishedAt.slice(0,10)}</time> <Icon name="launch"/></a>
           <p>{post.text.slice(0,280)}</p>
         </li>)}</ol>
       </details>}

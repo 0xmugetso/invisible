@@ -9,12 +9,12 @@ const median = values => {
 };
 
 export const socialMethodology = {
-  version:'social-publishing-v1',
-  sample:'Up to 30 latest dated public posts per official platform. Duplicate URLs are counted once.',
+  version:'social-publishing-v2',
+  sample:'Up to 30 dated timeline entries returned per official platform. Duplicate URLs are counted once. X reposts remain visible and are excluded from publishing scores and engagement medians.',
   weights:{recency:40, cadence:30, continuity:30},
   meaning:'Publishing activity on each platform. This measures communication, not community quality, investment merit, sentiment, or verified product delivery.',
   scoring:'Recency decays linearly from 40 to 0 over 30 days. Cadence reaches 30 at 8 posts in the last 30 days. Continuity contributes 7.5 per active trailing week, capped at 30.',
-  eligibility:'At least 5 dated posts and a complete requested sample, or evidence that the returned timeline reaches at least 30 days back. Future-dated posts are rejected.',
+  eligibility:'At least 5 dated authored posts and a complete requested sample, or evidence that the returned timeline reaches at least 30 days back. Future-dated posts are rejected.',
   engagement:'Median likes, replies, reposts, and views are reported only where actually returned. Engagement is excluded from the score.',
 };
 
@@ -30,23 +30,28 @@ export function analyzeSocialSource(source, observedAt) {
     seen.add(url.href);
     return true;
   }).toSorted((a,b)=>Date.parse(b.publishedAt)-Date.parse(a.publishedAt)).slice(0,30);
+  const authored = posts.filter(post=>post.kind!=='repost');
   const recent = posts.filter(post=>now-Date.parse(post.publishedAt)<30*DAY);
-  const ageDays = posts.length ? (now-Date.parse(posts[0].publishedAt))/DAY : null;
-  const weeks = new Set(recent.filter(post=>now-Date.parse(post.publishedAt)<28*DAY)
+  const recentAuthored=authored.filter(post=>now-Date.parse(post.publishedAt)<30*DAY);
+  const ageDays = authored.length ? (now-Date.parse(authored[0].publishedAt))/DAY : null;
+  const weeks = new Set(recentAuthored.filter(post=>now-Date.parse(post.publishedAt)<28*DAY)
     .map(post=>Math.floor((now-Date.parse(post.publishedAt))/(7*DAY))));
   const complete = posts.length===30;
   const reachesWindow = posts.length>0 && now-Date.parse(posts.at(-1).publishedAt)>=30*DAY;
-  const eligible = source.status==='collected' && posts.length>=5 && (complete || reachesWindow);
+  const eligible = source.status==='collected' && authored.length>=5 && (complete || reachesWindow);
   const contributions = eligible ? {
     recency:rounded(40*Math.max(0,1-ageDays/30)),
-    cadence:rounded(30*Math.min(1,recent.length/8)),
+    cadence:rounded(30*Math.min(1,recentAuthored.length/8)),
     continuity:weeks.size*7.5,
   } : null;
   const score = contributions ? rounded(Object.values(contributions).reduce((sum,value)=>sum+value,0)) : null;
   const engagement = Object.fromEntries(['likes','replies','reposts','views'].map(metric=>{
-    const values=posts.map(post=>post.metrics?.[metric]).filter(value=>finite(value)&&value>=0);
+    const values=authored.map(post=>post.metrics?.[metric]).filter(value=>finite(value)&&value>=0);
     return [metric,{median:median(values),measuredPosts:values.length}];
   }));
+  const engagementRates=authored.filter(post=>['likes','replies','reposts','views'].every(key=>finite(post.metrics?.[key])&&post.metrics[key]>=0)&&post.metrics.views>0)
+    .map(post=>100*(post.metrics.likes+post.metrics.replies+post.metrics.reposts)/post.metrics.views);
+  const engagementRate={medianPercent:engagementRates.length ? rounded(median(engagementRates)) : null,measuredPosts:engagementRates.length};
   const contentRules={
     product:/\b(launch(?:ed)?|release[ds]?|upgrade[ds]?|mainnet|integrat(?:ion|ed)|audit(?:ed)?)\b/i,
     education:/\b(tutorial|guide|how to|documentation|learn|explainer)\b/i,
@@ -55,24 +60,24 @@ export function analyzeSocialSource(source, observedAt) {
     promotion:/\b(giveaway|airdrop|reward|prize|win|competition|incentive)\b/i,
   };
   const contentMix=Object.fromEntries(Object.entries(contentRules).map(([label,rule])=>[
-    label,recent.filter(post=>rule.test(post.text ?? '')).length,
+    label,recentAuthored.filter(post=>rule.test(post.text ?? '')).length,
   ]));
   const observations=[];
-  if (posts.length) observations.push(ageDays<=7 ? 'The latest captured post is within the last week.'
+  if (authored.length) observations.push(ageDays<=7 ? 'The latest captured post is within the last week.'
     : ageDays<=30 ? 'The latest captured post is within the last month.'
     : 'The newest captured post is older than 30 days. This does not establish inactivity on other channels.');
   if (!eligible && posts.length) observations.push('The sample is too small or incomplete for a publishing score.');
-  if (recent.length && weeks.size<3) observations.push('Captured activity is concentrated in fewer than three of the last four weeks.');
-  if (contentMix.promotion>recent.length/2) observations.push('More than half of recent captured posts mention promotional terms.');
+  if (recentAuthored.length && weeks.size<3) observations.push('Captured activity is concentrated in fewer than three of the last four weeks.');
+  if (contentMix.promotion>recentAuthored.length/2) observations.push('More than half of recent captured posts mention promotional terms.');
   if (contentMix.product) observations.push('Some posts mention product releases, integrations, or audits. These are communication claims, not verified delivery.');
-  const productPosts=posts.filter(post=>/\b(launch(?:ed)?|release[ds]?|upgrade[ds]?|mainnet|integrat(?:ion|ed)|audit(?:ed)?)\b/i.test(post.text ?? ''));
+  const productPosts=authored.filter(post=>/\b(launch(?:ed)?|release[ds]?|upgrade[ds]?|mainnet|integrat(?:ion|ed)|audit(?:ed)?)\b/i.test(post.text ?? ''));
   return {
-    ...source,posts,sampleCount:posts.length,recentPosts:recent.length,activeWeeks:weeks.size,
-    daysSinceLastPost:ageDays===null ? null : rounded(ageDays),score,contributions,engagement,
+    ...source,posts,sampleCount:posts.length,recentPosts:recent.length,authoredPosts:authored.length,recentAuthoredPosts:recentAuthored.length,repostCount:posts.length-authored.length,activeWeeks:weeks.size,
+    daysSinceLastPost:ageDays===null ? null : rounded(ageDays),score,contributions,engagement,engagementRate,
     coverage:complete ? 'latest_30' : reachesWindow ? 'covers_30_days' : 'partial',
     summary:source.status!=='collected' ? 'Collection unavailable. No activity score assigned.'
       : !posts.length ? 'No dated public posts were returned. No activity score assigned.'
-      : `${recent.length} of ${posts.length} sampled posts fall in the last 30 days, spanning ${weeks.size} of the last four weeks.`,
+      : `${recentAuthored.length} authored posts fall in the last 30 days. The sample contains ${authored.length} authored entries and ${posts.length-authored.length} reposts.`,
     contentMix,observations,
     signals:productPosts.slice(0,5).map(post=>({url:post.url,publishedAt:post.publishedAt,
       label:'Mentions a release, integration, or audit',excerpt:post.text.slice(0,240)})),

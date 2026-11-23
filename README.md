@@ -48,7 +48,7 @@ See how to compare NEAR projects, inspect the evidence behind a ranking, and ask
 
 ## Social Activity Research
 
-Project evidence now includes an early social publishing analysis. The collector requests up to 30 posts from attributed channels, stores source URLs and retrieval times, and computes per-platform recency, cadence, and continuity scores. Coverage and access failures remain visible. Social scores currently carry no weight in the investment or activity rankings.
+Project evidence now includes an early social publishing analysis. The collector requests up to 30 posts from attributed channels, stores source URLs and retrieval times, and computes per-platform recency, cadence, and continuity scores. Reposts remain visible but are excluded from publishing scores and engagement medians. Measured engagement and keyword-based content categories are shown separately; neither changes the publishing score. Coverage and access failures remain visible. Social scores currently carry no weight in the investment or activity rankings.
 
 [Social methodology](https://invisible-gray.vercel.app/docs/#social-activity) · [Coverage API](https://invisible-gray.vercel.app/api/v1/social)
 
@@ -320,7 +320,7 @@ mkdir -p .claude/skills/invisible && curl -fsS 'https://invisible-gray.vercel.ap
 | --- | --- | --- |
 | Shipped | Verify NEAR Activity | Map projects to contracts, compare signer activity across two 28-day windows, and link the underlying evidence. |
 | Shipped | Publish the Research Workspace | Ship the dashboard, project evidence, and agent access through MCP, REST, A2A, and the skill. |
-| In progress | Track Social and Product Activity | Public-channel collection, per-platform publishing scores, and dated source posts are available in project evidence. Authenticated X coverage and unattended refresh are pending. |
+| In progress | Track Social and Product Activity | Public-channel collection, per-platform publishing scores, and dated source posts are available in project evidence. Authenticated X timelines are collected where access succeeds; rate limits remain visible. Unattended refresh is pending. |
 | Coming soon | Follow Projects and Unlocks | Follow projects in a watchlist and surface changes in signer retention, upcoming unlocks, and new deployments. |
 | Exploration | Explore an Invisible Token | Define potential utility, distribution, and launch criteria. |
 

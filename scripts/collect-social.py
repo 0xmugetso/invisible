@@ -21,10 +21,14 @@ parser = argparse.ArgumentParser()
 parser.add_argument('--discover', action='store_true', help='Discover candidate links for a separate attribution review')
 parser.add_argument('--project', help='Collect one mapped project ID')
 parser.add_argument('--agent-reach', default=os.environ.get('AGENT_REACH_BIN',str(ROOT/'.local/agent-reach-venv/bin/agent-reach') if (ROOT/'.local/agent-reach-venv/bin/agent-reach').exists() else 'agent-reach'))
+parser.add_argument('--only-x', action='store_true', help='Refresh attributed X timelines and retain other channels')
+parser.add_argument('--timeout',type=int,default=75,help='Maximum seconds per Agent Reach query')
 parser.add_argument('--skip-x', action='store_true', help='Collect public channels while a login is pending')
 parser.add_argument('--rediscover', action='store_true', help='Refresh official-page links using saved attribution')
 parser.add_argument('--output', default=str(ROOT/'data/social-evidence.json'))
 args = parser.parse_args()
+if not 10<=args.timeout<=180: parser.error('--timeout must be between 10 and 180 seconds')
+if args.only_x and args.skip_x: parser.error('--only-x and --skip-x are mutually exclusive')
 if not shutil.which(args.agent_reach):
     parser.error('Install Agent Reach from its official GitHub release or provide --agent-reach PATH')
 try:
@@ -49,10 +53,10 @@ records = {p['id']:p for p in existing['projects']}
 approved=json.loads((ROOT/'data/social-sources.json').read_text()) if (ROOT/'data/social-sources.json').exists() else {}
 
 def reach(channel, action, value, limit=None):
-    cmd=[args.agent_reach,channel,action,value,'--timeout','18']
+    cmd=[args.agent_reach,channel,action,value,'--timeout',str(args.timeout)]
     if limit: cmd+=['--limit',str(limit)]
     try:
-        proc=subprocess.run(cmd,capture_output=True,text=True,timeout=26)
+        proc=subprocess.run(cmd,capture_output=True,text=True,timeout=args.timeout+10)
         return json.loads(proc.stdout)
     except (subprocess.TimeoutExpired,FileNotFoundError,json.JSONDecodeError):
         return {'ok':False,'error':{'code':'COLLECTOR_UNAVAILABLE'},'items':[]}
@@ -92,6 +96,7 @@ def save():
     temp.replace(output)
 
 for p in projects:
+    if args.only_x and not any(s['platform']=='X' for s in approved.get(p['id'],[])): continue
     links={}
     for label,value in p.get('links',{}).items():
         url=value if isinstance(value,str) else value['url']
@@ -137,6 +142,10 @@ for p in projects:
             if key[0]=='GitHub' and not all(re.fullmatch(r'[A-Za-z0-9_.-]+',part) for part in key[1].split('/')): continue
             used.add(key)
             s=source(key[0],url,evidence)
+            if args.only_x and key[0]!='X':
+                previous=next((old for old in records.get(p['id'],{}).get('sources',[]) if old['url']==url),None)
+                if previous: channels.append(previous)
+                continue
             if key[0]=='X':
                 if args.skip_x:
                     old=next((old for old in records.get(p['id'],{}).get('sources',[]) if old['url']==url),None)
@@ -154,7 +163,9 @@ for p in projects:
                         post_host=urllib.parse.urlparse(post_url or '').netloc.removeprefix('www.')
                         if post_url and stamp and post_host in ('twitter.com','x.com') and '/status/' in post_url:
                             s['posts'].append({'url':post_url,'publishedAt':stamp,'text':(item.get('text') or '')[:1200],
-                                               'metrics':{k:raw[k] for k in ('likes','replies','reposts','views') if isinstance(raw.get(k),(int,float))}})
+                                               'kind':'repost' if raw.get('is_retweet') or (item.get('author') or key[1]).lower().lstrip('@')!=key[1] else 'post',
+                                               'author':item.get('author'),
+                                               'metrics':{k:raw[upstream] for k,upstream in [('likes','likes'),('replies','replies'),('reposts','retweets'),('views','views')] if isinstance(raw.get(upstream),(int,float))}})
                     s['status']='collected'; s['sampleComplete']=len(s['posts'])>=30
                 else: s['error']=(result.get('error') or {}).get('code','UPSTREAM_UNAVAILABLE')
             elif key[0]=='Telegram':

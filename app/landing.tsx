@@ -99,7 +99,7 @@ const developerLinks = [
 const milestones = [
   {title:'Verify NEAR Activity',icon:'contracts',done:true,details:'Map projects to contracts, compare returning signers, and link each finding to source transactions.'},
   {title:'Publish the Research Workspace',icon:'overview',done:true,details:'Explore activity and investment rankings, inspect vesting evidence, and compare signer forecasts against observed cohorts.'},
-  {title:'Track Social and Product Activity',icon:'observed',done:false,details:'Inspect publishing scores and dated public posts. Authenticated X coverage, unattended refresh, and broader social analysis are next.'},
+  {title:'Track Social and Product Activity',icon:'observed',done:false,details:'Inspect publishing scores and dated public posts. Authenticated X timelines are available where collection succeeds. Unattended refresh and broader social analysis are next.'},
   {title:'Follow Projects and Unlocks',icon:'clock',done:false,details:'Save a watchlist and surface changes in retention, upcoming unlocks, and new contract deployments.'},
   {title:'Explore an Invisible Token',icon:'growth',done:false,details:'Publish proposed utility, distribution, and launch criteria before announcing any dates or terms.'},
 ] as const;

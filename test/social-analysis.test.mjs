@@ -65,3 +65,19 @@ test('project social reads complete before their database pool closes',async()=>
     else process.env.DATABASE_URL=previousUrl;
   }
 });
+
+test('reposts cannot inflate publishing or authored engagement',()=>{
+  const data=source(30);
+  data.posts.forEach((post,i)=>{
+    post.kind=i<25 ? 'repost' : 'post';
+    post.metrics=i<25 ? {likes:99999,replies:99999,reposts:99999,views:1} : {likes:5,replies:2,reposts:3,views:100};
+  });
+  const result=analyzeSocialSource(data,now);
+  assert.equal(result.repostCount,25);
+  assert.equal(result.recentAuthoredPosts,5);
+  assert.deepEqual(result.engagement.likes,{median:5,measuredPosts:5});
+  assert.deepEqual(result.engagementRate,{medianPercent:10,measuredPosts:5});
+  assert.ok(result.score<100);
+  data.posts[25].kind='repost';
+  assert.equal(analyzeSocialSource(data,now).score,null);
+});

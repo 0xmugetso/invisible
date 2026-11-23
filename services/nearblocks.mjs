@@ -79,19 +79,26 @@ export async function ingestProjectSample(db, {requestFeed=request, pause=wait, 
     WHERE NOT p.benchmark AND (s.sampled_at IS NULL OR s.sampled_at < now()-interval '10 hours')
     ORDER BY s.sampled_at NULLS FIRST, c.account_id`);
   const results=new Map(),sampled=[];
-  let credential=apiKey,nextStart=now(),cursor=0,failedContracts=0,failure;
+  let credential=apiKey,nextStart=now(),cooldownUntil=0,cursor=0,failedContracts=0,failure;
+  async function reserveRequest() {
+    for(;;) {
+      const start=Math.max(now(),nextStart,cooldownUntil);
+      if(start>=deadline) return false;
+      nextStart=start+intervalMs;
+      await pause(Math.max(0,start-now()));
+      // A provider cooldown may have arrived while this worker was waiting.
+      if(cooldownUntil>start) continue;
+      return now()<deadline;
+    }
+  }
   async function read(contract) {
     const path='accounts/'+encodeURIComponent(contract)+'/txns';
     for(let attempt=0;attempt<2;attempt++) {
-      const start=Math.max(now(),nextStart);
-      if(start>=deadline) return null;
-      nextStart=start+intervalMs;
-      await pause(Math.max(0,start-now()));
-      if(now()>=deadline) return null;
+      if(!await reserveRequest() || now()>=deadline) return null;
       try { return await requestFeed(path,{limit:20},credential); }
       catch(error) {
         if(attempt===0 && /HTTP 429$/.test(error.message)) {
-          nextStart=Math.max(nextStart,now()+(error.retryAfterMs ?? 60000));
+          cooldownUntil=Math.max(cooldownUntil,now()+(error.retryAfterMs ?? 60000));
           continue;
         }
         if(attempt===0 && credential && /HTTP (401|403)$/.test(error.message)) {

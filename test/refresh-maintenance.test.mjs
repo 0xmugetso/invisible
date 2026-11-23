@@ -47,3 +47,13 @@ test('rate limits delay retries through the shared queue',async()=>{
   assert.equal(result.sampled,2);assert.equal(result.failed,0);assert.equal(requests,3);
   assert.ok(waits.some(ms=>ms>=60000),'provider cooldown is honored');
 });
+
+test('bounded workers overlap latency while all starts keep the shared pace',async()=>{
+  const db=sampleDb(74),waits=[];let active=0,peak=0;
+  const result=await ingestProjectSample(db,{requestFeed:async()=>{
+    active++;peak=Math.max(peak,active);
+    await new Promise(resolve=>setImmediate(resolve));active--;return {data:[]};
+  },pause:async ms=>{waits.push(ms)},now:()=>0});
+  assert.equal(result.sampled,74);assert.equal(peak,6);
+  assert.deepEqual(waits.toSorted((a,b)=>a-b),Array.from({length:74},(_,i)=>i*3200));
+});

@@ -13,7 +13,15 @@ async function request(path, params, credential = apiKey) {
     signal: AbortSignal.timeout(15000),
     headers: credential ? {Authorization:'Bearer '+credential} : {},
   });
-  if (!response.ok) throw new Error('NearBlocks '+path+' returned HTTP '+response.status);
+  if (!response.ok) {
+    const error=new Error('NearBlocks '+path+' returned HTTP '+response.status);
+    error.status=response.status;
+    const retry=response.headers.get('retry-after');
+    const seconds=Number(retry);
+    error.retryAfterMs=retry && Number.isFinite(seconds) ? Math.max(0,seconds*1000)
+      : retry && Number.isFinite(Date.parse(retry)) ? Math.max(0,Date.parse(retry)-Date.now()) : 60000;
+    throw error;
+  }
   const payload = await response.json();
   if (!Array.isArray(payload.data)) throw new Error('Invalid NearBlocks data.');
   return payload;
@@ -61,48 +69,62 @@ function directCall(tx, contract, time) {
   };
 }
 
-export async function ingestProjectSample(db) {
-  // Rotate through a fixed batch so one scheduled refresh cannot use the whole provider allowance.
+export async function ingestProjectSample(db, {requestFeed=request, pause=wait, now=Date.now, budgetMs=250000, intervalMs=3200} = {}) {
+  // Two workers share a paced request queue: fewer than 20 starts per minute,
+  // including retries. Refresh every due contract, never just the first twelve.
+  const deadline=now()+budgetMs;
   const {rows:contracts} = await db.query(`SELECT c.account_id FROM invisible.project_contract c
     JOIN invisible.project p ON p.id=c.project_id
     LEFT JOIN invisible.contract_sample s ON s.account_id=c.account_id
-    WHERE NOT p.benchmark
-    ORDER BY s.sampled_at NULLS FIRST, c.account_id LIMIT 12`);
-  const results = new Map();
-  const sampled=[];
-  let credential = apiKey;
-  let failure;
-  let failedContracts = 0;
-  for (const {account_id:contract} of contracts) {
-    try {
-      await wait(credential ? 750 : 1500);
-      const path = 'accounts/'+encodeURIComponent(contract)+'/txns';
-      const {data} = await request(path, {limit:20}, credential).catch(async error => {
-        if (!credential || !/HTTP (401|403|429)$/.test(error.message)) throw error;
-        credential = null;
-        await wait(1500);
-        return request(path, {limit:20}, credential);
-      });
-      for (const tx of data) {
-        if (tx.receiver_account_id !== contract) continue;
-        const call = directCall(tx, contract, timestamp(tx.block_timestamp));
-        if (call) results.set(call.transaction_hash, call);
+    WHERE NOT p.benchmark AND (s.sampled_at IS NULL OR s.sampled_at < now()-interval '10 hours')
+    ORDER BY s.sampled_at NULLS FIRST, c.account_id`);
+  const results=new Map(),sampled=[];
+  let credential=apiKey,nextStart=now(),cursor=0,failedContracts=0,failure;
+  async function read(contract) {
+    const path='accounts/'+encodeURIComponent(contract)+'/txns';
+    for(let attempt=0;attempt<2;attempt++) {
+      const start=Math.max(now(),nextStart);
+      if(start>=deadline) return null;
+      nextStart=start+intervalMs;
+      await pause(Math.max(0,start-now()));
+      if(now()>=deadline) return null;
+      try { return await requestFeed(path,{limit:20},credential); }
+      catch(error) {
+        if(attempt===0 && /HTTP 429$/.test(error.message)) {
+          nextStart=Math.max(nextStart,now()+(error.retryAfterMs ?? 60000));
+          continue;
+        }
+        if(attempt===0 && credential && /HTTP (401|403)$/.test(error.message)) {
+          credential=null;
+          continue;
+        }
+        throw error;
       }
-      sampled.push(contract);
-    } catch(error) {
-      failure=error;
-      failedContracts++;
-      if (error.message.endsWith('HTTP 429')) break;
     }
   }
-  // Save completed work even when a later contract hits the rate limit.
-  if (results.size) await storeCalls(db,[...results.values()],[],'nearblocks');
-  if (sampled.length) await db.query(`INSERT INTO invisible.contract_sample
+  async function worker() {
+    while(cursor<contracts.length && now()<deadline) {
+      const {account_id:contract}=contracts[cursor++];
+      try {
+        const payload=await read(contract);
+        if(!payload) break;
+        for(const tx of payload.data) {
+          if(tx.receiver_account_id!==contract) continue;
+          const call=directCall(tx,contract,timestamp(tx.block_timestamp));
+          if(call) results.set(call.transaction_hash,call);
+        }
+        sampled.push(contract);
+      } catch(error) {failure=error;failedContracts++;}
+    }
+  }
+  await Promise.all([worker(),worker()]);
+  if(results.size) await storeCalls(db,[...results.values()],[],'nearblocks');
+  if(sampled.length) await db.query(`INSERT INTO invisible.contract_sample
     SELECT account,now() FROM unnest($1::text[]) AS account
     ON CONFLICT (account_id) DO UPDATE SET sampled_at=EXCLUDED.sampled_at`,[sampled]);
-  if (failure && !sampled.length) throw failure;
-  if (failure) console.warn('Some NearBlocks contract samples failed', failure.message);
-  return {sampled:sampled.length,failed:failedContracts,deferred:contracts.length-sampled.length-failedContracts};
+  if(failure && !sampled.length) throw failure;
+  if(failure) console.warn('Some NearBlocks contract samples failed',failure.message);
+  return {due:contracts.length,sampled:sampled.length,failed:failedContracts,deferred:contracts.length-sampled.length-failedContracts};
 }
 
 async function fetchCalls(contract, start, end) {

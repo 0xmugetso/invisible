@@ -2,6 +2,7 @@ import {timingSafeEqual} from 'node:crypto';
 import {openDatabase, seedRegistry} from '../services/store.mjs';
 import {bigQueryForInvocation} from '../services/bigquery.mjs';
 import {ingestBlocks, ingestProjectSample} from '../services/nearblocks.mjs';
+import {cleanupRetention} from '../services/retention.mjs';
 import {refreshWarehouseRankings} from '../services/warehouse-rankings.mjs';
 
 const day = 86400000;
@@ -36,10 +37,13 @@ export default async function handler(request, response) {
     const summary = {
       ranking: result.status === 'fulfilled' ? result.value : {status:'failed'},
       blocks: blocks.status === 'fulfilled' ? {status:'saved', latestBlock:new Date(blocks.value).toISOString()} : {status:'failed'},
-      contractSample: sample.status === 'fulfilled' ? {status:'saved', ...sample.value} : {status:'failed'},
+      contractSample: sample.status === 'fulfilled' ? {status:sample.value.failed || sample.value.deferred ? 'partial':'saved', ...sample.value} : {status:'failed'},
     };
     if (result.status === 'rejected') console.error('Warehouse ranking refresh failed', result.reason.message);
-    const failed = [result,blocks,sample].some(feed => feed.status === 'rejected');
+    try { summary.retention=await cleanupRetention(db); }
+    catch(error) { console.error('Retention cleanup failed',error.message); summary.retention={status:'failed'}; }
+    const failed = [result,blocks,sample].some(feed => feed.status === 'rejected') ||
+      summary.contractSample.status==='partial' || summary.retention.status==='failed';
     return response.status(failed ? 502 : 200).json(summary);
   } catch (error) {
     console.error('Activity refresh failed', error.message);

@@ -349,7 +349,7 @@ The production Vercel project serves the static Next.js export and the Node func
 
 ### Scheduled research refresh
 
-Use the repository root and the build settings in `vercel.json`. It deploys the static Next.js export and Node API functions. Vercel schedules one refresh in the 00:00 UTC hour. GitHub Actions schedules a second refresh at 12:17 UTC, using the repository Actions secret `INVISIBLE_REFRESH_SECRET` with the same value as Vercel’s `CRON_SECRET`. Both invoke the same authenticated endpoint.
+Use the repository root and the build settings in `vercel.json`. It deploys the static Next.js export and Node API functions. Vercel schedules refreshes in the 00:00 and 12:00 UTC hours. Each is a separate daily job; on Hobby, execution can occur anywhere within its scheduled hour. GitHub Actions is a manual recovery trigger only, using the repository Actions secret `INVISIBLE_REFRESH_SECRET` with the same value as Vercel’s `CRON_SECRET`. All invoke the same authenticated, overlap-protected endpoint. Each run samples every mapped non-benchmark contract due for refresh (older than 10 hours), with a 250-second work budget and a shared request queue paced below 20 requests per minute. Failed or deferred samples make the run report partial failure and remain due for retry.
 
 Set `CRON_SECRET`, `DATABASE_URL`, and `BQ_PROJECT` in the production environment. Use a random cron secret. For keyless BigQuery access, follow the [Vercel Google Cloud federation guide](https://vercel.com/docs/oidc/gcp). Use the team issuer and allowed audience `https://vercel.com/TEAM_SLUG`, map `google.subject` to `assertion.sub`, and restrict the provider with `assertion.sub == 'owner:TEAM_SLUG:project:invisible:environment:production'`. Grant that exact subject Workload Identity User on the service account. The service account needs BigQuery Job User on the query project. Enable the BigQuery, Security Token Service, and IAM Service Account Credentials APIs in Google Cloud.
 
@@ -362,3 +362,9 @@ Run the database setup before the first scheduled run. The cron finds the latest
 ## Brand assets
 
 [Keyhole mark](app/icon.svg) · [README banner](public/brand/readme-hero.png) · [Social banner · 1200 × 630](public/brand/social-hero.png) · [Dashboard walkthrough](public/dashboard-walkthrough.mp4)
+
+### Database Retention
+
+Scheduled refreshes retain the latest 20 raw transaction examples per contract plus raw examples referenced by published summaries from the last year. Published ranking summaries are kept for 365 days; block samples for seven days (at least the latest 20 blocks survive). Registry records, current social evidence, and user profiles are preserved. Expired wallet sessions and challenges are removed. Raw pruning requires a warehouse summary less than seven days old and invalidates legacy raw-history coverage markers, so truncated samples cannot be presented as complete historical data. Production rankings and forecasts use warehouse aggregates, not the trimmed raw sample table.
+
+Preview with `node scripts/retention.mjs`; apply with `node scripts/retention.mjs --apply` using `DATABASE_URL`. An operator can add `--compact` for a one-time table rewrite to reclaim disk space after a large cleanup; it briefly locks the raw sample table and is never run by cron. Archive historical raw imports before the first large cleanup if they are needed for offline research.
